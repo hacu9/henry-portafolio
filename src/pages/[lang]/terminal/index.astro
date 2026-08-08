@@ -13,6 +13,7 @@
  */
 import Base from '../../../layouts/Base.astro';
 import TechWall from '../../../components/TechWall.astro';
+import TechRow from '../../../components/TechRow.astro';
 import ContactSwitch from '../../../components/ContactSwitch.astro';
 import { LANGS, t, tl, OTHER_LANG, LANG_LABEL, path , asset} from '../../../i18n/types';
 import type { Lang } from '../../../i18n/types';
@@ -87,7 +88,6 @@ const boot =
       <div class="out" data-camera>
         <p class="hl">{t(profile.thesis.lead, lang)}</p>
         {tl(profile.thesis.body, lang).map((p) => <p>{p}</p>)}
-        <p class="warn"># {t(ui.theTradeoff, lang)}: {t(profile.thesis.tradeoff, lang)}</p>
       </div>
     </section>
 
@@ -134,7 +134,7 @@ const boot =
                   <p class="lbl"># {t(ui.theOutcome, lang)}</p>
                   <p class="ok">{t(p.outcome, lang)}</p>
                 </div>
-                <p class="deps">{p.stack.join(' ')}</p>
+                <TechRow items={p.stack} size="sm" />
               </div>
             </details>
           ))
@@ -154,7 +154,7 @@ const boot =
                   <p class="ctitle">&gt; {t(p.decisions[0].title, lang)}</p>
                   <p>{t(p.decisions[0].body, lang)}</p>
                 </div>
-                <p class="deps">{p.stack.join(' ')}</p>
+                <TechRow items={p.stack} size="sm" />
               </div>
             </details>
           ))

@@ -126,7 +126,6 @@ const repos = [...new Set(entries.map((e) => e.repo))];
         <div>
           <p class="k">{t(ui.howIWork, lang)}</p>
           {tl(profile.thesis.body, lang).map((p) => <p class="body">{p}</p>)}
-          <p class="body dim tradeoff">{t(profile.thesis.tradeoff, lang)}</p>
         </div>
         <dl class="facts">
           <div><dt>{t(ui.basedIn, lang)}</dt><dd>{t(profile.location, lang)}</dd></div>

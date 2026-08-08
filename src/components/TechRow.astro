@@ -1,0 +1,96 @@
+---
+/**
+ * The stack line for a single project, with a logo beside each name.
+ *
+ * Replaces the plain "Next.js · TypeScript · Capacitor" strings. A logo makes
+ * the row scannable — a reader spots React Native without reading — while the
+ * name stays, because a logo alone is a guessing game.
+ *
+ * Colour is deliberately static. Every logo inherits the same muted ink from
+ * the surrounding palette and does NOT change on hover or over time. Brand
+ * colours were rejected: several of these marks are pure black, which vanishes
+ * on the dark variants, and a row that recolours itself reads as decoration
+ * rather than information.
+ *
+ * A technology with no icon simply renders as text.
+ */
+import { TECH_ICON } from '../data/tech';
+
+interface Props {
+  items: string[];
+  /** Smaller for dense layouts like the log stream. */
+  size?: 'sm' | 'md';
+}
+const { items, size = 'md' } = Astro.props;
+
+const raw = import.meta.glob('../icons/tech/*.svg', {
+  query: '?raw',
+  import: 'default',
+  eager: true,
+}) as Record<string, string>;
+
+const clean = (svg: string) =>
+  svg
+    .replace(/ fill="[^"]*"/g, '')
+    .replace(/<title>.*?<\/title>/g, '')
+    .replace('<svg', '<svg fill="currentColor" aria-hidden="true" focusable="false"');
+
+const entries = items.map((name) => {
+  const slug = TECH_ICON[name];
+  const key = slug && Object.keys(raw).find((k) => k.endsWith(`/${slug}.svg`));
+  return { name, svg: key ? clean(raw[key]) : null };
+});
+---
+
+<ul class:list={['techrow', size === 'sm' && 'techrow--sm']}>
+  {
+    entries.map((e) => (
+      <li>
+        {e.svg && <span class="techrow__icon" set:html={e.svg} />}
+        <span>{e.name}</span>
+      </li>
+    ))
+  }
+</ul>
+
+<style>
+  .techrow {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.3rem 0.45rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .techrow li {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-family: var(--mono, ui-monospace, monospace);
+    font-size: 0.6875rem;
+    letter-spacing: 0.02em;
+    /* One colour, always. It never shifts on hover or on a timer. */
+    color: var(--dim, currentColor);
+    border: 1px solid var(--line, currentColor);
+    border-radius: 999px;
+    padding: 0.15rem 0.5rem 0.15rem 0.4rem;
+    white-space: nowrap;
+  }
+  .techrow__icon {
+    display: inline-flex;
+    width: 0.95em;
+    height: 0.95em;
+    flex: none;
+  }
+  .techrow__icon :global(svg) {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+
+  .techrow--sm li {
+    font-size: 0.625rem;
+    padding: 0.08rem 0.4rem 0.08rem 0.32rem;
+    border-color: transparent;
+  }
+</style>

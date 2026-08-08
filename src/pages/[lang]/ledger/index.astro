@@ -13,6 +13,7 @@
  */
 import Base from '../../../layouts/Base.astro';
 import TechWall from '../../../components/TechWall.astro';
+import TechRow from '../../../components/TechRow.astro';
 import ContactSwitch from '../../../components/ContactSwitch.astro';
 import { LANGS, t, tl, OTHER_LANG, LANG_LABEL, path , asset} from '../../../i18n/types';
 import type { Lang } from '../../../i18n/types';
@@ -82,10 +83,6 @@ const L = {
       <div class="cols" data-stagger>
         {tl(profile.thesis.body, lang).map((p) => <p>{p}</p>)}
       </div>
-      <p class="caveat">
-        <span class="k">{t(ui.theTradeoff, lang)}</span>
-        {t(profile.thesis.tradeoff, lang)}
-      </p>
     </section>
 
     <section id="work">
@@ -142,7 +139,7 @@ const L = {
               <span class="k">{L.balance[lang]}</span>
               {t(p.outcome, lang)}
             </p>
-            <p class="deps">{p.stack.join('  ·  ')}</p>
+            <TechRow items={p.stack} size="sm" />
           </article>
         ))
       }

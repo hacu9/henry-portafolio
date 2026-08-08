@@ -1,6 +1,7 @@
 ---
 import Base from '../../../layouts/Base.astro';
 import TechWall from '../../../components/TechWall.astro';
+import TechRow from '../../../components/TechRow.astro';
 import ContactSwitch from '../../../components/ContactSwitch.astro';
 import { LANGS, t, tl, OTHER_LANG, LANG_LABEL, path , asset} from '../../../i18n/types';
 import type { Lang } from '../../../i18n/types';
@@ -95,10 +96,6 @@ const first = lang === 'es' ? morphWords[0][1] : morphWords[0][0];
       <div class="cols" data-stagger>
         {tl(profile.thesis.body, lang).map((p) => <p>{p}</p>)}
       </div>
-      <p class="aside">
-        <span class="micro">{t(ui.theTradeoff, lang)}</span>
-        {t(profile.thesis.tradeoff, lang)}
-      </p>
     </section>
 
     <!-- ===================================================== WORK -->
@@ -152,7 +149,7 @@ const first = lang === 'es' ? morphWords[0][1] : morphWords[0][0];
               </div>
             </div>
 
-            <p class="stack-line">{p.stack.join('  ·  ')}</p>
+            <TechRow items={p.stack} size="sm" />
           </article>
         ))
       }

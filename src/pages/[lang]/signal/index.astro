@@ -1,6 +1,7 @@
 ---
 import Base from '../../../layouts/Base.astro';
 import TechWall from '../../../components/TechWall.astro';
+import TechRow from '../../../components/TechRow.astro';
 import ContactSwitch from '../../../components/ContactSwitch.astro';
 import { LANGS, t, tl, OTHER_LANG, LANG_LABEL, path , asset} from '../../../i18n/types';
 import type { Lang } from '../../../i18n/types';
@@ -110,10 +111,6 @@ const liveCount = projects.filter((p) => p.status === 'live').length;
           <h2>{t(profile.thesis.lead, lang)}</h2>
           {tl(profile.thesis.body, lang).map((p) => <p class="body">{p}</p>)}
         </div>
-        <aside class="tradeoff">
-          <p class="eyebrow">{t(ui.theTradeoff, lang)}</p>
-          <p>{t(profile.thesis.tradeoff, lang)}</p>
-        </aside>
       </div>
     </section>
 
@@ -182,9 +179,7 @@ const liveCount = projects.filter((p) => p.status === 'live').length;
               </div>
             </div>
 
-            <ul class="tech">
-              {p.stack.map((s) => <li>{s}</li>)}
-            </ul>
+            <TechRow items={p.stack} />
           </article>
         ))
       }
@@ -210,11 +205,7 @@ const liveCount = projects.filter((p) => p.status === 'live').length;
                 <h4>{t(p.decisions[0].title, lang)}</h4>
                 <p class="body">{t(p.decisions[0].body, lang)}</p>
               </div>
-              <ul class="tech">
-                {p.stack.map((s) => (
-                  <li>{s}</li>
-                ))}
-              </ul>
+              <TechRow items={p.stack} />
             </article>
           ))
         }

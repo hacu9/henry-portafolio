@@ -117,8 +117,8 @@ const rawProjects: Project[] = [
           es: 'Migré toda la plataforma de Vercel y Supabase a un VPS de Hetzner con Coolify',
         },
         body: {
-          en: 'The bill was not the point — at this scale the difference is small money. The point was control. Managed platforms decide your database, your background workers and your failure modes for you, and I wanted those decisions back before the product grew into them. So both moved onto one Hetzner box running Coolify. I did not size up when memory got tight; I added swap and kept the box, because sizing up is how you stop noticing what your app actually costs to run. I also refused to keep managed hosting for development, since two different infrastructures produce drift that only ever surfaces in production. The trade is real: uptime, disk pressure and Docker hygiene are now mine, and I do that maintenance myself.',
-          es: 'La factura no era el punto — a esta escala la diferencia es poca plata. El punto era el control. Las plataformas administradas deciden por ti la base de datos, los workers y los modos de falla, y yo quería esas decisiones de vuelta antes de que el producto creciera dentro de ellas. Así que ambos pasaron a una sola máquina Hetzner con Coolify. No subí de instancia cuando la memoria quedó justa: agregué swap y me quedé con la misma máquina, porque subir de instancia es la forma de dejar de notar lo que de verdad cuesta operar tu app. También descarté dejar hosting administrado para desarrollo, porque dos infraestructuras distintas producen desviaciones que solo aparecen en producción. La contrapartida es real: el uptime, el disco y la higiene de Docker ahora son míos, y ese mantenimiento lo hago yo.',
+          en: 'Managed platforms pick your database, your background workers and your failure modes for you. I wanted those decisions back before the product grew into them, so both moved onto one Hetzner box running Coolify. When memory got tight I added swap and kept the same machine rather than sizing up — sizing up is how you stop noticing what your app costs to run. Development stayed on the same infrastructure as production, because two setups produce drift that only ever surfaces in the one that matters. Uptime, disk and Docker hygiene are mine now, and I run them.',
+          es: 'Las plataformas administradas eligen por ti la base de datos, los workers y los modos de falla. Quería esas decisiones de vuelta antes de que el producto creciera dentro de ellas, así que ambos pasaron a una sola máquina Hetzner con Coolify. Cuando la memoria quedó justa agregué swap y me quedé con la misma máquina en vez de subir de instancia — subir de instancia es la forma de dejar de notar lo que cuesta operar tu app. Desarrollo se quedó en la misma infraestructura que producción, porque dos montajes producen desviaciones que solo aparecen en el que importa. El uptime, el disco y la higiene de Docker ahora son míos, y los opero yo.',
         },
       },
       {
@@ -143,8 +143,8 @@ const rawProjects: Project[] = [
       },
     ],
     outcome: {
-      en: 'Live on Google Play production. I run the Meta, TikTok and Google Ads campaigns myself, so I see what an architecture decision costs per user. Installs land around USD 0.06–0.11 and roughly one in five completes registration — and I would rather say plainly that registration is the bottleneck than quote the install price as a win. A cheap install is easy to buy and easy to mistake for progress. Fixing the step after it is the interesting problem, and it is the one I am on.',
-      es: 'Publicada en producción en Google Play. Yo mismo manejo las campañas de Meta, TikTok y Google Ads, así que veo lo que cuesta por usuario cada decisión de arquitectura. Las instalaciones salen a unos 0,06–0,11 USD y cerca de una de cada cinco completa el registro — y prefiero decir claramente que el registro es el cuello de botella antes que presentar el costo por instalación como un logro. Una instalación barata es fácil de comprar y fácil de confundir con progreso. Arreglar el paso siguiente es el problema interesante, y es en el que estoy.',
+      en: 'Live on Google Play production. I run the Meta, TikTok and Google Ads campaigns myself, so I see what an architecture decision costs per acquired user. Registration is the step I am working on now.',
+      es: 'Publicada en producción en Google Play. Yo mismo manejo las campañas de Meta, TikTok y Google Ads, así que veo lo que cuesta por usuario adquirido cada decisión de arquitectura. El registro es el paso en el que estoy trabajando ahora.',
     },
     stack: [
       'Next.js', 'TypeScript', 'Capacitor', 'PostgreSQL', 'Hetzner', 'Coolify',
@@ -207,8 +207,8 @@ const rawProjects: Project[] = [
       },
     ],
     outcome: {
-      en: 'In development. The orchestration layer is the subject of the experiment, so it is being built before the surface around it.',
-      es: 'En desarrollo. La capa de orquestación es el objeto del experimento, así que se construye antes que la superficie que la rodea.',
+      en: 'The orchestration layer is the experiment, so it gets built before the surface around it.',
+      es: 'La capa de orquestación es el experimento, así que se construye antes que la superficie que la rodea.',
     },
     stack: [
       'Next.js', 'TypeScript', 'LangGraph', 'PostgreSQL', 'Prisma',
@@ -221,10 +221,7 @@ const rawProjects: Project[] = [
     name: 'Femi',
     tagline: { en: "Women's safety platform", es: 'Plataforma de seguridad para mujeres' },
     status: 'building',
-    statusNote: {
-      en: 'Substantially built — not released',
-      es: 'Construida en gran parte — sin publicar',
-    },
+
     role: { en: 'Mobile and real-time systems', es: 'Móvil y sistemas en tiempo real' },
     period: '2025 — 2026',
     lead: true,
@@ -275,7 +272,7 @@ const rawProjects: Project[] = [
       },
     ],
     outcome: {
-      en: 'Real-time alerting, identity verification and trust modelling working together — the hard parts of a safety product rather than the screens around them.',
+      en: 'Real-time alerting, identity verification and trust modelling working together — the hard parts of a safety product, not the screens around them.',
       es: 'Alertas en tiempo real, verificación de identidad y modelado de confianza funcionando juntos — las partes difíciles de un producto de seguridad, no las pantallas que las rodean.',
     },
     stack: [
@@ -374,7 +371,10 @@ const rawProjects: Project[] = [
         },
       },
     ],
-    outcome: { en: 'In development.', es: 'En desarrollo.' },
+    outcome: {
+      en: 'Built directly on Meta\'s platform rather than through a reseller, so the per-conversation economics and the customer relationship stay with the product.',
+      es: 'Construido directo sobre la plataforma de Meta y no a través de un revendedor, así la economía por conversación y la relación con el cliente se quedan en el producto.',
+    },
     stack: ['Next.js', 'TypeScript', 'WhatsApp Cloud API', 'Voice agents', 'PostgreSQL'],
   },
 

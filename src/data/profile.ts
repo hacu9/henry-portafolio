@@ -57,43 +57,28 @@ export const profile = {
        * manager the last word should be engineering, so the ads sit mid-list.
        */
       en: [
-        'The method is specific: watch which number is falling, work out whether the problem belongs to the code or to the vendor underneath it, change the piece that controls the outcome, then stay and operate it.',
-        'That is how a domain I have not worked in becomes a product that ships. Over 8+ years it has meant enterprise Microsoft integrations, a multi-agent AI system, a dating app in production and a safety platform with real-time alerts — four things with almost nothing in common.',
+        'The method is specific: watch which number is falling, work out whether the problem belongs to the code or the vendor underneath it, change the piece that controls the outcome, then stay and operate it.',
+        'It is how an unfamiliar domain becomes a product that ships. Over 8+ years that has meant enterprise Microsoft integrations, a multi-agent AI system, a dating app in production and a safety platform with real-time alerts — four things with almost nothing in common.',
         'It is also why I own the parts most engineers hand off: payment integration, attribution, the ad campaigns that bring the users in, release pipelines, and the infrastructure migration underneath all of it. Inside a team that shows up as setting the technical direction and the standards other people work to — the review gates, the specs, the definition of done.',
       ],
       es: [
         'El método es concreto: miro qué número se está cayendo, averiguo si el problema es del código o del proveedor que lo sostiene, cambio la pieza que controla el resultado, y me quedo operándolo después.',
-        'Así es como un dominio en el que nunca trabajé termina siendo un producto que sale. En 8+ años eso significó integraciones empresariales con Microsoft, un sistema de IA multiagente, una app de citas en producción y una plataforma de seguridad con alertas en tiempo real — cuatro cosas que casi no se parecen en nada.',
+        'Es la forma en que un dominio desconocido termina siendo un producto que sale. En 8+ años eso significó integraciones empresariales con Microsoft, un sistema de IA multiagente, una app de citas en producción y una plataforma de seguridad con alertas en tiempo real — cuatro cosas que casi no se parecen en nada.',
         'También es la razón por la que me hago cargo de lo que la mayoría delega: integración de pagos, atribución, las campañas que traen usuarios, pipelines de release y la migración de infraestructura debajo de todo eso. Dentro de un equipo eso se traduce en fijar la dirección técnica y los estándares con los que trabajan los demás — las compuertas de revisión, las especificaciones, la definición de terminado.',
       ],
     } as LList,
     /**
-     * The counter-argument, stated before anyone else can make it.
+     * REMOVED — deliberately, and it should stay removed.
      *
-     * The previous version conceded "not the deepest specialist in any single
-     * framework" and named a six-years-of-Kubernetes engineer as the contrast.
-     * That cost nothing — nobody hiring for these roles wants that person — and
-     * a sharp reader notices a free concession. It also read as
-     * self-disqualification to anyone screening for senior React Native.
+     * Every project card carries a status badge, so what has shipped is
+     * already stated structurally. A paragraph re-confessing it was redundant,
+     * and it set the tone the rest of the copy then copied: disclaimers where
+     * claims belonged.
      *
-     * This version concedes the thing a skeptical CTO would actually find.
+     * Forward-looking self-critique still has a place. The Luxura outcome
+     * names registration as the step being worked on now — that is
+     * professional evaluation of the work. "I have not..." is just damage.
      */
-    /**
-     * Two real concessions, not one strawman.
-     *
-     * Henry confirmed on 2026-08-08: "i havent really lead". Earlier drafts
-     * said he had led small teams; that claim is gone rather than softened.
-     * Saying it plainly costs him some postings — which is the point. A
-     * reader who finds the gap themselves discounts everything else on the
-     * page; a reader who is told it up front does not.
-     *
-     * What survives is true: he sets technical direction and owns delivery,
-     * and he did set branch-protection policy for a team at Level60.
-     */
-    tradeoff: {
-      en: 'Worth saying before you find it yourself: the agentic work is the newest thing here and it is not in production yet. Luxura is what shipped. Mate is the bet, and I would rather you judge it as a bet than take my word that it is finished.',
-      es: 'Mejor decirlo antes de que lo descubras: el trabajo agéntico es lo más nuevo y todavía no está en producción. Lo publicado es Luxura. Mate es la apuesta, y prefiero que la juzgues como apuesta y no que me creas que ya está terminada.',
-    } as L,
   },
 
   /**

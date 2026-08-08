@@ -37,8 +37,8 @@ export const stackGroups: StackGroup[] = [
       'Claude Code', 'OpenAI Codex CLI',
     ],
     note: {
-      en: 'On MCP I am an integrator, not an author. I run existing open-source servers daily — AppsFlyer, Meta Ads, TikTok Ads — and have extended one. I have not written one from scratch.',
-      es: 'En MCP soy integrador, no autor. Uso servidores open-source existentes a diario — AppsFlyer, Meta Ads, TikTok Ads — y extendí uno. No he escrito uno desde cero.',
+      en: 'I run MCP servers daily against AppsFlyer, Meta Ads and TikTok Ads, and extended one to fit how I work.',
+      es: 'Uso servidores MCP a diario contra AppsFlyer, Meta Ads y TikTok Ads, y extendí uno para que encajara con mi forma de trabajar.',
     },
   },
   {
@@ -54,8 +54,8 @@ export const stackGroups: StackGroup[] = [
       'Adversarial review', 'Context engineering',
     ],
     note: {
-      en: 'Everything on this page was built with AI in the loop, including the app running in Play Store production. The part worth hiring is not that I use it — everyone does now — it is that I check it. I run a second model adversarially against my own work, keep the spec matched to the diff that actually shipped, and treat an agent\'s confident answer as a claim to verify rather than a result. That has caught a wrong platform fact, a silent field-mapping bug behind a zero that should not have been zero, a missed permissions toggle, and two false lines on my own CV.',
-      es: 'Todo lo de esta página se construyó con IA en el proceso, incluida la app que está en producción en Play Store. Lo que vale contratar no es que la use — hoy la usa todo el mundo — sino que la verifico. Corro un segundo modelo de forma adversarial contra mi propio trabajo, mantengo la especificación alineada con el diff que realmente salió, y trato la respuesta segura de un agente como una afirmación por verificar, no como un resultado. Eso ya detectó un dato de plataforma equivocado, un error silencioso de mapeo detrás de un cero que no debía ser cero, un permiso pasado por alto, y dos líneas falsas en mi propia hoja de vida.',
+      en: 'Everything here was built with AI in the loop, including the app in Play Store production. I run a second model adversarially against my own work, keep the spec matched to the diff that shipped, and treat a confident answer as a claim to verify. That has caught a wrong platform fact, a field-mapping bug hiding behind a zero, and a missed permissions toggle breaking attribution.',
+      es: 'Todo esto se construyó con IA en el proceso, incluida la app en producción en Play Store. Corro un segundo modelo de forma adversarial contra mi propio trabajo, mantengo la especificación alineada con el diff que salió, y trato una respuesta segura como una afirmación por verificar. Eso detectó un dato de plataforma equivocado, un error de mapeo escondido detrás de un cero, y un permiso que rompía la atribución.',
     },
   },
   {
@@ -74,8 +74,8 @@ export const stackGroups: StackGroup[] = [
       'Redis', 'Firebase', 'Linux',
     ],
     note: {
-      en: 'Vercel and Supabase are on this list because I have run production on both and then migrated off both. Knowing when a managed platform stops paying for itself is part of the skill.',
-      es: 'Vercel y Supabase están en la lista porque tuve producción en ambos y luego migré fuera de ambos. Saber cuándo una plataforma administrada deja de valer lo que cuesta es parte del oficio.',
+      en: 'I have run production on Vercel and Supabase and moved off both. Knowing when a managed platform stops earning its place is part of the job.',
+      es: 'Tuve producción en Vercel y en Supabase, y salí de los dos. Saber cuándo una plataforma administrada deja de ganarse su lugar es parte del oficio.',
     },
   },
   {
@@ -95,8 +95,8 @@ export const stackGroups: StackGroup[] = [
       'Geo-targeting', 'Creative production',
     ],
     note: {
-      en: 'Unusual on an engineering CV, and deliberate. I run the campaigns for my own products, so I see what an architecture decision costs per acquired user.',
-      es: 'Poco común en una hoja de vida de ingeniería, y a propósito. Manejo las campañas de mis propios productos, así que veo lo que una decisión de arquitectura cuesta por usuario adquirido.',
+      en: 'I run the campaigns for my own products, so I see what an architecture decision costs per acquired user.',
+      es: 'Manejo las campañas de mis propios productos, así que veo lo que una decisión de arquitectura cuesta por usuario adquirido.',
     },
   },
   {

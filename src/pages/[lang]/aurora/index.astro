@@ -12,6 +12,7 @@
  */
 import Base from '../../../layouts/Base.astro';
 import TechWall from '../../../components/TechWall.astro';
+import TechRow from '../../../components/TechRow.astro';
 import ContactSwitch from '../../../components/ContactSwitch.astro';
 import { LANGS, t, tl, OTHER_LANG, LANG_LABEL, path , asset} from '../../../i18n/types';
 import type { Lang } from '../../../i18n/types';
@@ -83,10 +84,6 @@ const indexHref = path(base, lang);
         <div class="cols" data-stagger>
           {tl(profile.thesis.body, lang).map((p) => <p>{p}</p>)}
         </div>
-        <p class="caveat">
-          <span class="eyebrow">{t(ui.theTradeoff, lang)}</span>
-          {t(profile.thesis.tradeoff, lang)}
-        </p>
       </div>
     </section>
 
@@ -134,7 +131,7 @@ const indexHref = path(base, lang);
                 <p class="out">{t(p.outcome, lang)}</p>
               </div>
             </div>
-            <ul class="chips">{p.stack.map((s) => <li>{s}</li>)}</ul>
+            <TechRow items={p.stack} />
           </article>
         ))
       }

@@ -220,7 +220,7 @@ const A = {
       <dd><p class="lead">{t(A.why, lang)}</p></dd>
     </dl>
 
-    <Testimonials lang={lang} />
+    <div class="quotes-wrap"><Testimonials lang={lang} /></div>
 
     <section id="contact" class="closing">
       <p class="k">{t(ui.getInTouch, lang)}</p>
@@ -359,4 +359,10 @@ const A = {
     letter-spacing: 0.14em; text-transform: uppercase; color: var(--dim);
   }
   .foot a { color: var(--accent); }
+
+  .quotes-wrap {
+    max-width: var(--shell);
+    margin-inline: auto;
+    padding: 2.5rem var(--pad) 0;
+  }
 </style>

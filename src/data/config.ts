@@ -41,3 +41,19 @@ export const COARSE_TIMELINE_DATES = false;
  * Do NOT paste Victor's key. It is in his repo and it routes to his inbox.
  */
 export const WEB3FORMS_ACCESS_KEY = '9854292a-6ba2-4536-8293-6d5740d3dabe';
+
+
+/**
+ * Show sample testimonials so the section can be judged while it is empty.
+ *
+ * Design review needs the slot filled; a hiring manager must never see a quote
+ * nobody said. So this is a switch, not a default, and the samples are marked
+ * SAMPLE in the rendered output.
+ *
+ * Flip to true, look at the layout, flip it back. It is already true in
+ * `npm run dev` regardless of this setting.
+ *
+ * Real ones go in src/data/testimonials.ts and this can then stay false
+ * forever. See docs/testimonial-drafts.md for drafts to send for approval.
+ */
+export const SHOW_SAMPLE_TESTIMONIALS = true;

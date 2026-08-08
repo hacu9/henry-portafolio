@@ -13,7 +13,7 @@
  */
 import { t } from '../i18n/types';
 import type { Lang } from '../i18n/types';
-import { visibleTestimonials as testimonials } from '../data/testimonials';
+import { visibleTestimonials as testimonials, showingSamples } from '../data/testimonials';
 
 interface Props {
   lang: Lang;
@@ -28,7 +28,10 @@ const heading = label ?? (lang === 'es' ? 'Lo que dicen' : 'What people say');
 {
   testimonials.length > 0 && (
     <section class="quotes" id="testimonials">
-      <p class="quotes-label">{heading}</p>
+      <p class="quotes-label">
+        {heading}
+        {showingSamples && <span class="quotes-sample">{lang === 'es' ? 'Muestra' : 'Sample'}</span>}
+      </p>
       <div class="quotes-grid">
         {testimonials.map((r) => (
           <figure class="quote">
@@ -112,5 +115,14 @@ const heading = label ?? (lang === 'es' ? 'Lo que dicen' : 'What people say');
   }
   .quote-role {
     color: var(--dim, currentColor);
+  }
+
+  /* Filler is always labelled. A quote nobody said must never be able to pass
+     as an endorsement, even by accident. */
+  .quotes-sample {
+    margin-left: 0.5rem;
+    border: 1px dashed var(--accent, currentColor);
+    color: var(--accent, currentColor);
+    padding: 0.05rem 0.4rem;
   }
 </style>

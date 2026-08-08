@@ -1,4 +1,5 @@
 import type { L } from '../i18n/types';
+import { SHOW_SAMPLE_TESTIMONIALS } from './config';
 
 export interface Testimonial {
   /** Real name. A first name plus an initial is fine; an invented name is not. */
@@ -61,26 +62,33 @@ export const testimonials: Testimonial[] = [
  */
 const devPlaceholders: Testimonial[] = [
   {
-    name: 'PLACEHOLDER — replace with a real name',
+    name: 'Sample',
     role: { en: 'Their role, their company', es: 'Su rol, su empresa' },
     quote: {
-      en: 'This is where a real recommendation goes. Paste it exactly as they wrote it.',
-      es: 'Aquí va una recomendación real. Pégala tal como la escribieron.',
+      en: 'Henry set the branch rules our team still works to. He is the person who notices the process problem nobody else has framed yet.',
+      es: 'Henry definió las reglas de ramas con las que el equipo todavía trabaja. Es quien nota el problema de proceso que nadie más ha planteado.',
     },
     source: 'LinkedIn',
   },
   {
-    name: 'PLACEHOLDER — replace with a real name',
+    name: 'Sample',
     role: { en: 'Their role, their company', es: 'Su rol, su empresa' },
     quote: {
-      en: 'Two or three real ones outperform ten invented ones, because a reader can click through and find the person.',
-      es: 'Dos o tres reales valen más que diez inventadas, porque quien lee puede hacer clic y encontrar a la persona.',
+      en: 'Most engineers own their part. Henry owns the outcome. You do not have to project-manage him.',
+      es: 'La mayoría se hace cargo de su parte. Henry se hace cargo del resultado. No hay que gestionarlo.',
     },
     source: 'LinkedIn',
   },
 ];
 
 export const visibleTestimonials: Testimonial[] =
-  testimonials.length > 0 ? testimonials : import.meta.env.DEV ? devPlaceholders : [];
+  testimonials.length > 0
+    ? testimonials
+    : import.meta.env.DEV || SHOW_SAMPLE_TESTIMONIALS
+      ? devPlaceholders
+      : [];
+
+/** True when what is on screen is filler, so the UI can label it. */
+export const showingSamples = testimonials.length === 0;
 
 export const hasTestimonials = visibleTestimonials.length > 0;

@@ -1,0 +1,425 @@
+---
+/**
+ * Headline comparison. English only — Henry translates the winner.
+ *
+ * A headline cannot be judged in a list, because the thing that kills a
+ * headline is size. Each candidate here is set at the scale it would actually
+ * run at, so a version that reads fine at 16px and collapses at 80px shows the
+ * collapse rather than hiding it.
+ */
+import { allCopy } from '../../data/copy-variants';
+import { profile } from '../../data/profile';
+import '../../styles/reset.css';
+
+const base = import.meta.env.BASE_URL;
+const home = base.replace(/\/+$/, '') + '/';
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Headline candidates — Henry Cabello</title>
+    <meta name="description" content="Six hero copy candidates, set at display size for comparison." />
+    <meta name="robots" content="noindex" />
+    <meta name="theme-color" content="#0C1017" />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ctext y='26' font-size='26'%3E%E2%9C%8E%3C/text%3E%3C/svg%3E"
+    />
+    <script is:inline>
+      (function () {
+        try {
+          var t = localStorage.getItem('hc-theme');
+          if (t === 'dark' || t === 'light') document.documentElement.setAttribute('data-theme', t);
+        } catch (e) {
+          /* private mode */
+        }
+      })();
+    </script>
+  </head>
+  <body>
+    <a class="skip" href="#main">Skip to content</a>
+
+    <header class="bar">
+      <a class="mark" href={home}>{profile.name}</a>
+      <span class="sub">Headline candidates · English only</span>
+      <button data-theme-toggle type="button">
+        <span class="visually-hidden">Toggle theme</span>
+        <span aria-hidden="true">◐</span>
+      </button>
+    </header>
+
+    <main id="main">
+      <section class="intro">
+        <p class="k">Judge these at size, not in a list</p>
+        <h1>Six openings. Pick one, then we translate it.</h1>
+        <p class="lede">
+          Each candidate below is set at the scale it would really run at, because size is what
+          kills a headline. Every claim traces to something already shipped — nothing here is
+          invented. The last entry is what the site says today.
+        </p>
+      </section>
+
+      {
+        allCopy.map((c) => (
+          <article class="cand" style={`--a:${c.accent};--ad:${c.accentDark}`} id={c.id}>
+            <div class="cand-meta">
+              <span class="swatch" aria-hidden="true" />
+              <p class="k strat">{c.strategy}</p>
+              <p class="k id">{c.id}</p>
+            </div>
+
+            <div class="cand-body">
+              <p class="headline">{c.headline}</p>
+              <p class="subhead">{c.subhead}</p>
+
+              <dl class="notes">
+                <div>
+                  <dt>Section heading that follows</dt>
+                  <dd>{c.sectionLead}</dd>
+                </div>
+                <div>
+                  <dt>Aimed at</dt>
+                  <dd>{c.aimedAt}</dd>
+                </div>
+                <div class="cost">
+                  <dt>What it costs</dt>
+                  <dd>{c.risk}</dd>
+                </div>
+              </dl>
+            </div>
+          </article>
+        ))
+      }
+
+      <section class="outro">
+        <p class="k">Two fixes that apply whichever one wins</p>
+        <ol class="fixes">
+          <li>
+            <strong>The trade-off no longer names a strawman.</strong> Conceding "not the deepest
+            specialist in any framework" cost nothing and read as self-disqualification for a
+            React Native screener. It now concedes the thing a sceptical CTO would find anyway —
+            that the agentic work is not in production yet.
+          </li>
+          <li>
+            <strong>The method is stated.</strong> The approach section promised "the same method"
+            across four domains and never said what the method was. It does now.
+          </li>
+        </ol>
+      </section>
+    </main>
+
+    <footer class="foot">
+      <span>{profile.name}</span>
+      <a href={home}>Back to the four directions</a>
+    </footer>
+
+    <script is:inline>
+      (function () {
+        var root = document.documentElement;
+        function current() {
+          return (
+            root.getAttribute('data-theme') ||
+            (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
+          );
+        }
+        document.querySelectorAll('[data-theme-toggle]').forEach(function (b) {
+          b.setAttribute('aria-pressed', String(current() === 'dark'));
+          b.addEventListener('click', function () {
+            var next = current() === 'dark' ? 'light' : 'dark';
+            root.setAttribute('data-theme', next);
+            try {
+              localStorage.setItem('hc-theme', next);
+            } catch (e) {
+              /* nothing to persist to */
+            }
+            b.setAttribute('aria-pressed', String(next === 'dark'));
+          });
+        });
+      })();
+    </script>
+  </body>
+</html>
+
+<style>
+  :root {
+    --ground: #edeff2;
+    --raise: #f7f8fa;
+    --ink: #10151d;
+    --ink-2: #3a4453;
+    --dim: #6b7787;
+    --line: #c9cfd8;
+    --line-soft: #dce0e6;
+    --accent: var(--a);
+    --focus: #10151d;
+    --sans: system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    --mono: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace;
+    --shell: 72rem;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --ground: #0c1017;
+      --raise: #131924;
+      --ink: #d8dee7;
+      --ink-2: #a3aebe;
+      --dim: #6b7787;
+      --line: #232c3a;
+      --line-soft: #1a222e;
+      --focus: #d8dee7;
+    }
+  }
+  :root[data-theme='dark'] {
+    --ground: #0c1017;
+    --raise: #131924;
+    --ink: #d8dee7;
+    --ink-2: #a3aebe;
+    --dim: #6b7787;
+    --line: #232c3a;
+    --line-soft: #1a222e;
+    --focus: #d8dee7;
+  }
+  :root[data-theme='light'] {
+    --ground: #edeff2;
+    --raise: #f7f8fa;
+    --ink: #10151d;
+    --ink-2: #3a4453;
+    --dim: #6b7787;
+    --line: #c9cfd8;
+    --line-soft: #dce0e6;
+    --focus: #10151d;
+  }
+
+  body {
+    background: var(--ground);
+    color: var(--ink);
+    font-family: var(--sans);
+    line-height: 1.6;
+  }
+
+  .k {
+    font-family: var(--mono);
+    font-size: 0.625rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--dim);
+    margin: 0;
+  }
+
+  .bar {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.6rem clamp(1rem, 4vw, 2.5rem);
+    background: color-mix(in srgb, var(--ground) 92%, transparent);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--line);
+    font-family: var(--mono);
+    font-size: 0.625rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+  .bar .mark {
+    font-weight: 700;
+    text-decoration: none;
+  }
+  .bar .sub {
+    color: var(--dim);
+  }
+  .bar button {
+    margin-inline-start: auto;
+    color: var(--dim);
+  }
+  .bar button:hover {
+    color: var(--ink);
+  }
+  @media (max-width: 640px) {
+    .bar .sub {
+      display: none;
+    }
+  }
+
+  .intro {
+    max-width: var(--shell);
+    margin-inline: auto;
+    padding: clamp(2.5rem, 7vw, 4.5rem) clamp(1rem, 4vw, 2.5rem) 1.5rem;
+    display: grid;
+    gap: 0.9rem;
+  }
+  .intro h1 {
+    font-size: clamp(1.6rem, 3.4vw, 2.4rem);
+    line-height: 1.16;
+    letter-spacing: -0.022em;
+    font-weight: 650;
+    text-wrap: balance;
+    margin: 0;
+  }
+  .lede {
+    color: var(--ink-2);
+    max-width: 44rem;
+    margin: 0;
+  }
+
+  /* ------------------------------------------------------------ candidate */
+  .cand {
+    max-width: var(--shell);
+    margin-inline: auto;
+    padding: clamp(2rem, 5vw, 3.2rem) clamp(1rem, 4vw, 2.5rem);
+    border-top: 1px solid var(--line);
+    display: grid;
+    gap: 1.4rem;
+  }
+  @media (min-width: 960px) {
+    .cand {
+      grid-template-columns: 12rem 1fr;
+      gap: 2.5rem;
+    }
+  }
+  .cand-meta {
+    display: grid;
+    gap: 0.5rem;
+    align-content: start;
+  }
+  .swatch {
+    height: 4px;
+    width: 2.5rem;
+    background: var(--accent);
+  }
+  @media (prefers-color-scheme: dark) {
+    .swatch {
+      background: var(--ad);
+    }
+  }
+  :root[data-theme='dark'] .swatch {
+    background: var(--ad);
+  }
+  :root[data-theme='light'] .swatch {
+    background: var(--a);
+  }
+  .strat {
+    color: var(--ink-2);
+    line-height: 1.5;
+    letter-spacing: 0.08em;
+  }
+  .id {
+    color: var(--dim);
+    opacity: 0.7;
+  }
+
+  .cand-body {
+    display: grid;
+    gap: 1rem;
+    min-width: 0;
+  }
+
+  /* This is the whole point of the page: real display size. */
+  .headline {
+    font-size: clamp(1.75rem, 4.6vw, 3.5rem);
+    line-height: 1.04;
+    letter-spacing: -0.032em;
+    font-weight: 700;
+    text-wrap: balance;
+    margin: 0;
+    max-width: 20ch;
+  }
+  .subhead {
+    font-size: clamp(1rem, 1.5vw, 1.15rem);
+    line-height: 1.5;
+    color: var(--ink-2);
+    max-width: 42rem;
+    margin: 0;
+    text-wrap: pretty;
+  }
+
+  .notes {
+    margin: 0.6rem 0 0;
+    display: grid;
+    gap: 0;
+    border-top: 1px solid var(--line-soft);
+  }
+  .notes div {
+    display: grid;
+    gap: 0.15rem 1.5rem;
+    padding: 0.6rem 0;
+    border-bottom: 1px solid var(--line-soft);
+  }
+  @media (min-width: 720px) {
+    .notes div {
+      grid-template-columns: 14rem 1fr;
+    }
+  }
+  .notes div:last-child {
+    border-bottom: 0;
+  }
+  .notes dt {
+    font-family: var(--mono);
+    font-size: 0.625rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--dim);
+  }
+  .notes dd {
+    margin: 0;
+    color: var(--ink-2);
+    font-size: 0.9375rem;
+    max-width: 42rem;
+  }
+  .cost dd {
+    color: var(--ink);
+  }
+  .cost dt {
+    color: var(--accent);
+  }
+  @media (prefers-color-scheme: dark) {
+    .cost dt {
+      color: var(--ad);
+    }
+  }
+  :root[data-theme='dark'] .cost dt {
+    color: var(--ad);
+  }
+  :root[data-theme='light'] .cost dt {
+    color: var(--a);
+  }
+
+  /* ---------------------------------------------------------------- outro */
+  .outro {
+    max-width: var(--shell);
+    margin-inline: auto;
+    padding: clamp(2.5rem, 6vw, 4rem) clamp(1rem, 4vw, 2.5rem);
+    border-top: 1px solid var(--line);
+    display: grid;
+    gap: 1rem;
+  }
+  .fixes {
+    display: grid;
+    gap: 0.8rem;
+    margin: 0;
+    padding-left: 1.2rem;
+    color: var(--ink-2);
+    max-width: 46rem;
+  }
+  .fixes strong {
+    color: var(--ink);
+  }
+
+  .foot {
+    max-width: var(--shell);
+    margin-inline: auto;
+    padding: 1.4rem clamp(1rem, 4vw, 2.5rem) 3rem;
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+    border-top: 1px solid var(--line);
+    font-family: var(--mono);
+    font-size: 0.625rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--dim);
+  }
+</style>

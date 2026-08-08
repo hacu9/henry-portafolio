@@ -1,0 +1,116 @@
+---
+/**
+ * Third-party voice. Renders nothing at all while the array is empty, so the
+ * page is complete and correct with no testimonials in it.
+ *
+ * Henry asked once for invented ones. There are none here and there should
+ * never be any: a fabricated endorsement attributed to a named person is a
+ * false statement, and it collapses the moment a hiring manager clicks the
+ * profile link. Every entry carries a real name and, where possible, a link,
+ * precisely so it can be checked.
+ *
+ * To fill it, see the instructions in src/data/testimonials.ts.
+ */
+import { t } from '../i18n/types';
+import type { Lang } from '../i18n/types';
+import { testimonials } from '../data/testimonials';
+
+interface Props {
+  lang: Lang;
+  /** Section label, supplied by the variant so it matches local wording. */
+  label?: string;
+}
+const { lang, label } = Astro.props;
+
+const heading = label ?? (lang === 'es' ? 'Lo que dicen' : 'What people say');
+---
+
+{
+  testimonials.length > 0 && (
+    <section class="quotes" id="testimonials">
+      <p class="quotes-label">{heading}</p>
+      <div class="quotes-grid">
+        {testimonials.map((r) => (
+          <figure class="quote">
+            <blockquote>{t(r.quote, lang)}</blockquote>
+            <figcaption>
+              <span class="quote-name">
+                {r.sourceUrl ? (
+                  <a href={r.sourceUrl} rel="noopener" target="_blank">
+                    {r.name}
+                  </a>
+                ) : (
+                  r.name
+                )}
+              </span>
+              <span class="quote-role">{t(r.role, lang)}</span>
+            </figcaption>
+          </figure>
+        ))}
+      </div>
+    </section>
+  )
+}
+
+<style>
+  .quotes {
+    display: grid;
+    gap: 1.1rem;
+  }
+  .quotes-label {
+    font-family: var(--mono, ui-monospace, monospace);
+    font-size: 0.625rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--dim, currentColor);
+    margin: 0;
+  }
+  .quotes-grid {
+    display: grid;
+    gap: 1.4rem;
+  }
+  @media (min-width: 820px) {
+    .quotes-grid {
+      grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
+    }
+  }
+  .quote {
+    margin: 0;
+    display: grid;
+    gap: 0.7rem;
+    align-content: start;
+    border-left: 2px solid var(--accent, currentColor);
+    padding-left: 1rem;
+  }
+  .quote blockquote {
+    margin: 0;
+    color: var(--ink, currentColor);
+    font-size: 1.02rem;
+    line-height: 1.5;
+    text-wrap: pretty;
+  }
+  /* Real quotation marks, so it reads as someone speaking. */
+  .quote blockquote::before {
+    content: '“';
+  }
+  .quote blockquote::after {
+    content: '”';
+  }
+  .quote figcaption {
+    display: grid;
+    gap: 0.1rem;
+    font-family: var(--mono, ui-monospace, monospace);
+    font-size: 0.6875rem;
+  }
+  .quote-name {
+    color: var(--ink-2, currentColor);
+    font-weight: 650;
+  }
+  .quote-name a {
+    color: inherit;
+    text-underline-offset: 3px;
+  }
+  .quote-role {
+    color: var(--dim, currentColor);
+  }
+</style>

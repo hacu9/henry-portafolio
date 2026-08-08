@@ -13,6 +13,7 @@
  * has no business doing this.
  */
 import Base from '../../../layouts/Base.astro';
+import Testimonials from '../../../components/Testimonials.astro';
 import TechWall from '../../../components/TechWall.astro';
 import TechRow from '../../../components/TechRow.astro';
 import ContactSwitch from '../../../components/ContactSwitch.astro';
@@ -223,6 +224,9 @@ const rooms = leadProjects.length * 2 + 2;
         }
       </ol>
     </section>
+
+    <Testimonials lang={lang} />
+
 
     <section id="contact" class="blk close spot" data-camera>
       <div class="contact-id"><img class="portrait" src={asset(base, profile.photo)} alt={t(profile.photoAlt, lang)} width="72" height="72" loading="lazy" />

@@ -12,6 +12,7 @@
  * lights a card the same way hover does.
  */
 import Base from '../../../layouts/Base.astro';
+import Testimonials from '../../../components/Testimonials.astro';
 import TechWall from '../../../components/TechWall.astro';
 import TechRow from '../../../components/TechRow.astro';
 import ContactSwitch from '../../../components/ContactSwitch.astro';
@@ -34,6 +35,7 @@ const base = import.meta.env.BASE_URL;
 const other = OTHER_LANG[lang];
 const altHref = path(base, other, 'darkroom');
 const indexHref = path(base, lang);
+const cvHref = `${base.replace(/\/+$/, '')}/cv/`;
 ---
 
 <Base
@@ -53,6 +55,7 @@ const indexHref = path(base, lang);
       <a href="#work">{t(ui.work, lang)}</a>
       <a href="#approach">{t(ui.about, lang)}</a>
       <a href="#contact">{t(ui.contact, lang)}</a>
+      <a href={cvHref}>CV</a>
     </nav>
     <div class="tools">
       <a href={altHref} hreflang={other} lang={other}>{LANG_LABEL[other]}</a>
@@ -192,6 +195,9 @@ const indexHref = path(base, lang);
         }
       </ol>
     </section>
+
+    <Testimonials lang={lang} />
+
 
     <section id="contact" class="band close">
       <div class="contact-id"><img class="portrait" src={asset(base, profile.photo)} alt={t(profile.photoAlt, lang)} width="72" height="72" loading="lazy" />

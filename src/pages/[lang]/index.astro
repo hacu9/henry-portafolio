@@ -69,10 +69,6 @@ const link = (slug: string) => path(base, lang, slug);
       </ul>
 
       <p class="note">{t(ui.builtNote, lang)} {t(ui.reducedMotionNote, lang)}</p>
-      {/* Headline candidates are English-only until one is chosen. */}
-      <p class="note">
-        <a class="copy-link" href={path(base, 'copy')}>Headline candidates →</a>
-      </p>
     </main>
   </div>
 </Base>
@@ -274,12 +270,5 @@ const link = (slug: string) => path(base, lang, slug);
     font-size: 0.6875rem;
     color: var(--dim);
     letter-spacing: 0.04em;
-  }
-  .note + .note {
-    margin-top: 0.6rem;
-  }
-  .copy-link {
-    color: var(--ink);
-    text-underline-offset: 4px;
   }
 </style>

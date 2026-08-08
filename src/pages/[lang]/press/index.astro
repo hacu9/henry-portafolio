@@ -8,6 +8,7 @@
  * type sitting exactly on the grid until it deliberately does not.
  */
 import Base from '../../../layouts/Base.astro';
+import Testimonials from '../../../components/Testimonials.astro';
 import TechWall from '../../../components/TechWall.astro';
 import TechRow from '../../../components/TechRow.astro';
 import ContactSwitch from '../../../components/ContactSwitch.astro';
@@ -195,6 +196,9 @@ const indexHref = path(base, lang);
         </ol>
       </div>
     </section>
+
+    <Testimonials lang={lang} />
+
 
     <section id="contact" class="colophon">
       <div class="contact-id"><img class="portrait" src={asset(base, profile.photo)} alt={t(profile.photoAlt, lang)} width="72" height="72" loading="lazy" /></div>

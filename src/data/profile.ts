@@ -49,14 +49,14 @@ export const profile = {
    *   'The stack is not the skill.'   // currently the approach heading
    */
   positioning: {
-    en: 'I build it, ship it, and still run it.',
-    es: 'Lo construyo, lo publico y lo sigo operando.',
+    en: 'Nothing here is a demo.',
+    es: 'Aquí no hay demos.',
   } as L,
 
   /** Carries the evidence the headline no longer has room for. */
   lede: {
-    en: 'Eight years across Microsoft enterprise systems, multi-agent AI, and a dating app running on Google Play. I work in agentic workflows with adversarial review: two AIs on everything I write, and I never let them compare notes.',
-    es: 'Ocho años entre sistemas empresariales de Microsoft, IA multiagente, y una app de citas corriendo en Google Play. Trabajo con flujos agénticos y revisión adversarial: dos IAs sobre todo lo que escribo, y nunca las dejo ponerse de acuerdo.',
+    en: 'Luxura, a dating app, is live on Google Play: I built it, I operate its infrastructure, and I run the ad campaigns that bring it users. Next is Mate, where every user gets their own AI agent.',
+    es: 'Luxura, una app de citas, está en Google Play: la construí yo, opero su infraestructura y dirijo la pauta que le trae usuarios. Lo que viene es Mate, donde cada usuario tiene su propio agente de IA.',
   } as L,
 
   /** Used where a plain description is needed, such as meta tags. */

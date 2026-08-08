@@ -1,5 +1,6 @@
 ---
 import Base from '../../../layouts/Base.astro';
+import Testimonials from '../../../components/Testimonials.astro';
 import TechWall from '../../../components/TechWall.astro';
 import TechRow from '../../../components/TechRow.astro';
 import ContactSwitch from '../../../components/ContactSwitch.astro';
@@ -217,6 +218,8 @@ const first = lang === 'es' ? morphWords[0][1] : morphWords[0][0];
     </section>
 
     <!-- ================================================== CONTACT -->
+    <Testimonials lang={lang} />
+
     <section id="contact" class="close" data-camera>
       <div class="contact-id"><img class="portrait" src={asset(base, profile.photo)} alt={t(profile.photoAlt, lang)} width="72" height="72" loading="lazy" />
         <p class="micro">{t(ui.getInTouch, lang)}</p></div>

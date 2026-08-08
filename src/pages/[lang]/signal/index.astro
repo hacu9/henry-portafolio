@@ -1,5 +1,6 @@
 ---
 import Base from '../../../layouts/Base.astro';
+import Testimonials from '../../../components/Testimonials.astro';
 import TechWall from '../../../components/TechWall.astro';
 import TechRow from '../../../components/TechRow.astro';
 import ContactSwitch from '../../../components/ContactSwitch.astro';
@@ -22,6 +23,7 @@ const base = import.meta.env.BASE_URL;
 const other = OTHER_LANG[lang];
 const altHref = path(base, other, 'signal');
 const indexHref = path(base, lang);
+const cvHref = `${base.replace(/\/+$/, '')}/cv/`;
 
 const title = `${profile.name}, ${t(profile.title, lang)}`;
 
@@ -56,6 +58,7 @@ const liveCount = projects.filter((p) => p.status === 'live').length;
         <a href="#stack">{t(ui.stack, lang)}</a>
         <a href="#record">{t(ui.timeline, lang)}</a>
         <a href="#contact">{t(ui.contact, lang)}</a>
+      <a href={cvHref}>CV</a>
       </nav>
       <div class="bar-tools">
         <a class="lang" href={altHref} hreflang={other} lang={other}>{LANG_LABEL[other]}</a>
@@ -264,6 +267,8 @@ const liveCount = projects.filter((p) => p.status === 'live').length;
     </section>
 
     <!-- ================================================== CONTACT ===== -->
+    <Testimonials lang={lang} />
+
     <section id="contact" class="shell band">
       <div class="cta spot" data-camera>
         <div class="contact-id"><img class="portrait" src={asset(base, profile.photo)} alt={t(profile.photoAlt, lang)} width="72" height="72" loading="lazy" />

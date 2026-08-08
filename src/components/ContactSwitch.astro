@@ -1,0 +1,227 @@
+---
+/**
+ * Contact that changes with who is reading.
+ *
+ * Three very different people reach this section and they want three different
+ * things. A hiring manager wants a slot in a calendar — she is not building
+ * anything, she is filling a role, and a message box is friction. Another
+ * engineer wants to talk shop. A client wants to describe a project.
+ *
+ * So the reader picks, and the heading, the sentence and the primary action
+ * all change. Nothing is hidden: whichever mode is active, the email address
+ * and the form remain reachable below.
+ *
+ * The default is the hiring path, because that is the audience the site is
+ * for. It works with JavaScript off: every panel is in the DOM and the CSS
+ * shows the first one until a script says otherwise.
+ */
+import { t } from '../i18n/types';
+import type { Lang } from '../i18n/types';
+import { profile } from '../data/profile';
+import ContactForm from './ContactForm.astro';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+
+const modes = [
+  {
+    id: 'hiring',
+    tab: { en: "I'm hiring", es: 'Estoy contratando' },
+    head: { en: 'Take thirty minutes of my Tuesday.', es: 'Tómate treinta minutos de mi martes.' },
+    body: {
+      en: 'Bogotá is on US Eastern all year, so a normal morning slot for you is a normal morning for me. Book directly — no screening call before the screening call.',
+      es: 'Bogotá está en horario del Este de EE. UU. todo el año, así que una mañana normal para ti es una mañana normal para mí. Agenda directo — sin llamada previa a la llamada.',
+    },
+    cta: { en: 'Book 30 minutes', es: 'Agendar 30 minutos' },
+    href: profile.calendly,
+  },
+  {
+    id: 'dev',
+    tab: { en: "I'm a dev", es: 'Soy dev' },
+    head: { en: 'Ask me what broke.', es: 'Pregúntame qué se rompió.' },
+    body: {
+      en: 'Happy to go deep on any of it — the OTP delivery problem, running an app on one box, or what actually happens when you let two models argue about your own code. The repos are public.',
+      es: 'Con gusto entro en detalle en cualquiera — el problema de entrega de OTP, operar una app en una sola máquina, o qué pasa de verdad cuando dejas que dos modelos discutan sobre tu propio código. Los repos son públicos.',
+    },
+    cta: { en: 'GitHub', es: 'GitHub' },
+    href: profile.githubUrl,
+  },
+  {
+    id: 'project',
+    tab: { en: 'I have a project', es: 'Tengo un proyecto' },
+    head: { en: 'Tell me what you are building.', es: 'Cuéntame qué estás construyendo.' },
+    body: {
+      en: 'I take the whole thing — the build, the infrastructure it runs on, the payments, and the campaigns that bring the users in. One sentence about the problem is enough to start.',
+      es: 'Me hago cargo de todo — el desarrollo, la infraestructura donde corre, los pagos y las campañas que traen usuarios. Con una frase sobre el problema basta para empezar.',
+    },
+    cta: { en: 'Write to me', es: 'Escríbeme' },
+    href: `mailto:${profile.email}`,
+  },
+] as const;
+---
+
+<div class="cswitch" data-cswitch>
+  <div class="cswitch-tabs" role="tablist" aria-label="Contact">
+    {
+      modes.map((m, i) => (
+        <button
+          type="button"
+          role="tab"
+          id={`ctab-${m.id}`}
+          aria-controls={`cpanel-${m.id}`}
+          aria-selected={i === 0 ? 'true' : 'false'}
+          tabindex={i === 0 ? 0 : -1}
+          data-mode={m.id}
+        >
+          {t(m.tab, lang)}
+        </button>
+      ))
+    }
+  </div>
+
+  {
+    modes.map((m, i) => (
+      <div
+        class="cswitch-panel"
+        role="tabpanel"
+        id={`cpanel-${m.id}`}
+        aria-labelledby={`ctab-${m.id}`}
+        data-panel={m.id}
+        hidden={i !== 0}
+      >
+        <h3 class="cswitch-head">{t(m.head, lang)}</h3>
+        <p class="cswitch-body">{t(m.body, lang)}</p>
+        <a class="cswitch-cta" href={m.href} rel="noopener" target={m.href.startsWith('http') ? '_blank' : undefined}>
+          {t(m.cta, lang)} →
+        </a>
+      </div>
+    ))
+  }
+
+  <div class="cswitch-always">
+    <a href={`mailto:${profile.email}`}>{profile.email}</a>
+    <a href={profile.linkedinUrl} rel="me noopener">LinkedIn</a>
+    <a href={profile.githubUrl} rel="me noopener">GitHub</a>
+  </div>
+
+  <ContactForm lang={lang} />
+</div>
+
+<style>
+  .cswitch {
+    display: grid;
+    gap: 0.9rem;
+    margin-top: 1rem;
+  }
+  .cswitch-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+  }
+  .cswitch-tabs button {
+    font-family: var(--mono, ui-monospace, monospace);
+    font-size: 0.6875rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--dim, currentColor);
+    border: 1px solid var(--line, currentColor);
+    padding: 0.3rem 0.7rem;
+    border-radius: 999px;
+    background: transparent;
+    transition: color 0.18s ease, border-color 0.18s ease, background 0.18s ease;
+  }
+  .cswitch-tabs button:hover {
+    color: var(--ink, currentColor);
+    border-color: var(--dim, currentColor);
+  }
+  .cswitch-tabs button[aria-selected='true'] {
+    color: var(--ground, #ffffff);
+    background: var(--ink, #1a1a1a);
+    border-color: var(--ink, #1a1a1a);
+  }
+
+  .cswitch-panel {
+    display: grid;
+    gap: 0.5rem;
+    max-width: 40rem;
+  }
+  .cswitch-panel[hidden] {
+    display: none;
+  }
+  .cswitch-head {
+    font-size: clamp(1.1rem, 2.2vw, 1.45rem);
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    font-weight: 650;
+    margin: 0;
+    color: var(--ink, currentColor);
+  }
+  .cswitch-body {
+    color: var(--ink-2, currentColor);
+    font-size: 0.9375rem;
+    margin: 0;
+  }
+  .cswitch-cta {
+    justify-self: start;
+    margin-top: 0.35rem;
+    font-family: var(--mono, ui-monospace, monospace);
+    font-size: 0.8125rem;
+    font-weight: 650;
+    color: var(--accent, currentColor);
+    text-underline-offset: 4px;
+  }
+
+  .cswitch-always {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.1rem;
+    padding-top: 0.7rem;
+    border-top: 1px solid var(--line, currentColor);
+    font-family: var(--mono, ui-monospace, monospace);
+    font-size: 0.75rem;
+  }
+  .cswitch-always a {
+    color: var(--dim, currentColor);
+  }
+  .cswitch-always a:hover {
+    color: var(--accent, currentColor);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .cswitch-tabs button {
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  for (const root of document.querySelectorAll<HTMLElement>('[data-cswitch]')) {
+    const tabs = [...root.querySelectorAll<HTMLButtonElement>('[role="tab"]')];
+    const panels = [...root.querySelectorAll<HTMLElement>('[role="tabpanel"]')];
+
+    const select = (id: string, focus = false) => {
+      for (const tab of tabs) {
+        const on = tab.dataset.mode === id;
+        tab.setAttribute('aria-selected', String(on));
+        tab.tabIndex = on ? 0 : -1;
+        if (on && focus) tab.focus();
+      }
+      for (const panel of panels) {
+        panel.hidden = panel.dataset.panel !== id;
+      }
+    };
+
+    tabs.forEach((tab, i) => {
+      tab.addEventListener('click', () => select(tab.dataset.mode || ''));
+      // Arrow keys are what a tablist is expected to do.
+      tab.addEventListener('keydown', (e) => {
+        if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
+        e.preventDefault();
+        const next = (i + (e.key === 'ArrowRight' ? 1 : -1) + tabs.length) % tabs.length;
+        select(tabs[next].dataset.mode || '', true);
+      });
+    });
+  }
+</script>

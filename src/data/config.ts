@@ -40,4 +40,4 @@ export const COARSE_TIMELINE_DATES = false;
  *
  * Do NOT paste Victor's key. It is in his repo and it routes to his inbox.
  */
-export const WEB3FORMS_ACCESS_KEY = '';
+export const WEB3FORMS_ACCESS_KEY = '9854292a-6ba2-4536-8293-6d5740d3dabe';

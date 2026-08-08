@@ -19,6 +19,8 @@ export const profile = {
   } as L,
 
   email: 'cabello986@gmail.com',
+  /** A hiring manager wants a slot, not a form. */
+  calendly: 'https://calendly.com/cabello986/30min',
   github: 'hacu9',
   githubUrl: 'https://github.com/hacu9',
   linkedin: 'cabello986',
@@ -79,14 +81,18 @@ export const profile = {
     /**
      * Two real concessions, not one strawman.
      *
-     * Henry has led teams, but lightly — his words: "not that much". So the
-     * honest line is that his depth is in owning delivery, not in managing
-     * headcount. That costs him something on a large tech-lead posting, which
-     * is precisely why it is worth saying.
+     * Henry confirmed on 2026-08-08: "i havent really lead". Earlier drafts
+     * said he had led small teams; that claim is gone rather than softened.
+     * Saying it plainly costs him some postings — which is the point. A
+     * reader who finds the gap themselves discounts everything else on the
+     * page; a reader who is told it up front does not.
+     *
+     * What survives is true: he sets technical direction and owns delivery,
+     * and he did set branch-protection policy for a team at Level60.
      */
     tradeoff: {
-      en: 'Two things worth saying before you find them yourself. The agentic work is the newest thing here and it is not in production yet — Luxura is what shipped, Mate is the bet. And I lead architecture, technical direction and delivery — I have led small teams and worked across others — but I am not selling headcount management. If the job is mostly org chart, someone else has run that further than I have.',
-      es: 'Dos cosas que prefiero decir antes de que las descubras. El trabajo agéntico es lo más nuevo y todavía no está en producción — lo publicado es Luxura, Mate es la apuesta. Y lidero arquitectura, dirección técnica y entrega — he liderado equipos pequeños y trabajado dentro de otros — pero no vendo gestión de personal. Si el trabajo es sobre todo organigrama, alguien más ha llegado más lejos que yo en eso.',
+      en: 'Two things worth saying before you find them yourself. The agentic work is the newest thing here and it is not in production yet — Luxura is what shipped, Mate is the bet. And I have not managed a team. I own architecture, technical direction and delivery end to end, and I have worked inside teams and set engineering practice within them, but if the role is mostly people I would be learning that part on your time.',
+      es: 'Dos cosas que prefiero decir antes de que las descubras. El trabajo agéntico es lo más nuevo y todavía no está en producción — lo publicado es Luxura, Mate es la apuesta. Y no he gestionado un equipo. Me hago cargo de la arquitectura, la dirección técnica y la entrega de punta a punta, y he trabajado dentro de equipos y fijado prácticas de ingeniería en ellos, pero si el rol es sobre todo de personas, esa parte la estaría aprendiendo con tu tiempo.',
     } as L,
   },
 

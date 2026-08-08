@@ -12,7 +12,7 @@
  * lights a card the same way hover does.
  */
 import Base from '../../../layouts/Base.astro';
-import ContactForm from '../../../components/ContactForm.astro';
+import ContactSwitch from '../../../components/ContactSwitch.astro';
 import { LANGS, t, tl, OTHER_LANG, LANG_LABEL, path , asset} from '../../../i18n/types';
 import type { Lang } from '../../../i18n/types';
 import { ui } from '../../../i18n/ui';
@@ -198,12 +198,7 @@ const indexHref = path(base, lang);
       <div class="contact-id"><img class="portrait" src={asset(base, profile.photo)} alt={t(profile.photoAlt, lang)} width="72" height="72" loading="lazy" />
         <p class="kick">{t(ui.getInTouch, lang)}</p></div>
       {t(ui.contactLede, lang) && <h2 class="big">{t(ui.contactLede, lang)}</h2>}
-      <p class="links">
-        <a href={`mailto:${profile.email}`}>{profile.email}</a>
-        <a href={profile.linkedinUrl} rel="me noopener">LinkedIn</a>
-        <a href={profile.githubUrl} rel="me noopener">GitHub</a>
-      </p>
-      <ContactForm lang={lang} />
+      <ContactSwitch lang={lang} />
     </section>
   </main>
 
@@ -754,7 +749,6 @@ const indexHref = path(base, lang);
     let tx = x;
     let ty = y;
     let on = false;
-    let raf = 0;
 
     window.addEventListener(
       'pointermove',
@@ -775,8 +769,8 @@ const indexHref = path(base, lang);
       y += (ty - y) * 0.12;
       document.documentElement.style.setProperty('--lx', `${(x / window.innerWidth) * 100}%`);
       document.documentElement.style.setProperty('--ly', `${(y / window.innerHeight) * 100}%`);
-      raf = requestAnimationFrame(frame);
+      requestAnimationFrame(frame);
     };
-    raf = requestAnimationFrame(frame);
+    requestAnimationFrame(frame);
   }
 </script>

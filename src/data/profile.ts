@@ -27,25 +27,36 @@ export const profile = {
   linkedinUrl: 'https://www.linkedin.com/in/cabello986',
 
   /**
-   * The headline. Short on purpose.
+   * The headline. Short, and general enough to fit every role he wants.
    *
-   * The previous version ran 34 words and had to be demoted or re-measured in
-   * three different variants because it would not set as display type. It also
-   * argued range ("from X to Y"), and range reads as generalist.
+   * History, so this does not cycle again:
+   *   1. A 34-word sentence. Would not set as display type; argued range,
+   *      and range reads as generalist.
+   *   2. "One engineer shipped this app..." — "this app" pointed at nothing
+   *      before the reader had met Luxura, and it shifted person mid-thought.
+   *   3. "I build the product, run the infrastructure, and buy the users."
+   *      Sharp, but too narrow: a third of it was ad buying, none of it was
+   *      AI, and the highest-value target here is an AI tech lead who does
+   *      not care who buys the media.
    *
-   * This one puts the checkable fact and the method in the same breath: the
-   * app is on Google Play and anyone can open it, and the second sentence is
-   * the part almost nobody else can claim.
+   * This one states the through-line that is true of every project on the
+   * page — enterprise, mobile and agentic alike — and lands on the word that
+   * separates him from people who hand work over at the merge.
+   *
+   * ALTERNATES, if this ever needs swapping. Each is one line:
+   *   'I don't hand things off.'
+   *   'Eight years, four domains, nothing built twice.'
+   *   'The stack is not the skill.'   // currently the approach heading
    */
   positioning: {
-    en: 'I build the product, run the infrastructure, and buy the users.',
-    es: 'Construyo el producto, opero la infraestructura y compro los usuarios.',
+    en: 'I build it, ship it, and still run it.',
+    es: 'Lo construyo, lo publico y lo sigo operando.',
   } as L,
 
   /** Carries the evidence the headline no longer has room for. */
   lede: {
-    en: 'Luxura is live on Google Play — I built it, own the infrastructure, wired the payments, and run the ads. Nothing ships until a second model has tried to break it.',
-    es: 'Luxura está publicada en Google Play — la construí, opero su infraestructura, conecté los pagos y manejo la pauta. Nada sale hasta que un segundo modelo intentó romperlo.',
+    en: 'Eight years of it: Microsoft enterprise integrations, multi-agent AI systems, and an app live on Google Play that I built, host, monetise and still operate. Nothing ships until a second model has tried to break it.',
+    es: 'Ocho años de eso: integraciones empresariales con Microsoft, sistemas de IA multiagente, y una app publicada en Google Play que construí, alojo, monetizo y sigo operando. Nada sale hasta que un segundo modelo intentó romperlo.',
   } as L,
 
   /** Used where a plain description is needed, such as meta tags. */

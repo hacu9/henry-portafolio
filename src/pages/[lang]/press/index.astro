@@ -8,6 +8,7 @@
  * type sitting exactly on the grid until it deliberately does not.
  */
 import Base from '../../../layouts/Base.astro';
+import TechWall from '../../../components/TechWall.astro';
 import ContactSwitch from '../../../components/ContactSwitch.astro';
 import { LANGS, t, tl, OTHER_LANG, LANG_LABEL, path , asset} from '../../../i18n/types';
 import type { Lang } from '../../../i18n/types';
@@ -158,7 +159,8 @@ const indexHref = path(base, lang);
     </section>
 
     <section class="sheet">
-      <div class="sheet-label"><span class="kick">{t(ui.whatIUse, lang)}</span></div>
+      <div class="sheet-label"><span class="kick">{t(ui.whatIUse, lang)}</span>
+      <TechWall /></div>
       <div class="sheet-body">
         {
           stackGroups.map((g) => (

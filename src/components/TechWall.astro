@@ -1,0 +1,200 @@
+---
+/**
+ * Morphing tech wall — the mechanic from victor-portafolio's logo band.
+ *
+ * A row of slots, each holding the whole logo set with exactly one visible.
+ * A timer advances ONE slot at a time to a logo that is not currently on show
+ * elsewhere, so the wall reshuffles continuously without ever repeating itself
+ * across the row. Nothing moves position; only the crossfade changes, which is
+ * why it stays cheap.
+ *
+ * Two rules this follows and generic icon decoration does not:
+ *   - Every logo is a tool actually used in the work described on this page.
+ *     It is a claim, not an ornament, which is why the list is short.
+ *   - Reduced motion leaves the wall completely static, still showing a valid
+ *     set. The animation is never load-bearing.
+ *
+ * Logos are monochrome Simple Icons inlined at build time and painted with
+ * currentColor, so they follow the variant's palette and cost no requests.
+ */
+
+interface Props {
+  /** How many are on screen at once. Fewer on narrow layouts. */
+  slots?: number;
+  label?: string;
+}
+const { slots = 7, label = 'Tools I work in' } = Astro.props;
+
+/** Only tools that appear in the case studies or the stack. */
+const tools = [
+  { slug: 'typescript', name: 'TypeScript' },
+  { slug: 'nextdotjs', name: 'Next.js' },
+  { slug: 'react', name: 'React / React Native' },
+  { slug: 'expo', name: 'Expo' },
+  { slug: 'nodedotjs', name: 'Node.js' },
+  { slug: 'postgresql', name: 'PostgreSQL' },
+  { slug: 'prisma', name: 'Prisma' },
+  { slug: 'redis', name: 'Redis' },
+  { slug: 'docker', name: 'Docker' },
+  { slug: 'linux', name: 'Linux' },
+  { slug: 'firebase', name: 'Firebase' },
+  { slug: 'googleplay', name: 'Google Play' },
+  { slug: 'langchain', name: 'LangGraph' },
+  { slug: 'anthropic', name: 'Claude' },
+  { slug: 'openai', name: 'OpenAI Codex' },
+  { slug: 'laravel', name: 'Laravel' },
+  { slug: 'vuedotjs', name: 'Vue' },
+];
+
+/**
+ * Inlined at build time so they inherit currentColor and cost no requests.
+ *
+ * A raw glob, not readFileSync: a runtime file read resolves relative to the
+ * OUTPUT directory during a build and goes looking inside dist/.
+ */
+const raw = import.meta.glob('../icons/tech/*.svg', {
+  query: '?raw',
+  import: 'default',
+  eager: true,
+}) as Record<string, string>;
+
+const icons = tools.map((tool) => {
+  const key = Object.keys(raw).find((k) => k.endsWith(`/${tool.slug}.svg`));
+  return {
+    ...tool,
+    // Simple Icons ship a fixed fill; strip it so the palette drives colour.
+    svg: (key ? raw[key] : '')
+      .replace(/ fill="[^"]*"/g, '')
+      .replace('<svg', '<svg fill="currentColor" aria-hidden="true" focusable="false"'),
+  };
+});
+---
+
+<div class="techwall" data-techwall aria-label={label}>
+  {
+    Array.from({ length: slots }).map((_, s) => (
+      <div class="techslot">
+        {icons.map((icon, i) => (
+          <span class:list={['techslot__item', i % slots === s && 'is-on']} title={icon.name}>
+            <span class="techslot__svg" set:html={icon.svg} />
+          </span>
+        ))}
+      </div>
+    ))
+  }
+</div>
+
+<style>
+  .techwall {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: clamp(0.75rem, 3vw, 2rem);
+    padding-block: clamp(0.9rem, 2.5vw, 1.6rem);
+  }
+  .techslot {
+    position: relative;
+    width: clamp(22px, 3.2vw, 34px);
+    aspect-ratio: 1;
+    flex: none;
+  }
+  .techslot__item {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    opacity: 0;
+    transform: scale(0.82) rotate(-6deg);
+    transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.2, 0.9, 0.2, 1);
+    color: var(--dim, currentColor);
+    pointer-events: none;
+  }
+  .techslot__item.is-on {
+    opacity: 1;
+    transform: none;
+    pointer-events: auto;
+  }
+  .techslot__svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+  .techslot__svg :global(svg) {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+  /* The wall reads as texture until you approach it, then resolves. */
+  .techwall:hover .techslot__item.is-on {
+    color: var(--accent, currentColor);
+  }
+
+  /* The last few hide before the row would crowd. */
+  @media (max-width: 720px) {
+    .techslot:nth-child(n + 6) {
+      display: none;
+    }
+  }
+  @media (max-width: 480px) {
+    .techslot:nth-child(n + 5) {
+      display: none;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .techslot__item {
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  const wall = document.querySelector<HTMLElement>('[data-techwall]');
+
+  // Reduced motion leaves a valid, static set on screen.
+  if (wall && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    const slots = [...wall.querySelectorAll<HTMLElement>('.techslot')];
+    const total = slots[0]?.children.length ?? 0;
+
+    if (slots.length && total) {
+      // Which icon index each slot is currently showing.
+      const state = slots.map((_, s) => s % total);
+      let cursor = 0;
+      let timer = 0;
+
+      const tick = () => {
+        const s = cursor % slots.length;
+        cursor += 1;
+
+        // Never show the same logo twice across the row.
+        const shown = new Set(state.filter((_, i) => i !== s));
+        let next = (state[s] + slots.length) % total;
+        let guard = 0;
+        while (shown.has(next) && guard++ < total) next = (next + 1) % total;
+        if (next === state[s]) return;
+
+        const items = slots[s].children;
+        items[state[s]]?.classList.remove('is-on');
+        items[next]?.classList.add('is-on');
+        state[s] = next;
+      };
+
+      const start = () => {
+        window.clearInterval(timer);
+        timer = window.setInterval(tick, 1400);
+      };
+      const stop = () => window.clearInterval(timer);
+
+      // Only run while it is actually on screen.
+      new IntersectionObserver((entries) => {
+        entries.forEach((e) => (e.isIntersecting ? start() : stop()));
+      }).observe(wall);
+
+      // And never in a background tab.
+      document.addEventListener('visibilitychange', () => {
+        if (document.hidden) stop();
+        else start();
+      });
+    }
+  }
+</script>

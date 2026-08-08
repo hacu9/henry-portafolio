@@ -12,6 +12,7 @@
  * mobile idiom. Every other direction is a desktop design that survives mobile.
  */
 import Base from '../../../layouts/Base.astro';
+import TechWall from '../../../components/TechWall.astro';
 import ContactSwitch from '../../../components/ContactSwitch.astro';
 import { LANGS, t, tl, OTHER_LANG, LANG_LABEL, path , asset} from '../../../i18n/types';
 import type { Lang } from '../../../i18n/types';
@@ -150,6 +151,7 @@ const indexHref = path(base, lang);
 
     <section class="blk">
       <p class="k" data-rise>{t(ui.whatIUse, lang)}</p>
+      <TechWall />
       <div class="stacks" data-stagger>
         {
           stackGroups.map((g) => (

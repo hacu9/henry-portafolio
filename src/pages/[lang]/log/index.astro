@@ -1,5 +1,6 @@
 ---
 import Base from '../../../layouts/Base.astro';
+import TechWall from '../../../components/TechWall.astro';
 import ContactSwitch from '../../../components/ContactSwitch.astro';
 import { LANGS, t, tl, OTHER_LANG, LANG_LABEL, path , asset} from '../../../i18n/types';
 import type { Lang } from '../../../i18n/types';
@@ -196,6 +197,7 @@ const repos = [...new Set(entries.map((e) => e.repo))];
     <!-- ===================================================== STACK -->
     <section class="block" data-camera>
       <p class="k">{t(ui.whatIUse, lang)}</p>
+      <TechWall />
       <div class="stack-grid" data-stagger>
         {
           stackGroups.map((g) => (

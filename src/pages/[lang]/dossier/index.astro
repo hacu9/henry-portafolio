@@ -13,6 +13,7 @@
  * with its own evidence is just friction.
  */
 import Base from '../../../layouts/Base.astro';
+import TechWall from '../../../components/TechWall.astro';
 import ContactSwitch from '../../../components/ContactSwitch.astro';
 import { LANGS, t, tl, OTHER_LANG, LANG_LABEL, path , asset} from '../../../i18n/types';
 import type { Lang } from '../../../i18n/types';
@@ -197,7 +198,8 @@ const L = {
     </section>
 
     <section class="folder">
-      <div class="tab"><span class="k">{t(ui.whatIUse, lang)}</span></div>
+      <div class="tab"><span class="k">{t(ui.whatIUse, lang)}</span>
+      <TechWall /></div>
       <div class="sheet">
         {
           stackGroups.map((g) => (

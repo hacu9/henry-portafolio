@@ -181,3 +181,25 @@ site had the case studies and the stack, and was missing most of the rest.
 | **A "currently working on" line** | Signals active building rather than a record of the past. Mate and Storia would fill it. |
 
 The first four are worth more than another design direction.
+
+
+## Do not argue against yourself (2026-08-08)
+
+A draft of the trade-off section volunteered "I have not managed a team... if the
+role is mostly people I would be learning that part on your time." Henry cut it,
+correctly.
+
+The line between honest and self-defeating:
+
+- **Never claim** something untrue. No managed-a-team claim appears anywhere.
+- **Never volunteer** a deficit nobody asked about. A portfolio states what is
+  true; it is not a confession, and there is no duty to make the reader's
+  objection for them.
+- **Do state the adjacent truth as a strength.** He sets technical direction and
+  the standards others work to, owns delivery end to end, and set
+  branch-protection policy for the team at Level60. All true, all positive.
+
+The one surviving concession is about a *product's status*, not his capability:
+Mate is not in the store. A reader will discover that, so being told first is
+better than being caught. Status honesty protects the page. Capability
+self-criticism just costs him interviews.

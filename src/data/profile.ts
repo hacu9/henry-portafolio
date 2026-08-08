@@ -59,12 +59,12 @@ export const profile = {
       en: [
         'The method is specific: watch which number is falling, work out whether the problem belongs to the code or to the vendor underneath it, change the piece that controls the outcome, then stay and operate it.',
         'That is how a domain I have not worked in becomes a product that ships. Over 8+ years it has meant enterprise Microsoft integrations, a multi-agent AI system, a dating app in production and a safety platform with real-time alerts — four things with almost nothing in common.',
-        'It is also why I own the parts most engineers hand off: payment integration, attribution, the ad campaigns that bring the users in, release pipelines, and the infrastructure migration underneath all of it.',
+        'It is also why I own the parts most engineers hand off: payment integration, attribution, the ad campaigns that bring the users in, release pipelines, and the infrastructure migration underneath all of it. Inside a team that shows up as setting the technical direction and the standards other people work to — the review gates, the specs, the definition of done.',
       ],
       es: [
         'El método es concreto: miro qué número se está cayendo, averiguo si el problema es del código o del proveedor que lo sostiene, cambio la pieza que controla el resultado, y me quedo operándolo después.',
         'Así es como un dominio en el que nunca trabajé termina siendo un producto que sale. En 8+ años eso significó integraciones empresariales con Microsoft, un sistema de IA multiagente, una app de citas en producción y una plataforma de seguridad con alertas en tiempo real — cuatro cosas que casi no se parecen en nada.',
-        'También es la razón por la que me hago cargo de lo que la mayoría delega: integración de pagos, atribución, las campañas que traen usuarios, pipelines de release y la migración de infraestructura debajo de todo eso.',
+        'También es la razón por la que me hago cargo de lo que la mayoría delega: integración de pagos, atribución, las campañas que traen usuarios, pipelines de release y la migración de infraestructura debajo de todo eso. Dentro de un equipo eso se traduce en fijar la dirección técnica y los estándares con los que trabajan los demás — las compuertas de revisión, las especificaciones, la definición de terminado.',
       ],
     } as LList,
     /**
@@ -91,8 +91,8 @@ export const profile = {
      * and he did set branch-protection policy for a team at Level60.
      */
     tradeoff: {
-      en: 'Two things worth saying before you find them yourself. The agentic work is the newest thing here and it is not in production yet — Luxura is what shipped, Mate is the bet. And I have not managed a team. I own architecture, technical direction and delivery end to end, and I have worked inside teams and set engineering practice within them, but if the role is mostly people I would be learning that part on your time.',
-      es: 'Dos cosas que prefiero decir antes de que las descubras. El trabajo agéntico es lo más nuevo y todavía no está en producción — lo publicado es Luxura, Mate es la apuesta. Y no he gestionado un equipo. Me hago cargo de la arquitectura, la dirección técnica y la entrega de punta a punta, y he trabajado dentro de equipos y fijado prácticas de ingeniería en ellos, pero si el rol es sobre todo de personas, esa parte la estaría aprendiendo con tu tiempo.',
+      en: 'Worth saying before you find it yourself: the agentic work is the newest thing here and it is not in production yet. Luxura is what shipped. Mate is the bet, and I would rather you judge it as a bet than take my word that it is finished.',
+      es: 'Mejor decirlo antes de que lo descubras: el trabajo agéntico es lo más nuevo y todavía no está en producción. Lo publicado es Luxura. Mate es la apuesta, y prefiero que la juzgues como apuesta y no que me creas que ya está terminada.',
     } as L,
   },
 

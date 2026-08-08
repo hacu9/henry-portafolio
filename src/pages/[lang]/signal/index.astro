@@ -1,5 +1,6 @@
 ---
 import Base from '../../../layouts/Base.astro';
+import TechWall from '../../../components/TechWall.astro';
 import ContactSwitch from '../../../components/ContactSwitch.astro';
 import { LANGS, t, tl, OTHER_LANG, LANG_LABEL, path , asset} from '../../../i18n/types';
 import type { Lang } from '../../../i18n/types';
@@ -224,6 +225,7 @@ const liveCount = projects.filter((p) => p.status === 'live').length;
     <section id="stack" class="shell band">
       <div class="head">
         <p class="eyebrow">{t(ui.whatIUse, lang)}</p>
+      <TechWall />
         <span class="fill" data-draw></span>
       </div>
       <div class="stacks" data-stagger>

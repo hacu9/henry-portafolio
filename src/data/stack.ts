@@ -55,7 +55,7 @@ export const stackGroups: StackGroup[] = [
       'Claude Code', 'OpenAI Codex CLI',
     ],
     note: {
-      en: 'I run MCP servers daily against AppsFlyer, Meta Ads and TikTok Ads. When one did not fit my workflow, I extended it myself.',
+      en: 'I run MCP servers daily against AppsFlyer, Meta Ads and TikTok Ads. One of them did not fit how I work, so I extended it.',
       es: 'Uso servidores MCP a diario contra AppsFlyer, Meta Ads y TikTok Ads. Cuando uno no encajaba con mi flujo, lo extendí yo mismo.',
     },
   },
@@ -75,7 +75,7 @@ export const stackGroups: StackGroup[] = [
       'Redis', 'Firebase', 'Linux',
     ],
     note: {
-      en: 'I have run production on Vercel and Supabase and moved off both. The skill is knowing when a managed platform stops earning its place.',
+      en: 'I have run production on Vercel and on Supabase, and moved off both. The skill is knowing the month a managed platform stops earning its place.',
       es: 'Tuve producción en Vercel y en Supabase, y salí de los dos. La habilidad está en saber cuándo una plataforma administrada deja de ganarse su lugar.',
     },
   },
@@ -96,8 +96,8 @@ export const stackGroups: StackGroup[] = [
       'Geo-targeting', 'Creative production',
     ],
     note: {
-      en: 'I run the campaigns for my own products, so I see what an architecture decision costs per acquired user.',
-      es: 'Manejo las campañas de mis propios productos, así que veo lo que una decisión de arquitectura cuesta por usuario adquirido.',
+      en: 'I buy the traffic for my own products. It means I find out what an architecture decision costs per user, in money, the same week I make it.',
+      es: 'Yo compro el tráfico de mis propios productos. Eso significa que descubro lo que cuesta por usuario una decisión de arquitectura, en plata, la misma semana en que la tomo.',
     },
   },
   {

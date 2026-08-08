@@ -90,14 +90,14 @@ export const profile = {
        * manager the last word should be engineering, so the ads sit mid-list.
        */
       en: [
-        'The method is specific: watch which number is falling, work out whether the problem belongs to the code or the vendor underneath it, change the piece that controls the outcome, then stay and operate it.',
-        'That method is how an unfamiliar domain becomes a shipped product. Eight-plus years of it: enterprise Microsoft integrations, a multi-agent AI system, a dating app in production, a safety platform with real-time alerts, four domains with almost nothing in common except how I entered them.',
-        'It is also why I own the parts most engineers hand off: payment integration, attribution, the ad campaigns that bring the users in, release pipelines, and the infrastructure migration underneath all of it. On a team, that same ownership becomes technical direction: the review gates, the specs, the definition of done that other people build against.',
+        'The method is always the same. Find the number that is falling. Work out whether it belongs to the code or to the vendor underneath it. Change the piece that actually controls it, then stay and run what you changed.',
+        'That is how a domain I have never touched turns into something in production. Microsoft enterprise systems, a multi-agent AI platform, a dating app on Google Play, a safety product with real-time alerts. Four domains, no shared ground, one way in.',
+        'It is also why I keep the work most engineers pass on: payments, attribution, release pipelines, the ad campaigns, and the infrastructure holding it all up. On a team that turns into technical direction, the review gates and the specs other people build against.',
       ],
       es: [
-        'El método es concreto: miro qué número se está cayendo, averiguo si el problema es del código o del proveedor que lo sostiene, cambio la pieza que controla el resultado, y me quedo operándolo después.',
-        'Ese método es cómo un dominio desconocido termina siendo un producto que sale. Ocho años y pico de eso: integraciones empresariales con Microsoft, un sistema de IA multiagente, una app de citas en producción, una plataforma de seguridad con alertas en tiempo real, cuatro dominios que no se parecen en nada salvo en cómo entré en ellos.',
-        'También es la razón por la que me hago cargo de lo que la mayoría delega: integración de pagos, atribución, las campañas que traen usuarios, pipelines de release y la migración de infraestructura debajo de todo eso. En un equipo, esa misma responsabilidad se vuelve dirección técnica: las compuertas de revisión, las especificaciones, la definición de terminado contra la que construyen los demás.',
+        'El método siempre es el mismo. Encontrar el número que se está cayendo. Averiguar si es del código o del proveedor que lo sostiene. Cambiar la pieza que de verdad lo controla, y quedarme operando lo que cambié.',
+        'Así es como un dominio que nunca toqué termina en producción. Sistemas empresariales de Microsoft, una plataforma de IA multiagente, una app de citas en Google Play, un producto de seguridad con alertas en tiempo real. Cuatro dominios sin nada en común, una sola forma de entrar.',
+        'También es la razón por la que me quedo con el trabajo que la mayoría delega: pagos, atribución, pipelines de release, las campañas y la infraestructura que sostiene todo. En un equipo eso se vuelve dirección técnica, las compuertas de revisión y las especificaciones contra las que construyen los demás.',
       ],
     } as LList,
     /**
@@ -127,16 +127,16 @@ export const profile = {
    */
   verification: {
     en: [
-      'Refused a model\'s claim that TikTok has no account-level budget cap. It does, Budget Manager. The model was confident and wrong.',
-      'Rejected a reported zero-conversion figure on a campaign that plainly had installs. The cause was a field-mapping error between conversions and app installs, found only because the number was refused.',
-      'Traced broken TikTok attribution to an ad-network permissions toggle that an AI research pass had missed entirely.',
-      'Killed two false lines from my own CV before they shipped, an authored-MCP-servers claim and a tool I had never used.',
+      'A model told me TikTok has no account-level budget cap. It does, and the campaign would have run uncapped if I had believed it.',
+      'A report came back with zero conversions on a campaign I could see was installing. The zero was a field-mapping bug, and it only surfaced because I refused the number.',
+      'TikTok attribution was silently broken for weeks. An AI research pass missed the cause completely; it was one ad-network permissions toggle.',
+      'Two false lines nearly went out on my own CV, both written by an assistant that sounded certain. I caught them before they shipped.',
     ],
     es: [
-      'Rechacé la afirmación de un modelo de que TikTok no tiene tope de presupuesto a nivel de cuenta. Sí lo tiene, Budget Manager. El modelo estaba seguro y equivocado.',
-      'Rechacé un reporte de cero conversiones en una campaña que claramente tenía instalaciones. La causa era un error de mapeo de campos entre conversiones e instalaciones, y solo apareció porque no acepté el número.',
-      'Rastreé una atribución rota de TikTok hasta un permiso de red publicitaria que una investigación hecha con IA había pasado por alto.',
-      'Eliminé dos afirmaciones falsas de mi propia hoja de vida antes de publicarla, haber escrito servidores MCP, y una herramienta que nunca usé.',
+      'Un modelo me dijo que TikTok no tiene tope de presupuesto por cuenta. Sí lo tiene, y la campaña habría corrido sin tope si le hubiera creído.',
+      'Un reporte marcaba cero conversiones en una campaña que claramente estaba instalando. El cero era un error de mapeo de campos, y solo apareció porque no acepté el número.',
+      'La atribución de TikTok estuvo rota en silencio durante semanas. Una investigación hecha con IA no dio con la causa; era un permiso de red publicitaria.',
+      'Dos afirmaciones falsas estuvieron a punto de salir en mi propia hoja de vida, escritas por un asistente que sonaba seguro. Las detecté antes de publicarla.',
     ],
   } as LList,
 

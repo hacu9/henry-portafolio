@@ -59,13 +59,13 @@ export const timeline: TimelineEntry[] = [
     role: { en: 'Independent engineer, own products', es: 'Ingeniero independiente, productos propios' },
     org: 'Own products and direct contracts',
     detail: {
-      en: 'Four products of my own, taken end to end alongside the Level60 work.',
+      en: 'Four products of my own, each taken end to end, alongside the Level60 work.',
       es: 'Cuatro productos propios, llevados de punta a punta en paralelo al trabajo de Level60.',
     },
     highlights: {
       en: [
         'Shipped Luxura to Google Play production alone: build, infrastructure, payments, moderation, store release and the ad campaigns.',
-        'Moved off managed platforms onto a single VPS I operate, cutting hosting cost and taking back control of the database and the background workers.',
+        'Moved off managed platforms onto a single VPS I operate, taking back the database, the workers and the hosting bill.',
         'Ran paid acquisition personally across Meta, TikTok and Google, campaign structure, creative, attribution and the cost per acquired user.',
         'Delivered growth and measurement strategy as a contract engagement for a medical marketplace.',
       ],
@@ -85,7 +85,7 @@ export const timeline: TimelineEntry[] = [
     role: { en: 'Full-Stack Developer', es: 'Desarrollador Full-Stack' },
     org: 'Gara Group Inc.',
     detail: {
-      en: 'Remote from Cúcuta for a Florida software firm, my first US client.',
+      en: 'Remote from Cúcuta for a Florida software firm. My first US client.',
       es: 'Remoto desde Cúcuta para una firma de software en Florida, mi primer cliente en EE. UU.',
     },
     highlights: {

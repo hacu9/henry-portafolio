@@ -113,5 +113,31 @@ export const reviewPick: CopyVariant = {
   accentDark: '#56C7D6',
 };
 
-export const copyCandidates: CopyVariant[] = [...copyVariants, reviewPick];
+/**
+ * The AI-forward version that does not rest on unshipped work.
+ *
+ * The review argued against foregrounding AI, on the grounds that Mate is in
+ * development and a hero is the worst place for the thinnest evidence. That
+ * holds only if the AI claim depends on Mate. It does not: everything Henry has
+ * shipped, including the app in Play Store production, was built with AI in the
+ * loop. That part is finished and checkable.
+ *
+ * The claim is deliberately not "I use AI" — by 2026 every engineer says that,
+ * so it signals nothing. The differentiator the market is actually paying for
+ * is judging the output, which is a discipline Henry already runs.
+ */
+export const aiNative: CopyVariant = {
+  id: 'verified',
+  strategy: 'AI-native delivery — the differentiator is checking it, not using it',
+  headline: 'Everything here was built with AI. That is not the interesting part.',
+  subhead:
+    'The interesting part is what I do next: run a second model adversarially against my own work, keep the spec matched to the diff that shipped, and treat a confident answer as a claim to verify. One of those products is live on Google Play.',
+  sectionLead: 'Anyone can generate code now. Judging it is the job.',
+  risk: 'Every engineer claims AI fluency in 2026, so the headline has one sentence to prove it means something sharper. If the subhead does not land, it reads as the same claim as everyone else.',
+  aimedAt: 'Tech leads and CTOs hiring for judgement in an AI-assisted team',
+  accent: '#7A3E8F',
+  accentDark: '#C58BE0',
+};
+
+export const copyCandidates: CopyVariant[] = [...copyVariants, reviewPick, aiNative];
 export const allCopy: CopyVariant[] = [...copyCandidates, currentCopy];

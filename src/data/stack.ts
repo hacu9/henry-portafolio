@@ -42,6 +42,23 @@ export const stackGroups: StackGroup[] = [
     },
   },
   {
+    /**
+     * Separate from the AI group on purpose. Building agents and delivering
+     * with agents are different claims, and only one of them has shipped
+     * product behind it. Conflating them would be the easiest lie on the page.
+     */
+    id: 'method',
+    label: { en: 'How I deliver', es: 'Cómo entrego' },
+    items: [
+      'Claude Code', 'OpenAI Codex CLI', 'Spec-driven development',
+      'Adversarial review', 'Context engineering',
+    ],
+    note: {
+      en: 'Everything on this page was built with AI in the loop, including the app running in Play Store production. The part worth hiring is not that I use it — everyone does now — it is that I check it. I run a second model adversarially against my own work, keep the spec matched to the diff that actually shipped, and treat an agent\'s confident answer as a claim to verify rather than a result.',
+      es: 'Todo lo de esta página se construyó con IA en el proceso, incluida la app que está en producción en Play Store. Lo que vale contratar no es que la use — hoy la usa todo el mundo — sino que la verifico. Corro un segundo modelo de forma adversarial contra mi propio trabajo, mantengo la especificación alineada con el diff que realmente salió, y trato la respuesta segura de un agente como una afirmación por verificar, no como un resultado.',
+    },
+  },
+  {
     id: 'microsoft',
     label: { en: 'Microsoft and enterprise', es: 'Microsoft y empresarial' },
     items: [
@@ -85,9 +102,11 @@ export const stackGroups: StackGroup[] = [
   {
     id: 'other',
     label: { en: 'Also', es: 'También' },
+    // Terraform and n8n were here and are now removed: Henry confirmed he has
+    // used neither. They appear in some target-role postings, which is exactly
+    // why listing them unverified was the wrong call.
     items: [
       'WebSockets', 'Filament', 'Face recognition', 'Identity verification',
-      'Terraform', 'n8n',
     ],
   },
 ];

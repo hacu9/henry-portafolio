@@ -184,8 +184,8 @@ const rawProjects: Project[] = [
     tagline: { en: "Women's safety platform", es: 'Plataforma de seguridad para mujeres' },
     status: 'building',
     statusNote: {
-      en: 'Confirm current status before publishing',
-      es: 'Confirmar el estado actual antes de publicar',
+      en: 'Substantially built — not released',
+      es: 'Construida en gran parte — sin publicar',
     },
     role: { en: 'Mobile and real-time systems', es: 'Móvil y sistemas en tiempo real' },
     period: '2025 — 2026',

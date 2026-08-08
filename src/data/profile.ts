@@ -60,18 +60,18 @@ export const profile = {
      *
      * This version concedes the thing a skeptical CTO would actually find.
      */
-    tradeoff: {
-      en: 'Worth saying before you find it yourself: the agentic work is the newest thing here and it is not in production yet. Luxura is what shipped. Mate is what I am betting on next, and I would rather you judge it as a bet than take my word that it is finished.',
-      es: 'Mejor decirlo antes de que lo descubras: el trabajo agéntico es lo más nuevo y todavía no está en producción. Lo que está publicado es Luxura. Mate es la apuesta siguiente, y prefiero que la juzgues como apuesta y no que me creas que ya está terminada.',
-    } as L,
     /**
-     * TODO(henry): the costliest honest concession is probably that you have
-     * owned scope rather than headcount — every product here you ran alone. For
-     * a tech-lead posting that is the objection, so meeting it head-on would
-     * buy more trust than the version above. I have not written it because
-     * nothing in the brief says whether you have led a team. Tell me and it
-     * goes in.
+     * Two real concessions, not one strawman.
+     *
+     * Henry has led teams, but lightly — his words: "not that much". So the
+     * honest line is that his depth is in owning delivery, not in managing
+     * headcount. That costs him something on a large tech-lead posting, which
+     * is precisely why it is worth saying.
      */
+    tradeoff: {
+      en: 'Two things worth saying before you find them yourself. The agentic work is the newest thing here and it is not in production yet — Luxura is what shipped, Mate is the bet. And I have led small teams and collaborated across others, but my depth is in owning delivery end to end, not in managing headcount. If the role is mostly people, someone else has run that further than I have.',
+      es: 'Dos cosas que prefiero decir antes de que las descubras. El trabajo agéntico es lo más nuevo y todavía no está en producción — lo publicado es Luxura, Mate es la apuesta. Y he liderado equipos pequeños y he colaborado en otros, pero mi profundidad está en hacerme cargo de la entrega de punta a punta, no en gestionar personas. Si el rol es sobre todo de gente, alguien más ha llegado más lejos que yo en eso.',
+    } as L,
   },
 
   /** Answers directly what the target roles screen for. */

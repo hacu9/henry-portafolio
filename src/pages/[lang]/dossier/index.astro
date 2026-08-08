@@ -76,6 +76,34 @@ const L = {
   </header>
 
   <main id="main">
+    <div class="clearance" data-clearance>
+      <span class="k">{L.clearance[lang]}</span>
+      <div class="clearance-tabs" role="tablist" aria-label={L.clearance[lang]}>
+        {
+          [
+            { id: 'brief', label: lang === 'es' ? 'Resumen' : 'Brief' },
+            { id: 'standard', label: lang === 'es' ? 'Completo' : 'Full' },
+            { id: 'deep', label: lang === 'es' ? 'Técnico' : 'Technical' },
+          ].map((lvl, i) => (
+            <button
+              type="button"
+              role="tab"
+              data-level={lvl.id}
+              aria-selected={i === 1 ? 'true' : 'false'}
+              tabindex={i === 1 ? 0 : -1}
+            >
+              {lvl.label}
+            </button>
+          ))
+        }
+      </div>
+      <p class="clearance-note">
+        {lang === 'es'
+          ? 'Un reclutador y un ingeniero no necesitan el mismo expediente. Elige cuánto abrir.'
+          : 'A recruiter and an engineer do not need the same file. Choose how much to open.'}
+      </p>
+    </div>
+
     <section class="cover">
       <div class="cover-head">
         <p class="k">{L.subject[lang]}</p>
@@ -130,11 +158,11 @@ const L = {
                   <span class="k">{t(ui.theProblem, lang)}</span>
                   <p>{t(p.problem, lang)}</p>
                 </div>
-                <div class="row">
+                <div class="row" data-level="standard">
                   <span class="k">{t(ui.whatIBuilt, lang)}</span>
                   <ul>{tl(p.built, lang).map((b) => <li>{b}</li>)}</ul>
                 </div>
-                <div class="row">
+                <div class="row" data-level="deep">
                   <span class="k">
                     {p.decisions.length > 1 ? t(ui.theDecisions, lang) : t(ui.theDecision, lang)}
                   </span>
@@ -152,7 +180,7 @@ const L = {
                   <p class="out">{t(p.outcome, lang)}</p>
                 </div>
               </div>
-              <TechRow items={p.stack} size="sm" />
+              <div data-level="deep"><TechRow items={p.stack} size="sm" /></div>
             </div>
           </article>
         ))
@@ -634,4 +662,96 @@ const L = {
     scroll-snap-align: start;
     background: var(--raise, transparent);
   }
+
+  /* ------------------------------------------------------------ clearance */
+  .clearance {
+    max-width: var(--shell);
+    margin-inline: auto;
+    padding: 1rem var(--pad) 0;
+    display: grid;
+    gap: 0.5rem;
+    justify-items: start;
+  }
+  .clearance-tabs {
+    display: flex;
+    gap: 0.3rem;
+  }
+  .clearance-tabs button {
+    font-family: var(--mono);
+    font-size: 0.625rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--dim);
+    border: 1px solid var(--line);
+    padding: 0.25rem 0.7rem;
+    background: transparent;
+  }
+  .clearance-tabs button[aria-selected='true'] {
+    color: var(--ground);
+    background: var(--ink);
+    border-color: var(--ink);
+  }
+  .clearance-note {
+    font-size: 0.8125rem;
+    color: var(--dim);
+    max-width: 42rem;
+  }
+  /* Withheld content is struck out rather than removed, so the reader can see
+     the shape of what is behind the next level. */
+  [data-level][hidden] {
+    display: none;
+  }
+  .redacted-count {
+    font-family: var(--mono);
+    font-size: 0.625rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    border: 1px dashed var(--accent);
+    padding: 0.3rem 0.6rem;
+    justify-self: start;
+  }
 </style>
+
+<script>
+  // Clearance levels. "Brief" is the recruiter's file, "Technical" is the
+  // engineer's. This is the idea the variant is named for: what you can read
+  // depends on who you say you are, and the page says how much is withheld
+  // rather than hiding that anything is.
+  const root = document.querySelector<HTMLElement>('[data-clearance]');
+  if (root) {
+    const tabs = [...root.querySelectorAll<HTMLButtonElement>('[data-level]')];
+    const ORDER = ['brief', 'standard', 'deep'];
+    const blocks = [...document.querySelectorAll<HTMLElement>('main [data-level]')];
+
+    const apply = (level: string) => {
+      const max = ORDER.indexOf(level);
+      let hidden = 0;
+      for (const b of blocks) {
+        const need = ORDER.indexOf(b.dataset.level || 'brief');
+        const off = need > max;
+        b.hidden = off;
+        if (off) hidden += 1;
+      }
+      for (const t of tabs) {
+        const on = t.dataset.level === level;
+        t.setAttribute('aria-selected', String(on));
+        t.tabIndex = on ? 0 : -1;
+      }
+      let tag = root.querySelector<HTMLElement>('.redacted-count');
+      if (!tag) {
+        tag = document.createElement('p');
+        tag.className = 'redacted-count';
+        root.appendChild(tag);
+      }
+      tag.hidden = hidden === 0;
+      tag.textContent =
+        document.documentElement.lang === 'es'
+          ? `${hidden} secciones reservadas en este nivel`
+          : `${hidden} sections withheld at this level`;
+    };
+
+    for (const t of tabs) t.addEventListener('click', () => apply(t.dataset.level || 'standard'));
+    apply('standard');
+  }
+</script>

@@ -42,6 +42,7 @@ const L = {
   bought: { en: 'BOUGHT', es: 'COMPRÓ' },
   paid: { en: 'PAID', es: 'PAGÓ' },
   balance: { en: 'BALANCE', es: 'BALANCE' },
+  built: { en: 'BUILT', es: 'CONSTRUIDO' },
   totals: { en: 'TOTALS', es: 'TOTALES' },
 };
 ---
@@ -89,6 +90,10 @@ const L = {
 
     <section id="work">
       {
+        /* The whole case study as an account book. Every line is an entry with
+           what it bought and what it cost, because that is the only honest way
+           to read an engineering decision. Nothing here is decoration: the
+           debit column is where the trade-offs live, and they are real. */
         leadProjects.map((p, i) => (
           <article class="acct" data-camera>
             <div class="acct-head">
@@ -97,24 +102,20 @@ const L = {
               <span class={`st st-${p.status}`}>{t(STATUS_LABEL[p.status], lang)}</span>
               <span class="per">{p.period}</span>
             </div>
-            <p class="tag">{t(p.tagline, lang)}{p.url && (<>{' · '}<a class="verify-link" href={p.url} target="_blank" rel="noopener">{p.urlLabel ? t(p.urlLabel, lang) : t(ui.verify, lang)} ↗</a></>)}</p>
-              {p.shots && (
-                <div class="shots">
-                  {p.shots.map((sh) => (
-                    <img src={asset(base, sh.src)} alt={t(sh.alt, lang)} loading="lazy" decoding="async" />
-                  ))}
-                </div>
+            <p class="tag">
+              {t(p.tagline, lang)}
+              {p.url && (
+                <>
+                  {' · '}
+                  <a class="verify-link" href={p.url} target="_blank" rel="noopener">
+                    {p.urlLabel ? t(p.urlLabel, lang) : t(ui.verify, lang)} ↗
+                  </a>
+                </>
               )}
+            </p>
 
-            <div class="ctx">
-              <p>{t(p.problem, lang)}</p>
-            </div>
-
-            {/* The book itself: each hard call as a double entry. */}
             <table class="book">
-              <caption class="visually-hidden">
-                {p.decisions.length > 1 ? t(ui.theDecisions, lang) : t(ui.theDecision, lang)}
-              </caption>
+              <caption class="ctx">{t(p.problem, lang)}</caption>
               <thead>
                 <tr>
                   <th scope="col">{L.entry[lang]}</th>
@@ -123,24 +124,25 @@ const L = {
                 </tr>
               </thead>
               <tbody>
+                {tl(p.built, lang).map((b) => (
+                  <tr class="line line--build">
+                    <th scope="row">{L.built[lang]}</th>
+                    <td colspan="2">{b}</td>
+                  </tr>
+                ))}
                 {p.decisions.map((d) => (
-                  <tr>
+                  <tr class="line line--call">
                     <th scope="row">{t(d.title, lang)}</th>
                     <td colspan="2">{t(d.body, lang)}</td>
                   </tr>
                 ))}
+                <tr class="line line--bal">
+                  <th scope="row">{L.balance[lang]}</th>
+                  <td colspan="2">{t(p.outcome, lang)}</td>
+                </tr>
               </tbody>
             </table>
 
-            <div class="built">
-              <p class="k">{t(ui.whatIBuilt, lang)}</p>
-              <ul>{tl(p.built, lang).map((b) => <li>{b}</li>)}</ul>
-            </div>
-
-            <p class="bal">
-              <span class="k">{L.balance[lang]}</span>
-              {t(p.outcome, lang)}
-            </p>
             <TechRow items={p.stack} size="sm" />
           </article>
         ))
@@ -545,5 +547,40 @@ const L = {
     max-width: 46ch;
     margin-top: 0.9rem;
     text-wrap: pretty;
+  }
+
+  /* Every row is an entry. Build lines are the debits, decisions carry the
+     reasoning, and the balance closes the account. */
+  .ctx {
+    caption-side: top;
+    text-align: left;
+    color: var(--ink-2);
+    padding-bottom: 0.8rem;
+    max-width: 48rem;
+    font-family: var(--sans);
+  }
+  .line--build th {
+    color: var(--dim) !important;
+    font-family: var(--mono) !important;
+    font-size: 0.625rem !important;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    font-weight: 400 !important;
+  }
+  .line--call th {
+    color: var(--ink) !important;
+  }
+  .line--bal th,
+  .line--bal td {
+    border-top: 2px solid var(--ink);
+    border-bottom: 0 !important;
+    padding-top: 0.8rem;
+    color: var(--ink) !important;
+  }
+  .line--bal th {
+    font-family: var(--mono) !important;
+    font-size: 0.625rem !important;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
   }
 </style>

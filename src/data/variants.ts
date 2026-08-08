@@ -14,51 +14,6 @@ export interface Variant {
 
 export const variants: Variant[] = [
   {
-    slug: 'signal',
-    name: { en: 'Signal', es: 'Signal' },
-    tagline: { en: 'The instrument panel', es: 'El panel de instrumentos' },
-    argues: {
-      en: 'Trust me with production.',
-      es: 'Confía en mí para producción.',
-    },
-    bestFor: {
-      en: 'Tech leads, CTOs, contract work',
-      es: 'Tech leads, CTOs, trabajo por contrato',
-    },
-    accent: '#B4700A',
-    accentDark: '#F0A423',
-  },
-  {
-    slug: 'deep-field',
-    name: { en: 'Deep Field', es: 'Deep Field' },
-    tagline: { en: 'The spectacle', es: 'El espectáculo' },
-    argues: {
-      en: 'I make beautiful things.',
-      es: 'Hago cosas hermosas.',
-    },
-    bestFor: {
-      en: 'Studios, creative engineering roles',
-      es: 'Estudios, roles de ingeniería creativa',
-    },
-    accent: '#6D3BD4',
-    accentDark: '#A886FF',
-  },
-  {
-    slug: 'kinetic',
-    name: { en: 'Kinetic', es: 'Kinetic' },
-    tagline: { en: 'Type is the whole show', es: 'La tipografía es todo' },
-    argues: {
-      en: 'I have taste, in two languages.',
-      es: 'Tengo criterio, en dos idiomas.',
-    },
-    bestFor: {
-      en: 'Design-led teams, agencies, founders',
-      es: 'Equipos con foco en diseño, agencias, fundadores',
-    },
-    accent: '#B5122E',
-    accentDark: '#FF5C74',
-  },
-  {
     slug: 'log',
     name: { en: 'The Log', es: 'El Registro' },
     tagline: { en: 'The working record', es: 'El registro de trabajo' },
@@ -74,23 +29,7 @@ export const variants: Variant[] = [
     accentDark: '#4FC79B',
   },
 
-  /* ------------------------------------------------------ second round -- */
-  {
-    slug: 'darkroom',
-    name: { en: 'Darkroom', es: 'Cuarto Oscuro' },
-    tagline: { en: 'Lit only where you look', es: 'Iluminado solo donde miras' },
-    argues: {
-      en: 'Look closer. It holds up.',
-      es: 'Mira de cerca. Aguanta.',
-    },
-    bestFor: {
-      en: 'Studios and design-led product teams',
-      es: 'Estudios y equipos con foco en producto',
-    },
-    accent: '#8A6A2F',
-    accentDark: '#E8B23F',
-  },
-  {
+    {
     slug: 'atlas',
     name: { en: 'Atlas', es: 'Atlas' },
     tagline: { en: 'Travel sideways through the work', es: 'Recorre el trabajo de lado' },
@@ -120,24 +59,8 @@ export const variants: Variant[] = [
     accent: '#0F7B4A',
     accentDark: '#3DDC84',
   },
-  {
-    slug: 'press',
-    name: { en: 'Press', es: 'Press' },
-    tagline: { en: 'Swiss grid, printed loud', es: 'Retícula suiza, impresa fuerte' },
-    argues: {
-      en: 'The work is the headline.',
-      es: 'El trabajo es el titular.',
-    },
-    bestFor: {
-      en: 'Founders and agencies who scan fast',
-      es: 'Fundadores y agencias que escanean rápido',
-    },
-    accent: '#C22118',
-    accentDark: '#FF6152',
-  },
 
-  /* ------------------------------------------------------- third round -- */
-  {
+    {
     slug: 'dossier',
     name: { en: 'Dossier', es: 'Expediente' },
     tagline: { en: 'What I can and cannot show you', es: 'Lo que puedo y no puedo mostrarte' },
@@ -151,21 +74,6 @@ export const variants: Variant[] = [
     },
     accent: '#8A5A12',
     accentDark: '#D9A441',
-  },
-  {
-    slug: 'aurora',
-    name: { en: 'Aurora', es: 'Aurora' },
-    tagline: { en: 'Soft light, hard evidence', es: 'Luz suave, evidencia dura' },
-    argues: {
-      en: 'This is a finished product, and so am I.',
-      es: 'Esto es un producto terminado, y yo también.',
-    },
-    bestFor: {
-      en: 'Product companies and modern SaaS teams',
-      es: 'Empresas de producto y equipos SaaS',
-    },
-    accent: '#5B49D6',
-    accentDark: '#9C8CFF',
   },
   {
     slug: 'ledger',

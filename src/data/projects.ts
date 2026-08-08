@@ -89,8 +89,8 @@ const rawProjects: Project[] = [
           es: 'Migré toda la plataforma de Vercel y Supabase a un VPS de Hetzner con Coolify',
         },
         body: {
-          en: 'Managed hosting prices per seat and per function call, which is the wrong shape for an app whose margin depends on cost per acquired user. Self-hosting on a single VPS made the unit economics predictable and gave me direct control of the database and the background workers. The trade is real: I now own the uptime, the disk pressure and the Docker hygiene, and I do that maintenance myself.',
-          es: 'El hosting administrado cobra por asiento y por llamada de función, que es la forma equivocada para una app cuyo margen depende del costo por usuario adquirido. Alojarlo yo mismo en un solo VPS volvió predecible la economía unitaria y me dio control directo de la base de datos y los workers. La contrapartida es real: ahora el uptime, el espacio en disco y la higiene de Docker son míos, y ese mantenimiento lo hago yo.',
+          en: 'Vercel plus Supabase Pro was running about USD 45 a month before the app had meaningful traction. A Hetzner CPX21 — four gigabytes, roughly nine euros — replaced both, and I deliberately did not size up when it got tight; I added swap instead and kept the box. I also refused to keep managed hosting for development, because running two different infrastructures produces drift that only shows up in production. The trade is real: uptime, disk pressure and Docker hygiene are now mine, and I do that maintenance myself.',
+          es: 'Vercel más Supabase Pro costaban cerca de 45 USD al mes cuando la app todavía no tenía tracción real. Un Hetzner CPX21 — cuatro gigas, unos nueve euros — reemplazó a los dos, y a propósito no subí de instancia cuando quedó justo: agregué swap y me quedé con la misma máquina. También descarté dejar hosting administrado para desarrollo, porque mantener dos infraestructuras distintas produce desviaciones que solo aparecen en producción. La contrapartida es real: el uptime, el disco y la higiene de Docker ahora son míos, y ese mantenimiento lo hago yo.',
         },
       },
       {
@@ -103,10 +103,20 @@ const rawProjects: Project[] = [
           es: 'La entrega de SNS a las operadoras colombianas era tan lenta que los registros se caían en la pantalla de verificación. Nada del resto de la app importa si la primera pantalla pierde usuarios. Firebase entregaba de forma confiable en el país, así que acepté el amarre con el proveedor en ese punto y mantuve el embudo completo.',
         },
       },
+      {
+        title: {
+          en: 'Replaced gender with an invitation role, so men could invite men',
+          es: 'Cambié el género por un rol de invitación, para que un hombre pudiera invitar a otro',
+        },
+        body: {
+          en: 'The product started with the funnel keyed to gender, which quietly made same-sex invitations impossible. I moved the model to an INVITER / INVITEE role chosen at registration, with the benefit of each stated plainly on that screen. The goal was to cut onboarding friction, and the side effect was that the paid tier attaches to a role rather than to a gender — which is both fairer and much easier to reason about in code.',
+          es: 'El producto arrancó con el embudo atado al género, lo que en la práctica hacía imposible una invitación entre personas del mismo sexo. Pasé el modelo a un rol INVITER / INVITEE que se elige al registrarse, con el beneficio de cada uno explicado en esa misma pantalla. El objetivo era bajar la fricción de onboarding, y el efecto secundario es que el plan pago se ata a un rol y no a un género — más justo, y mucho más fácil de razonar en el código.',
+        },
+      },
     ],
     outcome: {
-      en: 'Live on Google Play production. I run the Meta, TikTok and Google Ads campaigns myself, which puts the engineering decisions and the acquisition cost they drive on the same desk.',
-      es: 'Publicada en producción en Google Play. Yo mismo manejo las campañas de Meta, TikTok y Google Ads, así que las decisiones de ingeniería y el costo de adquisición que generan caen en el mismo escritorio.',
+      en: 'Live on Google Play production. The hosting move cut infrastructure from roughly USD 45 a month to about nine euros. I run the Meta, TikTok and Google Ads campaigns myself and drove installs to around USD 0.06–0.11 depending on audience, with roughly one in five installs completing registration. Engineering decisions and the acquisition cost they produce land on the same desk.',
+      es: 'Publicada en producción en Google Play. El cambio de hosting bajó la infraestructura de unos 45 USD al mes a cerca de nueve euros. Yo mismo manejo las campañas de Meta, TikTok y Google Ads, y llevé el costo por instalación a unos 0,06–0,11 USD según la audiencia, con aproximadamente una de cada cinco instalaciones completando el registro. Las decisiones de ingeniería y el costo de adquisición que producen caen en el mismo escritorio.',
     },
     stack: [
       'Next.js', 'TypeScript', 'Capacitor', 'PostgreSQL', 'Hetzner', 'Coolify',

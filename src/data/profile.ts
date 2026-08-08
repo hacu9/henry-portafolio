@@ -83,6 +83,32 @@ export const profile = {
     } as L,
   },
 
+  /**
+   * The evidence behind the "I verify what the model tells me" claim.
+   *
+   * Until now that claim was an assertion. These are four separate occasions,
+   * recovered from working history, where Henry rejected confident AI output
+   * and turned out to be right. For an AI or agentic role this is stronger
+   * material than any project bullet, because the scarce skill in 2026 is
+   * judging model output rather than producing it.
+   *
+   * Each one is a specific, checkable incident. None is a self-description.
+   */
+  verification: {
+    en: [
+      'Refused a model\'s claim that TikTok has no account-level budget cap. It does — Budget Manager. The model was confident and wrong.',
+      'Rejected a reported zero-conversion figure on a campaign that plainly had installs. The cause was a field-mapping error between conversions and app installs, found only because the number was refused.',
+      'Traced broken TikTok attribution to an ad-network permissions toggle that an AI research pass had missed entirely.',
+      'Killed two false lines from my own CV before they shipped — an authored-MCP-servers claim and a tool I had never used.',
+    ],
+    es: [
+      'Rechacé la afirmación de un modelo de que TikTok no tiene tope de presupuesto a nivel de cuenta. Sí lo tiene — Budget Manager. El modelo estaba seguro y equivocado.',
+      'Rechacé un reporte de cero conversiones en una campaña que claramente tenía instalaciones. La causa era un error de mapeo de campos entre conversiones e instalaciones, y solo apareció porque no acepté el número.',
+      'Rastreé una atribución rota de TikTok hasta un permiso de red publicitaria que una investigación hecha con IA había pasado por alto.',
+      'Eliminé dos afirmaciones falsas de mi propia hoja de vida antes de publicarla — haber escrito servidores MCP, y una herramienta que nunca usé.',
+    ],
+  } as LList,
+
   /** Answers directly what the target roles screen for. */
   fitFor: {
     en: [

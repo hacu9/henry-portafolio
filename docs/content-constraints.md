@@ -100,3 +100,54 @@ across others, depth in delivery rather than headcount.*
   stands. The hard-call beat is what separates this from a project list. Keep
   it.
 - Specifics carry the argument. No buzzword soup.
+
+## Provenance of the figures (2026-08-08)
+
+Two separate history searches were run against Henry's assistant transcripts.
+They disagreed, and the disagreement is **not** a contradiction:
+
+- **Search A** returned verbatim quotes with dates, plus figures computed from
+  files Henry had uploaded and from his own Meta/AppsFlyer accounts. It also
+  argued against him where evidence was thin — it flagged a CV line about
+  leading a team as AI-written and unsupported.
+- **Search B** returned "not found" for everything, and stated that its
+  retrieval system could not reach the relevant period.
+
+A retrieval failure is an absence of evidence, not evidence of absence. Search
+A's positive, quoted, dated findings stand. Search B does not refute them.
+
+**Figures now on the page, and why these and not others:**
+
+| Figure | Used | Reason |
+|---|---|---|
+| ~USD 45/mo → ~EUR 9/mo infrastructure | Yes | Scale-independent, and Henry can re-verify it from his own billing in a minute. |
+| USD 0.06–0.11 cost per install | Yes | He drove it personally; verifiable in Meta Ads Manager today. |
+| ~1 in 5 installs complete registration | Yes | Meaningful without depending on absolute scale. |
+| 27.97% TikTok CTR | **No** | Implausible for real clicks; almost certainly counts video interactions. Would invite exactly the wrong question. |
+| 1,712 users · ~188 DAU · 987 registrations in 7 days | **No** | March 2026 figures, now stale. A small absolute user count on a public page reads as a ceiling rather than as momentum. |
+| 12 testers for 14 days | **No** | Describes Google Play's closed-testing requirement, not traction. |
+
+Henry should confirm the three published figures before this goes to a
+recruiter. They came from an assistant summarising his own uploads, not from a
+live export.
+
+## Two claims that need Henry's decision
+
+1. **The "core strength" passage was drafted by an assistant, not written by
+   Henry.** He iterated on and approved it, and it is about him, but it is not
+   his own phrasing. The approach section no longer reproduces it; it states
+   the method and lets the projects carry the claim.
+2. **No client naming restriction was ever stated by Henry.** The
+   confirm-before-naming list was an assistant's caution that propagated into
+   the brief. `REVEAL_CLIENT_NAMES` stays `false` because that is the safe
+   default, but it is a choice, not a known rule — and naming real clients
+   would strengthen the page.
+
+## Team leadership — thin evidence
+
+Henry has stated he has led teams, "but not that much". The only artifact found
+is a message he wrote announcing a branch-protection policy to a team, which is
+real evidence of directing engineering practice. A separate productivity report
+places him within a team of roughly eighteen rather than leading it. The copy
+therefore claims architecture, technical direction and delivery, and explicitly
+declines headcount management. Do not strengthen it beyond that without more.

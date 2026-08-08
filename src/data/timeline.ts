@@ -85,12 +85,29 @@ export const timeline: TimelineEntry[] = [
     role: { en: 'Full-Stack Developer', es: 'Desarrollador Full-Stack' },
     org: 'Gara Group Inc.',
     detail: {
-      en: 'San José de Cúcuta, Colombia.',
-      es: 'San José de Cúcuta, Colombia.',
+      en: 'Remote from Cúcuta for a Florida software firm — my first US client.',
+      es: 'Remoto desde Cúcuta para una firma de software en Florida — mi primer cliente en EE. UU.',
     },
-    // TODO(henry): this role has no detail on record. Anything real — the
-    // stack, the product, one thing you shipped — would help; it is currently
-    // the thinnest entry on the page.
+    highlights: {
+      /*
+       * Gara Group, Inc. is a real firm in Sunrise, Florida that builds
+       * platforms for direct-sales and network-marketing companies —
+       * distributor back-offices, replicated customer-facing sites, and
+       * corporate operations. That matches Henry's description of the work.
+       *
+       * TODO(henry): the Laravel and Vue stack is your recollection, prefaced
+       * with "I think". Confirm before this goes to a recruiter, and add one
+       * concrete thing you shipped — this is still the thinnest role here.
+       */
+      en: [
+        'Built web applications for a firm specialising in direct-sales and network-marketing platforms — distributor back-office, replicated customer-facing sites, and corporate operations.',
+        'Worked in Laravel with Vue on the front end.',
+      ],
+      es: [
+        'Construí aplicaciones web para una firma especializada en plataformas de venta directa y mercadeo en red — back-office de distribuidores, sitios replicados de cara al cliente y operaciones corporativas.',
+        'Trabajé en Laravel con Vue en el front end.',
+      ],
+    },
     kind: 'work',
   },
   {

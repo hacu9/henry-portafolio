@@ -11,6 +11,13 @@ export const profile = {
     es: ['Español — nativo', 'Inglés — fluido'],
   } as LList,
 
+  /** Relative to BASE_URL; pages resolve it with path(). */
+  photo: 'images/henry.jpg',
+  photoAlt: {
+    en: 'Henry Cabello',
+    es: 'Henry Cabello',
+  } as L,
+
   email: 'cabello986@gmail.com',
   github: 'hacu9',
   githubUrl: 'https://github.com/hacu9',

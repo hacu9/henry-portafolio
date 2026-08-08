@@ -43,6 +43,11 @@ export interface Project {
    */
   url?: string;
   urlLabel?: L;
+  /**
+   * Product screenshots, relative to BASE_URL. Taken from Henry's own
+   * published marketing site (luxura.vip), so they are his to reuse.
+   */
+  shots?: { src: string; alt: L }[];
 }
 
 const rawProjects: Project[] = [
@@ -67,6 +72,20 @@ const rawProjects: Project[] = [
     lead: true,
     url: 'https://play.google.com/store/apps/details?id=app.luxura.dating',
     urlLabel: { en: 'See it on Google Play', es: 'Verla en Google Play' },
+    shots: [
+      {
+        src: 'images/luxura-step-one-en.png',
+        alt: { en: 'Luxura onboarding screen', es: 'Pantalla de onboarding de Luxura' },
+      },
+      {
+        src: 'images/luxura-step-two-en.png',
+        alt: { en: 'Luxura browse grid', es: 'Grilla de perfiles de Luxura' },
+      },
+      {
+        src: 'images/luxura-step-three-en.png',
+        alt: { en: 'Luxura invitation flow', es: 'Flujo de invitación de Luxura' },
+      },
+    ],
     problem: {
       en: 'Open dating apps fill with unserious volume, which drives women off the platform and takes the men with them. Luxura inverts the funnel: men pay to send an invitation, women join free. That asymmetry only works if the product controls its own economics end to end — payments, moderation, and the cost of acquiring each user.',
       es: 'Las apps de citas abiertas se llenan de volumen poco serio, eso hace que las mujeres se vayan y detrás se van los hombres. Luxura invierte el embudo: los hombres pagan por enviar una invitación, las mujeres entran gratis. Esa asimetría solo funciona si el producto controla su propia economía de punta a punta — pagos, moderación y el costo de adquirir cada usuario.',

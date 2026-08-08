@@ -38,14 +38,14 @@ export const profile = {
    * the part almost nobody else can claim.
    */
   positioning: {
-    en: 'One engineer shipped this app. A second model tried to break it first.',
-    es: 'Un solo ingeniero publicó esta app. Un segundo modelo intentó romperla antes.',
+    en: 'I build the product, run the infrastructure, and buy the users.',
+    es: 'Construyo el producto, opero la infraestructura y compro los usuarios.',
   } as L,
 
   /** Carries the evidence the headline no longer has room for. */
   lede: {
-    en: 'Luxura is live on Google Play — I built it, moved its infrastructure onto my own VPS, wired the payments, and I run the ads. Everything I ship goes through an adversarial AI review before it goes through me.',
-    es: 'Luxura está publicada en Google Play — la construí, moví su infraestructura a mi propio VPS, conecté los pagos y manejo la pauta. Todo lo que entrego pasa por una revisión adversarial con IA antes de pasar por mí.',
+    en: 'Luxura is live on Google Play — I built it, own the infrastructure, wired the payments, and run the ads. Nothing ships until a second model has tried to break it.',
+    es: 'Luxura está publicada en Google Play — la construí, opero su infraestructura, conecté los pagos y manejo la pauta. Nada sale hasta que un segundo modelo intentó romperlo.',
   } as L,
 
   /** Used where a plain description is needed, such as meta tags. */
@@ -80,13 +80,13 @@ export const profile = {
        */
       en: [
         'The method is specific: watch which number is falling, work out whether the problem belongs to the code or the vendor underneath it, change the piece that controls the outcome, then stay and operate it.',
-        'It is how an unfamiliar domain becomes a product that ships. Over 8+ years that has meant enterprise Microsoft integrations, a multi-agent AI system, a dating app in production and a safety platform with real-time alerts — four things with almost nothing in common.',
-        'It is also why I own the parts most engineers hand off: payment integration, attribution, the ad campaigns that bring the users in, release pipelines, and the infrastructure migration underneath all of it. Inside a team that shows up as setting the technical direction and the standards other people work to — the review gates, the specs, the definition of done.',
+        'That method is how an unfamiliar domain becomes a shipped product. Eight-plus years of it: enterprise Microsoft integrations, a multi-agent AI system, a dating app in production, a safety platform with real-time alerts — four domains with almost nothing in common except how I entered them.',
+        'It is also why I own the parts most engineers hand off: payment integration, attribution, the ad campaigns that bring the users in, release pipelines, and the infrastructure migration underneath all of it. On a team, that same ownership becomes technical direction: the review gates, the specs, the definition of done that other people build against.',
       ],
       es: [
         'El método es concreto: miro qué número se está cayendo, averiguo si el problema es del código o del proveedor que lo sostiene, cambio la pieza que controla el resultado, y me quedo operándolo después.',
-        'Es la forma en que un dominio desconocido termina siendo un producto que sale. En 8+ años eso significó integraciones empresariales con Microsoft, un sistema de IA multiagente, una app de citas en producción y una plataforma de seguridad con alertas en tiempo real — cuatro cosas que casi no se parecen en nada.',
-        'También es la razón por la que me hago cargo de lo que la mayoría delega: integración de pagos, atribución, las campañas que traen usuarios, pipelines de release y la migración de infraestructura debajo de todo eso. Dentro de un equipo eso se traduce en fijar la dirección técnica y los estándares con los que trabajan los demás — las compuertas de revisión, las especificaciones, la definición de terminado.',
+        'Ese método es cómo un dominio desconocido termina siendo un producto que sale. Ocho años y pico de eso: integraciones empresariales con Microsoft, un sistema de IA multiagente, una app de citas en producción, una plataforma de seguridad con alertas en tiempo real — cuatro dominios que no se parecen en nada salvo en cómo entré en ellos.',
+        'También es la razón por la que me hago cargo de lo que la mayoría delega: integración de pagos, atribución, las campañas que traen usuarios, pipelines de release y la migración de infraestructura debajo de todo eso. En un equipo, esa misma responsabilidad se vuelve dirección técnica: las compuertas de revisión, las especificaciones, la definición de terminado contra la que construyen los demás.',
       ],
     } as LList,
     /**

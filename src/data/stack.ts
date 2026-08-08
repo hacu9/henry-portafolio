@@ -21,6 +21,23 @@ export interface StackGroup {
  */
 export const stackGroups: StackGroup[] = [
   {
+    /**
+     * Separate from the AI group on purpose. Building agents and delivering
+     * with agents are different claims, and only one of them has shipped
+     * product behind it. Conflating them would be the easiest lie on the page.
+     */
+    id: 'method',
+    label: { en: 'How I deliver', es: 'Cómo entrego' },
+    items: [
+      'Claude Code', 'OpenAI Codex CLI', 'Spec-driven development',
+      'Adversarial review', 'Context engineering',
+    ],
+    note: {
+      en: 'I built everything here with AI in the loop, including the app in Play Store production. I run a second model adversarially against my own work, keep the spec matched to the diff that shipped, and treat a confident answer as a claim to verify. That has caught a wrong platform fact, a field-mapping bug hiding behind a zero, and a missed permissions toggle breaking attribution.',
+      es: 'Construí todo esto con IA en el proceso, incluida la app en producción en Play Store. Corro un segundo modelo de forma adversarial contra mi propio trabajo, mantengo la especificación alineada con el diff que salió, y trato una respuesta segura como una afirmación por verificar. Eso detectó un dato de plataforma equivocado, un error de mapeo escondido detrás de un cero, y un permiso que rompía la atribución.',
+    },
+  },
+  {
     id: 'core',
     label: { en: 'Core', es: 'Núcleo' },
     items: [
@@ -37,25 +54,8 @@ export const stackGroups: StackGroup[] = [
       'Claude Code', 'OpenAI Codex CLI',
     ],
     note: {
-      en: 'I run MCP servers daily against AppsFlyer, Meta Ads and TikTok Ads, and extended one to fit how I work.',
-      es: 'Uso servidores MCP a diario contra AppsFlyer, Meta Ads y TikTok Ads, y extendí uno para que encajara con mi forma de trabajar.',
-    },
-  },
-  {
-    /**
-     * Separate from the AI group on purpose. Building agents and delivering
-     * with agents are different claims, and only one of them has shipped
-     * product behind it. Conflating them would be the easiest lie on the page.
-     */
-    id: 'method',
-    label: { en: 'How I deliver', es: 'Cómo entrego' },
-    items: [
-      'Claude Code', 'OpenAI Codex CLI', 'Spec-driven development',
-      'Adversarial review', 'Context engineering',
-    ],
-    note: {
-      en: 'Everything here was built with AI in the loop, including the app in Play Store production. I run a second model adversarially against my own work, keep the spec matched to the diff that shipped, and treat a confident answer as a claim to verify. That has caught a wrong platform fact, a field-mapping bug hiding behind a zero, and a missed permissions toggle breaking attribution.',
-      es: 'Todo esto se construyó con IA en el proceso, incluida la app en producción en Play Store. Corro un segundo modelo de forma adversarial contra mi propio trabajo, mantengo la especificación alineada con el diff que salió, y trato una respuesta segura como una afirmación por verificar. Eso detectó un dato de plataforma equivocado, un error de mapeo escondido detrás de un cero, y un permiso que rompía la atribución.',
+      en: 'I run MCP servers daily against AppsFlyer, Meta Ads and TikTok Ads — and when one did not fit my workflow, I extended it myself.',
+      es: 'Uso servidores MCP a diario contra AppsFlyer, Meta Ads y TikTok Ads — y cuando uno no encajaba con mi flujo, lo extendí yo mismo.',
     },
   },
   {
@@ -74,8 +74,8 @@ export const stackGroups: StackGroup[] = [
       'Redis', 'Firebase', 'Linux',
     ],
     note: {
-      en: 'I have run production on Vercel and Supabase and moved off both. Knowing when a managed platform stops earning its place is part of the job.',
-      es: 'Tuve producción en Vercel y en Supabase, y salí de los dos. Saber cuándo una plataforma administrada deja de ganarse su lugar es parte del oficio.',
+      en: 'I have run production on Vercel and Supabase and moved off both. The skill is knowing when a managed platform stops earning its place.',
+      es: 'Tuve producción en Vercel y en Supabase, y salí de los dos. La habilidad está en saber cuándo una plataforma administrada deja de ganarse su lugar.',
     },
   },
   {

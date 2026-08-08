@@ -117,8 +117,8 @@ const rawProjects: Project[] = [
           es: 'Migré toda la plataforma de Vercel y Supabase a un VPS de Hetzner con Coolify',
         },
         body: {
-          en: 'Managed platforms pick your database, your background workers and your failure modes for you. I wanted those decisions back before the product grew into them, so both moved onto one Hetzner box running Coolify. When memory got tight I added swap and kept the same machine rather than sizing up — sizing up is how you stop noticing what your app costs to run. Development stayed on the same infrastructure as production, because two setups produce drift that only ever surfaces in the one that matters. Uptime, disk and Docker hygiene are mine now, and I run them.',
-          es: 'Las plataformas administradas eligen por ti la base de datos, los workers y los modos de falla. Quería esas decisiones de vuelta antes de que el producto creciera dentro de ellas, así que ambos pasaron a una sola máquina Hetzner con Coolify. Cuando la memoria quedó justa agregué swap y me quedé con la misma máquina en vez de subir de instancia — subir de instancia es la forma de dejar de notar lo que cuesta operar tu app. Desarrollo se quedó en la misma infraestructura que producción, porque dos montajes producen desviaciones que solo aparecen en el que importa. El uptime, el disco y la higiene de Docker ahora son míos, y los opero yo.',
+          en: 'Managed platforms pick your database, your background workers and your failure modes for you. I wanted those decisions back before the product grew into them, so I moved both onto one Hetzner box running Coolify. When memory got tight I added swap and kept the same machine rather than sizing up — sizing up is how you stop noticing what your app costs to run. Development stayed on the same infrastructure as production, because two setups produce drift that only ever surfaces in the one that matters. Uptime, disk and Docker hygiene are mine now, and I run them.',
+          es: 'Las plataformas administradas eligen por ti la base de datos, los workers y los modos de falla. Quería esas decisiones de vuelta antes de que el producto creciera dentro de ellas, así que moví ambos a una sola máquina Hetzner con Coolify. Cuando la memoria quedó justa agregué swap y me quedé con la misma máquina en vez de subir de instancia — subir de instancia es la forma de dejar de notar lo que cuesta operar tu app. Desarrollo se quedó en la misma infraestructura que producción, porque dos montajes producen desviaciones que solo aparecen en el que importa. El uptime, el disco y la higiene de Docker ahora son míos, y los opero yo.',
         },
       },
       {
@@ -137,14 +137,14 @@ const rawProjects: Project[] = [
           es: 'Cambié el género por un rol de invitación, para que un hombre pudiera invitar a otro',
         },
         body: {
-          en: 'The product started with the funnel keyed to gender, which quietly made same-sex invitations impossible. I moved the model to an INVITER / INVITEE role chosen at registration, with the benefit of each stated plainly on that screen. The goal was to cut onboarding friction, and the side effect was that the paid tier attaches to a role rather than to a gender — which is both fairer and much easier to reason about in code.',
-          es: 'El producto arrancó con el embudo atado al género, lo que en la práctica hacía imposible una invitación entre personas del mismo sexo. Pasé el modelo a un rol INVITER / INVITEE que se elige al registrarse, con el beneficio de cada uno explicado en esa misma pantalla. El objetivo era bajar la fricción de onboarding, y el efecto secundario es que el plan pago se ata a un rol y no a un género — más justo, y mucho más fácil de razonar en el código.',
+          en: 'The product started with the funnel keyed to gender, which quietly made same-sex invitations impossible. I moved the model to an INVITER / INVITEE role chosen at registration. Onboarding got simpler, and the paid tier now attaches to a role instead of a gender — fairer, and much easier to reason about in code.',
+          es: 'El producto arrancó con el embudo atado al género, lo que en la práctica hacía imposible una invitación entre personas del mismo sexo. Pasé el modelo a un rol INVITER / INVITEE que se elige al registrarse. El onboarding quedó más simple, y el plan pago ahora se ata a un rol y no a un género — más justo, y mucho más fácil de razonar en el código.',
         },
       },
     ],
     outcome: {
-      en: 'Live on Google Play production. I run the Meta, TikTok and Google Ads campaigns myself, so I see what an architecture decision costs per acquired user. Registration is the step I am working on now.',
-      es: 'Publicada en producción en Google Play. Yo mismo manejo las campañas de Meta, TikTok y Google Ads, así que veo lo que cuesta por usuario adquirido cada decisión de arquitectura. El registro es el paso en el que estoy trabajando ahora.',
+      en: 'Live on Google Play. I run the Meta, TikTok and Google Ads campaigns myself, so every architecture decision shows up in the cost of the next user. This is not a portfolio piece — it is a product I operate daily.',
+      es: 'Publicada en Google Play. Yo mismo manejo las campañas de Meta, TikTok y Google Ads, así que cada decisión de arquitectura aparece en el costo del próximo usuario. Esto no es una pieza de portafolio — es un producto que opero todos los días.',
     },
     stack: [
       'Next.js', 'TypeScript', 'Capacitor', 'PostgreSQL', 'Hetzner', 'Coolify',
@@ -252,8 +252,8 @@ const rawProjects: Project[] = [
     decisions: [
       {
         title: {
-          en: 'Required verified identity for nearby helpers, accepting a slower start',
-          es: 'Exigí identidad verificada a los ayudantes cercanos, aceptando un arranque más lento',
+          en: 'Required face and document verification before letting anyone answer an alert',
+          es: 'Exigí verificación facial y de documento antes de dejar que alguien respondiera una alerta',
         },
         body: {
           en: 'Alerting strangers near a woman in distress is only an improvement if those strangers are accountable. Face plus document verification adds real friction to signup and grows the helper network more slowly. On a safety product that is the correct direction to be wrong in — an unverified helper network is a liability, not a feature.',
@@ -272,8 +272,8 @@ const rawProjects: Project[] = [
       },
     ],
     outcome: {
-      en: 'Real-time alerting, identity verification and trust modelling working together — the hard parts of a safety product, not the screens around them.',
-      es: 'Alertas en tiempo real, verificación de identidad y modelado de confianza funcionando juntos — las partes difíciles de un producto de seguridad, no las pantallas que las rodean.',
+      en: 'Real-time alerting, identity verification and trust modelling, working as one system — the parts of a safety product you cannot retrofit.',
+      es: 'Alertas en tiempo real, verificación de identidad y modelado de confianza, funcionando como un solo sistema — las partes de un producto de seguridad que no se pueden agregar después.',
     },
     stack: [
       'React Native', 'Expo', 'TypeScript', 'WebSockets', 'PostgreSQL',
@@ -323,8 +323,8 @@ const rawProjects: Project[] = [
       },
     ],
     outcome: {
-      en: 'Five years of continuous enterprise work. This is the systems-integration half of the record: long-lived, high-consequence, and running in someone else’s tenant.',
-      es: 'Cinco años de trabajo empresarial continuo. Esta es la mitad de integración de sistemas: de larga vida, de alta consecuencia y corriendo en el tenant de otra empresa.',
+      en: 'Five years of continuous enterprise work — long-lived, high-consequence, and running in someone else’s tenant.',
+      es: 'Cinco años de trabajo empresarial continuo — de larga vida, de alta consecuencia y corriendo en el tenant de otra empresa.',
     },
     stack: [
       'Microsoft Graph', 'Teams API', 'Azure Functions', 'Azure SQL',

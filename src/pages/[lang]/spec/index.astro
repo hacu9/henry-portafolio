@@ -1,0 +1,351 @@
+---
+/**
+ * SPEC: read across, not down.
+ *
+ * Reading model is comparison. Every other variant asks you to read one
+ * project, then the next, then the next, and hold them in your head to compare.
+ * This one puts the products in columns and the dimensions in rows, so the
+ * comparison is the layout rather than an exercise for the reader.
+ *
+ * That makes some things instantly visible that prose hides: only one product
+ * is in production, all four were taken end to end, and the hard call in each
+ * one is a different KIND of problem. A row is a question asked of every
+ * product at once.
+ *
+ * On narrow screens a matrix is unreadable, so it collapses to one card per
+ * product with the row labels inline. Same data, same order, no horizontal
+ * scrolling.
+ */
+import Base from '../../../layouts/Base.astro';
+import Testimonials from '../../../components/Testimonials.astro';
+import ContactSwitch from '../../../components/ContactSwitch.astro';
+import TechRow from '../../../components/TechRow.astro';
+import { LANGS, t, tl, OTHER_LANG, LANG_LABEL, path } from '../../../i18n/types';
+import type { Lang } from '../../../i18n/types';
+import { ui } from '../../../i18n/ui';
+import { profile } from '../../../data/profile';
+import { leadProjects, supportingProjects, STATUS_LABEL, projectName } from '../../../data/projects';
+import { stackGroups } from '../../../data/stack';
+import { timeline, presentLabel } from '../../../data/timeline';
+import '../../../styles/reset.css';
+
+export function getStaticPaths() {
+  return LANGS.map((lang) => ({ params: { lang } }));
+}
+
+const lang = Astro.params.lang as Lang;
+const base = import.meta.env.BASE_URL;
+const other = OTHER_LANG[lang];
+const altHref = path(base, other, 'spec');
+const indexHref = path(base, lang);
+const cvHref = `${base.replace(/\/+$/, '')}/cv/`;
+
+/** The products get columns. Everything else stays below the matrix. */
+const cols = leadProjects;
+const method = stackGroups.find((g) => g.id === 'method')!;
+
+const R = {
+  status: { en: 'Status', es: 'Estado' },
+  role: { en: 'My role', es: 'Mi rol' },
+  problem: { en: 'The problem', es: 'El problema' },
+  call: { en: 'Hardest call', es: 'Decisión más dura' },
+  why: { en: 'Why', es: 'Por qué' },
+  stands: { en: 'Where it stands', es: 'En qué quedó' },
+  stack: { en: 'Stack', es: 'Stack' },
+  check: { en: 'Check it', es: 'Compruébalo' },
+} as const;
+---
+
+<Base
+  lang={lang}
+  title={`${profile.name}, ${t(profile.title, lang)}`}
+  description={t(profile.summary, lang)}
+  slug="spec"
+  themeColor="#0F0C0D"
+  grain={false}
+>
+  <a class="skip" href="#main">{t(ui.skipToContent, lang)}</a>
+
+  <header class="bar">
+    <a class="mark" href={indexHref}>{profile.name}</a>
+    <span class="sub">{t(profile.title, lang)}</span>
+    <div class="tools">
+      <a class="cv-link" href={cvHref}>CV</a>
+      <a href={altHref} hreflang={other} lang={other}>{LANG_LABEL[other]}</a>
+      <button data-theme-toggle type="button">
+        <span class="visually-hidden">{t(ui.toggleTheme, lang)}</span>
+        <span aria-hidden="true">◐</span>
+      </button>
+    </div>
+  </header>
+
+  <main id="main" class="wrap">
+    <div class="intro">
+      <h1>{t(profile.positioning, lang)}</h1>
+      <p class="lede">{t(profile.lede, lang)}</p>
+      <p class="hint">
+        {
+          lang === 'es'
+            ? 'Cada fila es la misma pregunta hecha a los tres productos. Lee a lo ancho.'
+            : 'Every row is the same question asked of all three products. Read across.'
+        }
+      </p>
+    </div>
+
+    <div class="scroll-x matrix-wrap">
+      <table class="matrix">
+        <thead>
+          <tr>
+            <td class="corner"></td>
+            {
+              cols.map((p) => (
+                <th scope="col">
+                  <span class="col-name">{projectName(p, lang)}</span>
+                  <span class="col-tag">{t(p.tagline, lang)}</span>
+                </th>
+              ))
+            }
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">{t(R.status, lang)}</th>
+            {
+              cols.map((p) => (
+                <td>
+                  <span class={`st st-${p.status}`}>{t(STATUS_LABEL[p.status], lang)}</span>
+                  <span class="muted">{p.period}</span>
+                </td>
+              ))
+            }
+          </tr>
+          <tr>
+            <th scope="row">{t(R.role, lang)}</th>
+            {cols.map((p) => <td>{t(p.role, lang)}</td>)}
+          </tr>
+          <tr>
+            <th scope="row">{t(R.problem, lang)}</th>
+            {cols.map((p) => <td>{t(p.problem, lang)}</td>)}
+          </tr>
+          <tr>
+            <th scope="row">{t(R.call, lang)}</th>
+            {cols.map((p) => <td class="strong">{t(p.decisions[0].title, lang)}</td>)}
+          </tr>
+          <tr>
+            <th scope="row">{t(R.why, lang)}</th>
+            {cols.map((p) => <td>{t(p.decisions[0].body, lang)}</td>)}
+          </tr>
+          <tr>
+            <th scope="row">{t(R.stands, lang)}</th>
+            {cols.map((p) => <td>{t(p.outcome, lang)}</td>)}
+          </tr>
+          <tr>
+            <th scope="row">{t(R.stack, lang)}</th>
+            {cols.map((p) => <td><TechRow items={p.stack} size="sm" /></td>)}
+          </tr>
+          <tr>
+            <th scope="row">{t(R.check, lang)}</th>
+            {
+              cols.map((p) => (
+                <td>
+                  {p.url ? (
+                    <a class="verify-link" href={p.url} target="_blank" rel="noopener">
+                      {p.urlLabel ? t(p.urlLabel, lang) : t(ui.verify, lang)} ↗
+                    </a>
+                  ) : (
+                    <span class="muted">{lang === 'es' ? 'Sin publicar' : 'Not released'}</span>
+                  )}
+                </td>
+              ))
+            }
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <section class="below">
+      <div>
+        <p class="k">{t(ui.howIWork, lang)}</p>
+        <h2>{t(profile.thesis.lead, lang)}</h2>
+        {tl(profile.thesis.body, lang).map((p) => <p class="body">{p}</p>)}
+      </div>
+      <div>
+        <p class="k">{t(method.label, lang)}</p>
+        <p class="body">{t(method.note!, lang)}</p>
+        <ul class="checks">
+          {tl(profile.verification, lang).map((v) => <li>{v}</li>)}
+        </ul>
+      </div>
+    </section>
+
+    <section class="below">
+      <div>
+        <p class="k">{t(ui.supportingWork, lang)}</p>
+        <dl class="mini">
+          {
+            supportingProjects.map((p) => (
+              <>
+                <dt>{projectName(p, lang)}</dt>
+                <dd>{t(p.tagline, lang)}. {t(p.problem, lang)}</dd>
+              </>
+            ))
+          }
+        </dl>
+      </div>
+      <div>
+        <p class="k">{t(ui.timeline, lang)}</p>
+        <dl class="mini">
+          {
+            timeline.map((e) => (
+              <>
+                <dt>{e.from} to {e.to === 'Present' ? t(presentLabel, lang) : e.to}</dt>
+                <dd><strong>{t(e.role, lang)}</strong>, {e.org}</dd>
+              </>
+            ))
+          }
+        </dl>
+      </div>
+    </section>
+
+    <Testimonials lang={lang} />
+
+    <section id="contact" class="closing">
+      <p class="k">{t(ui.getInTouch, lang)}</p>
+      <ContactSwitch lang={lang} />
+    </section>
+  </main>
+
+  <footer class="foot">
+    <span>{profile.name}</span>
+    <a href={indexHref}>{t(ui.backToIndex, lang)}</a>
+  </footer>
+</Base>
+
+<style>
+  :root {
+    --ground: #f7f3f4; --raise: #ffffff; --ink: #0f0c0d; --ink-2: #443a3c;
+    --dim: #857678; --line: #ddd0d2; --accent: #b5122e; --focus: #b5122e;
+    --sans: 'Helvetica Neue', Helvetica, Arial, system-ui, sans-serif;
+    --mono: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace;
+    --shell: 82rem; --pad: clamp(1rem, 3vw, 2.25rem);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --ground: #0f0c0d; --raise: #171213; --ink: #f2eaeb; --ink-2: #bfb0b2;
+      --dim: #8b7b7d; --line: #2a2223; --accent: #ff5c74; }
+  }
+  :global(:root[data-theme='dark']) {
+    --ground: #0f0c0d; --raise: #171213; --ink: #f2eaeb; --ink-2: #bfb0b2;
+    --dim: #8b7b7d; --line: #2a2223; --accent: #ff5c74;
+  }
+  :global(:root[data-theme='light']) {
+    --ground: #f7f3f4; --raise: #ffffff; --ink: #0f0c0d; --ink-2: #443a3c;
+    --dim: #857678; --line: #ddd0d2; --accent: #b5122e;
+  }
+
+  :global(body) { background: var(--ground); color: var(--ink); font-family: var(--sans); line-height: 1.55; }
+
+  .bar {
+    position: sticky; top: 0; z-index: 40; display: flex; align-items: center; gap: 1rem;
+    padding: 0.5rem var(--pad); background: var(--ground);
+    border-bottom: 2px solid var(--ink);
+    font-family: var(--mono); font-size: 0.625rem; letter-spacing: 0.14em; text-transform: uppercase;
+  }
+  .bar a { text-decoration: none; }
+  .mark { font-weight: 700; }
+  .bar .sub { color: var(--dim); }
+  @media (max-width: 720px) { .bar .sub { display: none; } }
+  .tools { margin-inline-start: auto; display: flex; gap: 0.8rem; align-items: center; color: var(--dim); }
+  .tools a:hover, .tools button:hover { color: var(--accent); }
+  .cv-link { color: var(--accent); font-weight: 700; }
+
+  .wrap { max-width: var(--shell); margin-inline: auto; padding-inline: var(--pad); }
+  .intro { padding-block: clamp(2rem, 6vw, 3.5rem) 1.5rem; display: grid; gap: 0.8rem; }
+  .intro h1 {
+    font-size: clamp(1.6rem, 3.6vw, 2.5rem); line-height: 1.05; font-weight: 800;
+    letter-spacing: -0.035em; text-transform: uppercase; margin: 0; text-wrap: balance;
+  }
+  .lede { color: var(--ink-2); max-width: 44rem; }
+  .hint {
+    font-family: var(--mono); font-size: 0.6875rem; letter-spacing: 0.08em;
+    color: var(--accent); text-transform: uppercase;
+  }
+
+  /* The matrix. Row headers stick so the question stays visible while the eye
+     travels across the columns. */
+  .matrix-wrap { border: 1px solid var(--line); background: var(--raise); }
+  .matrix { border-collapse: collapse; width: 100%; min-width: 60rem; }
+  .matrix th, .matrix td {
+    text-align: left; vertical-align: top; padding: 0.8rem 1rem;
+    border-bottom: 1px solid var(--line); border-right: 1px solid var(--line);
+  }
+  .matrix thead th {
+    position: sticky; top: 2.1rem; z-index: 2; background: var(--raise);
+    border-bottom: 2px solid var(--ink);
+  }
+  .corner { border-right: 1px solid var(--line); }
+  .col-name {
+    display: block; font-size: 1.15rem; font-weight: 800; letter-spacing: -0.02em;
+    text-transform: uppercase;
+  }
+  .col-tag { display: block; font-family: var(--mono); font-size: 0.625rem; color: var(--dim); margin-top: 0.2rem; }
+  .matrix tbody th {
+    position: sticky; left: 0; z-index: 1; background: var(--raise);
+    width: 9rem; font-family: var(--mono); font-size: 0.625rem;
+    letter-spacing: 0.14em; text-transform: uppercase; color: var(--dim); font-weight: 400;
+  }
+  .matrix td { color: var(--ink-2); font-size: 0.875rem; max-width: 22rem; }
+  .matrix td.strong { color: var(--ink); font-weight: 650; }
+  .muted { color: var(--dim); font-family: var(--mono); font-size: 0.625rem; display: block; margin-top: 0.3rem; }
+  .st {
+    font-family: var(--mono); font-size: 0.5625rem; letter-spacing: 0.13em;
+    text-transform: uppercase; border: 1px solid currentColor; padding: 0.08rem 0.35rem;
+  }
+  .st-live { color: var(--accent); }
+  .st-building, .st-ongoing, .st-delivered { color: var(--dim); }
+  .verify-link { color: var(--accent); font-weight: 700; font-size: 0.8125rem; }
+
+  /* A matrix cannot survive a phone, so it becomes one card per product. */
+  @media (max-width: 860px) {
+    .matrix-wrap { border: 0; overflow: visible; }
+    .matrix, .matrix thead, .matrix tbody, .matrix tr, .matrix th, .matrix td { display: block; width: auto; }
+    .matrix { min-width: 0; }
+    .matrix thead { display: none; }
+    .matrix tbody th {
+      position: static; width: auto; border: 0; padding: 1.1rem 0 0.2rem;
+      color: var(--accent);
+    }
+    .matrix td { border: 0; border-bottom: 1px solid var(--line); padding: 0 0 0.7rem; max-width: none; }
+    .matrix tbody tr { border-top: 2px solid var(--ink); padding-bottom: 0.8rem; display: block; }
+  }
+
+  .below {
+    display: grid; gap: 1.8rem; padding-block: clamp(2.5rem, 6vw, 4rem);
+    border-top: 1px solid var(--line);
+  }
+  @media (min-width: 860px) { .below { grid-template-columns: 1fr 1fr; gap: 3rem; } }
+  .below h2 {
+    font-size: clamp(1.3rem, 2.6vw, 1.9rem); font-weight: 800; text-transform: uppercase;
+    letter-spacing: -0.03em; margin: 0.4rem 0 0.8rem;
+  }
+  .k { font-family: var(--mono); font-size: 0.625rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--dim); }
+  .body { color: var(--ink-2); max-width: 36rem; font-size: 0.9375rem; }
+  .body + .body { margin-top: 0.7rem; }
+  .checks { display: grid; gap: 0.4rem; margin: 0.8rem 0 0; padding-left: 1.1rem; color: var(--ink-2); font-size: 0.875rem; max-width: 36rem; }
+  .checks li::marker { color: var(--accent); }
+
+  .mini { display: grid; gap: 0.15rem; margin: 0.6rem 0 0; }
+  .mini dt { font-family: var(--mono); font-size: 0.625rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--dim); margin-top: 0.7rem; }
+  .mini dd { margin: 0; color: var(--ink-2); font-size: 0.9rem; }
+  .mini dd strong { color: var(--ink); }
+
+  .closing { padding-block: clamp(2.5rem, 6vw, 4rem); border-top: 2px solid var(--ink); display: grid; gap: 1rem; }
+
+  .foot {
+    max-width: var(--shell); margin-inline: auto; padding: 1.3rem var(--pad) 3rem;
+    display: flex; justify-content: space-between; gap: 1rem; flex-wrap: wrap;
+    border-top: 1px solid var(--line);
+    font-family: var(--mono); font-size: 0.625rem; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--dim);
+  }
+  .foot a { color: var(--accent); }
+</style>

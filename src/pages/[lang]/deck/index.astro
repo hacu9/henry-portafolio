@@ -331,6 +331,9 @@ const cvHref = `${base.replace(/\/+$/, '')}/cv/`;
     gap: 0.9rem;
     box-shadow: 0 -1px 0 var(--line), 0 18px 40px -28px rgb(0 0 0 / 0.5);
     transform-origin: 50% 0%;
+    /* Promote once, so the per-frame scale is a compositor job. */
+    will-change: transform, opacity;
+    backface-visibility: hidden;
   }
   @media (prefers-reduced-motion: reduce) {
     .card { position: static; }
@@ -548,34 +551,52 @@ const cvHref = `${base.replace(/\/+$/, '')}/cv/`;
 </style>
 
 <script>
-  // As a card is covered by the next one, it shrinks and dims slightly. That
-  // is what sells the stack as physical rather than as overlapping boxes.
+  // As a card is covered by the next one it recedes. This runs in a continuous
+  // rAF loop, NOT on the scroll event: Lenis interpolates scroll every frame,
+  // so a scroll listener applies the transform a frame late and the stack
+  // visibly stutters against the wheel. Reading the rect inside the same frame
+  // that writes the transform keeps them locked together.
   const cards = [...document.querySelectorAll<HTMLElement>('.card')];
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   if (cards.length && !reduce) {
-    let raf = 0;
+    const inners = cards.map((c) => c.querySelector<HTMLElement>('.card-in'));
+    // Cache the parked offset per card; reading it every frame forces layout.
+    let parked = cards.map((c) => parseFloat(getComputedStyle(c).top) || 0);
+    const last = cards.map(() => -1);
 
-    const update = () => {
-      for (const card of cards) {
-        const inner = card.querySelector<HTMLElement>('.card-in');
-        if (!inner) continue;
-        const rect = card.getBoundingClientRect();
-        const parked = parseFloat(getComputedStyle(card).top) || 0;
-        // How far past its parking spot the card has been pushed.
-        const covered = Math.min(1, Math.max(0, (parked - rect.top) / 420));
-        inner.style.transform = `scale(${1 - covered * 0.055})`;
-        inner.style.opacity = String(1 - covered * 0.35);
+    let visible = true;
+    const stack = document.querySelector('.stack');
+    if (stack) {
+      new IntersectionObserver(
+        (es) => es.forEach((e) => (visible = e.isIntersecting)),
+        { rootMargin: '200px' },
+      ).observe(stack);
+    }
+
+    window.addEventListener('resize', () => {
+      parked = cards.map((c) => parseFloat(getComputedStyle(c).top) || 0);
+    });
+
+    const frame = () => {
+      if (visible) {
+        for (let i = 0; i < cards.length; i++) {
+          const inner = inners[i];
+          if (!inner) continue;
+          const top = cards[i].getBoundingClientRect().top;
+          // How far past its parking spot this card has been pushed.
+          const covered = Math.min(1, Math.max(0, (parked[i] - top) / 500));
+          // Quantise so sub-pixel jitter does not rewrite style every frame.
+          const q = Math.round(covered * 100) / 100;
+          if (q !== last[i]) {
+            inner.style.transform = `scale(${(1 - q * 0.05).toFixed(4)})`;
+            inner.style.opacity = String(1 - q * 0.3);
+            last[i] = q;
+          }
+        }
       }
-      raf = 0;
+      requestAnimationFrame(frame);
     };
-
-    const schedule = () => {
-      if (!raf) raf = requestAnimationFrame(update);
-    };
-
-    window.addEventListener('scroll', schedule, { passive: true });
-    window.addEventListener('resize', schedule);
-    update();
+    requestAnimationFrame(frame);
   }
 </script>

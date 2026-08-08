@@ -1,0 +1,327 @@
+---
+/**
+ * CHRONICLE: one time axis, everything placed on it.
+ *
+ * Reading model is chronological. There is no "work" section and no "about"
+ * section, because jobs, products and individual decisions are all just events
+ * with dates, and separating them hides the thing a reader is actually trying
+ * to work out: what was happening at the same time as what.
+ *
+ * A year rail on the left filters the axis. Choosing 2021 does not scroll to
+ * 2021, it removes everything else, so the page answers "what was he doing
+ * then" directly rather than making you hunt.
+ *
+ * The events are derived from the same data as every other variant. Products
+ * carry the year they started, roles carry their span, and each hard call sits
+ * on the project it belongs to.
+ */
+import Base from '../../../layouts/Base.astro';
+import Testimonials from '../../../components/Testimonials.astro';
+import ContactSwitch from '../../../components/ContactSwitch.astro';
+import TechRow from '../../../components/TechRow.astro';
+import { LANGS, t, tl, OTHER_LANG, LANG_LABEL, path } from '../../../i18n/types';
+import type { Lang } from '../../../i18n/types';
+import { ui } from '../../../i18n/ui';
+import { profile } from '../../../data/profile';
+import { projects, STATUS_LABEL, projectName } from '../../../data/projects';
+import { timeline, presentLabel } from '../../../data/timeline';
+import '../../../styles/reset.css';
+
+export function getStaticPaths() {
+  return LANGS.map((lang) => ({ params: { lang } }));
+}
+
+const lang = Astro.params.lang as Lang;
+const base = import.meta.env.BASE_URL;
+const other = OTHER_LANG[lang];
+const altHref = path(base, other, 'chronicle');
+const indexHref = path(base, lang);
+const cvHref = `${base.replace(/\/+$/, '')}/cv/`;
+
+type Kind = 'role' | 'product' | 'call' | 'study';
+
+interface Event {
+  year: number;
+  span?: string;
+  kind: Kind;
+  title: string;
+  org?: string;
+  body?: string;
+  bullets?: string[];
+  stack?: string[];
+  status?: string;
+  url?: string;
+  urlLabel?: string;
+}
+
+const firstYear = (period: string) => {
+  const m = period.match(/(19|20)\d{2}/);
+  return m ? Number(m[0]) : 2020;
+};
+
+const events: Event[] = [];
+
+for (const e of timeline) {
+  events.push({
+    year: firstYear(e.from),
+    span: `${e.from} to ${e.to === 'Present' ? t(presentLabel, lang) : e.to}`,
+    kind: e.kind === 'education' ? 'study' : 'role',
+    title: t(e.role, lang),
+    org: e.org,
+    body: e.detail ? t(e.detail, lang) : undefined,
+    bullets: e.highlights ? tl(e.highlights, lang) : undefined,
+  });
+}
+
+for (const p of projects) {
+  events.push({
+    year: firstYear(p.period),
+    span: p.period,
+    kind: 'product',
+    title: projectName(p, lang),
+    org: t(p.tagline, lang),
+    body: t(p.problem, lang),
+    stack: p.stack,
+    status: t(STATUS_LABEL[p.status], lang),
+    url: p.url,
+    urlLabel: p.urlLabel ? t(p.urlLabel, lang) : undefined,
+  });
+  for (const d of p.decisions) {
+    events.push({
+      year: firstYear(p.period),
+      kind: 'call',
+      title: t(d.title, lang),
+      org: projectName(p, lang),
+      body: t(d.body, lang),
+    });
+  }
+}
+
+events.sort((a, b) => b.year - a.year || (a.kind === 'call' ? 1 : -1));
+const years = [...new Set(events.map((e) => e.year))].sort((a, b) => b - a);
+
+const KIND: Record<Kind, { en: string; es: string }> = {
+  role: { en: 'ROLE', es: 'ROL' },
+  product: { en: 'PRODUCT', es: 'PRODUCTO' },
+  call: { en: 'DECISION', es: 'DECISIÓN' },
+  study: { en: 'STUDY', es: 'ESTUDIO' },
+};
+---
+
+<Base
+  lang={lang}
+  title={`${profile.name}, ${t(profile.title, lang)}`}
+  description={t(profile.summary, lang)}
+  slug="chronicle"
+  themeColor="#0A1416"
+>
+  <a class="skip" href="#main">{t(ui.skipToContent, lang)}</a>
+
+  <header class="bar">
+    <a class="mark" href={indexHref}>{profile.name}</a>
+    <span class="sub">{t(profile.title, lang)}</span>
+    <div class="tools">
+      <a class="cv-link" href={cvHref}>CV</a>
+      <a href={altHref} hreflang={other} lang={other}>{LANG_LABEL[other]}</a>
+      <button data-theme-toggle type="button">
+        <span class="visually-hidden">{t(ui.toggleTheme, lang)}</span>
+        <span aria-hidden="true">◐</span>
+      </button>
+    </div>
+  </header>
+
+  <main id="main" class="wrap">
+    <div class="intro">
+      <h1>{t(profile.positioning, lang)}</h1>
+      <p class="lede">{t(profile.lede, lang)}</p>
+    </div>
+
+    <div class="axis">
+      <nav class="rail" aria-label={t(ui.timeline, lang)}>
+        <button class="yr on" data-year="all" type="button">
+          {lang === 'es' ? 'Todo' : 'All'}
+        </button>
+        {years.map((y) => <button class="yr" data-year={String(y)} type="button">{y}</button>)}
+      </nav>
+
+      <ol class="stream">
+        {
+          events.map((e) => (
+            <li class={`ev ev--${e.kind}`} data-year={String(e.year)}>
+              <span class="ev-year">{e.span ?? e.year}</span>
+              <span class="ev-body">
+                <span class="ev-kind">{KIND[e.kind][lang]}</span>
+                <h2>
+                  {e.title}
+                  {e.status && <span class="ev-status">{e.status}</span>}
+                </h2>
+                {e.org && <p class="ev-org">{e.org}</p>}
+                {e.body && <p class="ev-text">{e.body}</p>}
+                {e.bullets && (
+                  <ul class="ev-list">
+                    {e.bullets.map((b) => (
+                      <li>{b}</li>
+                    ))}
+                  </ul>
+                )}
+                {e.url && (
+                  <p>
+                    <a class="verify-link" href={e.url} target="_blank" rel="noopener">
+                      {e.urlLabel ?? t(ui.verify, lang)} ↗
+                    </a>
+                  </p>
+                )}
+                {e.stack && <TechRow items={e.stack} size="sm" />}
+              </span>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+
+    <Testimonials lang={lang} />
+
+    <section id="contact" class="closing">
+      <p class="k">{t(ui.getInTouch, lang)}</p>
+      <ContactSwitch lang={lang} />
+    </section>
+  </main>
+
+  <footer class="foot">
+    <span>{profile.name}</span>
+    <a href={indexHref}>{t(ui.backToIndex, lang)}</a>
+  </footer>
+</Base>
+
+<style>
+  :root {
+    --ground: #f0f4f5; --raise: #ffffff; --ink: #0a1416; --ink-2: #37484c;
+    --dim: #6f8388; --line: #ccd8da; --accent: #0e6f80; --focus: #0e6f80;
+    --sans: system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    --mono: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace;
+    --shell: 74rem; --read: 40rem; --pad: clamp(1rem, 3vw, 2.25rem);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --ground: #0a1416; --raise: #0f1d20; --ink: #dfeaec; --ink-2: #a2b5b9;
+      --dim: #6f8388; --line: #1b2b2e; --accent: #56c7d6; }
+  }
+  :global(:root[data-theme='dark']) {
+    --ground: #0a1416; --raise: #0f1d20; --ink: #dfeaec; --ink-2: #a2b5b9;
+    --dim: #6f8388; --line: #1b2b2e; --accent: #56c7d6;
+  }
+  :global(:root[data-theme='light']) {
+    --ground: #f0f4f5; --raise: #ffffff; --ink: #0a1416; --ink-2: #37484c;
+    --dim: #6f8388; --line: #ccd8da; --accent: #0e6f80;
+  }
+
+  :global(body) { background: var(--ground); color: var(--ink); font-family: var(--sans); line-height: 1.6; }
+
+  .bar {
+    position: sticky; top: 0; z-index: 30; display: flex; align-items: center; gap: 1rem;
+    padding: 0.55rem var(--pad);
+    background: color-mix(in srgb, var(--ground) 92%, transparent);
+    backdrop-filter: blur(8px); border-bottom: 1px solid var(--line);
+    font-family: var(--mono); font-size: 0.625rem; letter-spacing: 0.14em; text-transform: uppercase;
+  }
+  .bar a { text-decoration: none; }
+  .mark { font-weight: 700; }
+  .bar .sub { color: var(--dim); }
+  @media (max-width: 720px) { .bar .sub { display: none; } }
+  .tools { margin-inline-start: auto; display: flex; gap: 0.8rem; align-items: center; color: var(--dim); }
+  .tools a:hover, .tools button:hover { color: var(--accent); }
+  .cv-link { color: var(--accent); font-weight: 700; }
+
+  .wrap { max-width: var(--shell); margin-inline: auto; padding-inline: var(--pad); }
+  .intro { padding-block: clamp(2.5rem, 7vw, 4rem) 1.5rem; display: grid; gap: 0.9rem; }
+  .intro h1 {
+    font-size: clamp(1.6rem, 3.6vw, 2.6rem); line-height: 1.1;
+    letter-spacing: -0.03em; font-weight: 700; margin: 0; text-wrap: balance;
+  }
+  .lede { color: var(--ink-2); max-width: 42rem; }
+
+  /* The axis. Years pin on the left, events run down the right. */
+  .axis { display: grid; gap: 1.5rem; padding-bottom: 2rem; }
+  @media (min-width: 860px) { .axis { grid-template-columns: 7rem 1fr; gap: 2.5rem; } }
+
+  .rail { display: flex; flex-wrap: wrap; gap: 0.3rem; align-content: start; }
+  @media (min-width: 860px) {
+    .rail { position: sticky; top: 4rem; flex-direction: column; }
+  }
+  .yr {
+    font-family: var(--mono); font-size: 0.6875rem; letter-spacing: 0.1em;
+    color: var(--dim); border: 1px solid var(--line); background: transparent;
+    padding: 0.25rem 0.6rem; text-align: left; font-variant-numeric: tabular-nums;
+  }
+  .yr:hover { color: var(--ink); border-color: var(--dim); }
+  .yr.on { color: var(--ground); background: var(--ink); border-color: var(--ink); }
+
+  .stream { display: grid; list-style: none; margin: 0; padding: 0; }
+  .ev {
+    display: grid; gap: 0.3rem 1.5rem;
+    padding: 1.1rem 0; border-top: 1px solid var(--line);
+    /* The spine: one continuous line down the whole record. */
+    position: relative;
+  }
+  @media (min-width: 700px) { .ev { grid-template-columns: 9rem 1fr; } }
+  .ev[hidden] { display: none; }
+  .ev-year {
+    font-family: var(--mono); font-size: 0.625rem; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--dim); font-variant-numeric: tabular-nums;
+    padding-top: 0.3rem;
+  }
+  .ev-body { display: grid; gap: 0.4rem; min-width: 0; }
+  .ev-kind {
+    font-family: var(--mono); font-size: 0.5625rem; letter-spacing: 0.16em;
+    color: var(--dim);
+  }
+  .ev h2 {
+    font-size: 1.05rem; font-weight: 650; margin: 0; line-height: 1.3;
+    display: flex; gap: 0.7rem; align-items: baseline; flex-wrap: wrap;
+  }
+  .ev-status {
+    font-family: var(--mono); font-size: 0.5625rem; letter-spacing: 0.13em;
+    text-transform: uppercase; border: 1px solid currentColor;
+    padding: 0.05rem 0.35rem; color: var(--dim);
+  }
+  .ev-org { font-family: var(--mono); font-size: 0.6875rem; color: var(--dim); }
+  .ev-text, .ev-list { color: var(--ink-2); font-size: 0.9375rem; max-width: var(--read); }
+  .ev-list { display: grid; gap: 0.2rem; margin: 0; padding-left: 1rem; }
+  .verify-link { color: var(--accent); font-weight: 600; font-size: 0.8125rem; }
+
+  /* Kind is carried by a colour bar, so the eye can sort the axis without
+     reading every label. */
+  .ev--product .ev-kind { color: var(--accent); }
+  .ev--product h2 { font-size: 1.25rem; }
+  .ev--call { padding-left: 1rem; border-left: 2px solid var(--line); }
+  .ev--call h2 { font-size: 0.95rem; font-weight: 600; }
+  .ev--study { opacity: 0.75; }
+
+  .closing {
+    padding: clamp(2.5rem, 6vw, 4rem) 0; border-top: 1px solid var(--line); display: grid; gap: 1rem;
+  }
+  .k { font-family: var(--mono); font-size: 0.625rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--dim); }
+
+  .foot {
+    max-width: var(--shell); margin-inline: auto; padding: 1.3rem var(--pad) 3rem;
+    display: flex; justify-content: space-between; gap: 1rem; flex-wrap: wrap;
+    border-top: 1px solid var(--line);
+    font-family: var(--mono); font-size: 0.625rem; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--dim);
+  }
+  .foot a { color: var(--accent); }
+</style>
+
+<script>
+  // Choosing a year removes everything else rather than scrolling to it, so
+  // the page answers "what was happening in 2021" instead of making you hunt.
+  const rail = document.querySelector('.rail');
+  const events = [...document.querySelectorAll<HTMLElement>('.ev')];
+
+  rail?.addEventListener('click', (e) => {
+    const btn = (e.target as HTMLElement).closest<HTMLButtonElement>('.yr');
+    if (!btn) return;
+    const year = btn.dataset.year || 'all';
+    for (const b of rail.querySelectorAll('.yr')) b.classList.toggle('on', b === btn);
+    for (const ev of events) ev.hidden = year !== 'all' && ev.dataset.year !== year;
+  });
+</script>

@@ -1,11 +1,11 @@
 ---
 /**
- * DECK — the work, stacked and dealt.
+ * DECK, the work, stacked and dealt.
  *
  * Projects are physical cards in a stack. As you scroll, the top card lifts
  * away and the next comes forward. Built entirely from position: sticky and a
  * scroll-driven scale, so the whole effect is a handful of CSS rules and one
- * short observer — no library, and nothing that reflows.
+ * short observer, no library, and nothing that reflows.
  *
  * The reason this direction exists: it is the only one of the twelve that is
  * BETTER on a phone than on a desktop, because a stack of cards is a native
@@ -38,7 +38,7 @@ const indexHref = path(base, lang);
 
 <Base
   lang={lang}
-  title={`${profile.name} — ${t(profile.title, lang)}`}
+  title={`${profile.name}, ${t(profile.title, lang)}`}
   description={t(profile.summary, lang)}
   slug="deck"
   themeColor="#120D0C"
@@ -172,7 +172,7 @@ const indexHref = path(base, lang);
               <span class="when">
                 {COARSE_TIMELINE_DATES
                   ? e.yearsOnly
-                  : `${e.from} — ${e.to === 'Present' ? t(presentLabel, lang) : e.to}`}
+                  : `${e.from} to ${e.to === 'Present' ? t(presentLabel, lang) : e.to}`}
               </span>
               <span class="what">
                 <strong>{t(e.role, lang)}</strong>
@@ -364,7 +364,7 @@ const indexHref = path(base, lang);
   .card-body > div { display: grid; gap: 0.4rem; align-content: start; }
   .card-body p, .card-body ul { color: var(--ink-2); font-size: 0.9rem; max-width: var(--read); }
   .card-body ul { display: grid; gap: 0.22rem; list-style: none; padding: 0; }
-  .card-body li::before { content: '— '; color: var(--accent); }
+  .card-body li::before { content: '- '; color: var(--accent); }
   .call { display: grid; gap: 0.25rem; }
   .call + .call { margin-top: 0.6rem; }
   .call h3 { font-size: 0.98rem; font-weight: 650; color: var(--ink); margin: 0; line-height: 1.3; }
@@ -497,7 +497,7 @@ const indexHref = path(base, lang);
 
   .contact-id { display: flex; align-items: center; gap: 0.9rem; }
 
-  /* Portrait beside the contact heading — a face where someone decides to write. */
+  /* Portrait beside the contact heading, a face where someone decides to write. */
   .portrait {
     width: 72px;
     height: 72px;

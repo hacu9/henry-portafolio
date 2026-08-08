@@ -26,7 +26,7 @@ const indexHref = path(base, lang);
 
 <Base
   lang={lang}
-  title={`${profile.name} — ${t(profile.title, lang)}`}
+  title={`${profile.name}, ${t(profile.title, lang)}`}
   description={t(profile.summary, lang)}
   slug="deep-field"
   themeColor="#08070F"
@@ -55,7 +55,7 @@ const indexHref = path(base, lang);
       <canvas id="field" aria-hidden="true"></canvas>
       <div class="stage-copy">
         <p class="kicker">
-          {t(profile.title, lang)} — {t(profile.experience, lang)}
+          {t(profile.title, lang)}, {t(profile.experience, lang)}
         </p>
         <h1 data-wipe>{profile.name}</h1>
         <p class="stage-claim">{t(profile.positioning, lang)}</p>
@@ -155,7 +155,7 @@ const indexHref = path(base, lang);
                 <p class="tag">{t(p.tagline, lang)}{p.url && (<>{' · '}<a class="verify-link" href={p.url} target="_blank" rel="noopener">{p.urlLabel ? t(p.urlLabel, lang) : t(ui.verify, lang)} ↗</a></>)}</p>
                 <p>{t(p.problem, lang)}</p>
                 <p class="call-inline">
-                  <strong>{t(p.decisions[0].title, lang)}</strong> — {t(p.decisions[0].body, lang)}
+                  <strong>{t(p.decisions[0].title, lang)}</strong>, {t(p.decisions[0].body, lang)}
                 </p>
               </article>
             ))
@@ -196,7 +196,7 @@ const indexHref = path(base, lang);
                 <span class="when">
                   {COARSE_TIMELINE_DATES
                     ? e.yearsOnly
-                    : `${e.from} — ${e.to === 'Present' ? t(presentLabel, lang) : e.to}`}
+                    : `${e.from} to ${e.to === 'Present' ? t(presentLabel, lang) : e.to}`}
                 </span>
                 <span class="what">
                   <strong>{t(e.role, lang)}</strong>
@@ -382,7 +382,7 @@ const indexHref = path(base, lang);
     gap: 1rem;
   }
   /* The name carries the display size. The positioning sentence is far too
-     long to set at 4rem — it ran twelve lines and pushed past the viewport. */
+     long to set at 4rem, it ran twelve lines and pushed past the viewport. */
   .stage h1 {
     font-family: var(--display);
     font-weight: 400;
@@ -812,7 +812,7 @@ const indexHref = path(base, lang);
 
   .contact-id { display: flex; align-items: center; gap: 0.9rem; }
 
-  /* Portrait beside the contact heading — a face where someone decides to write. */
+  /* Portrait beside the contact heading, a face where someone decides to write. */
   .portrait {
     width: 72px;
     height: 72px;
@@ -872,7 +872,7 @@ const indexHref = path(base, lang);
   }
 
   // The object. A domain-warped noise field lit from inside, written as a raw
-  // WebGL fragment shader — no library, so the whole hero costs a few KB
+  // WebGL fragment shader, no library, so the whole hero costs a few KB
   // instead of the ~600 KB a three.js build would add.
   const cv = document.getElementById('field') as HTMLCanvasElement | null;
   const gl = cv?.getContext('webgl', { antialias: false, alpha: false }) ?? null;

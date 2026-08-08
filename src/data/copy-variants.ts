@@ -1,7 +1,7 @@
 /**
  * Hero copy candidates.
  *
- * English only for now — Henry will translate whichever one wins.
+ * English only for now, Henry will translate whichever one wins.
  *
  * Every claim here traces to a verified fact in `projects.ts`. Nothing is
  * invented, and nothing contradicts docs/content-constraints.md. Mate is in
@@ -28,12 +28,12 @@ export interface CopyVariant {
 
 export const currentCopy: CopyVariant = {
   id: 'current',
-  strategy: 'Range statement — what shipped now',
+  strategy: 'Range statement: what shipped now',
   headline:
-    'I ship and operate complete products solo — from Microsoft enterprise integrations to consumer mobile apps live on the Play Store, including the infrastructure, the payments and the paid acquisition behind them.',
+    'I ship and operate complete products solo, from Microsoft enterprise integrations to consumer mobile apps live on the Play Store, including the infrastructure, the payments and the paid acquisition behind them.',
   subhead: 'Bogotá, Colombia · Remote-first · US clients',
   sectionLead: 'The stack is not the skill.',
-  risk: 'Thirty-four words. It dies at display size, and "from X to Y" argues generalist — the exact read Henry wants to avoid.',
+  risk: 'Thirty-four words. It dies at display size, and "from X to Y" argues generalist, which is the exact read Henry wants to avoid.',
   aimedAt: 'Everyone, which means no one',
   accent: '#6B7787',
   accentDark: '#6B7787',
@@ -42,7 +42,7 @@ export const currentCopy: CopyVariant = {
 export const copyVariants: CopyVariant[] = [
   {
     id: 'ownership',
-    strategy: 'Economic ownership — he owns the P&L, not just the repo',
+    strategy: 'Economic ownership: he owns the P&L, not just the repo',
     headline: 'I write the code and I buy the ads.',
     subhead:
       'Luxura is live on Google Play. I built it, moved its infrastructure off managed hosting, wired the payments, and I run the Meta and TikTok campaigns that fill it. One person, the whole chain.',
@@ -54,10 +54,10 @@ export const copyVariants: CopyVariant[] = [
   },
   {
     id: 'judgment',
-    strategy: 'Open on a decision, not a résumé — show the judgment working',
+    strategy: 'Open on a decision rather than a résumé, showing the judgment working',
     headline: 'The signups were dying at the verification screen.',
     subhead:
-      'AWS SNS could not reach Colombian carriers fast enough, so I moved authentication to Firebase and kept the funnel alive. Eight years of calls like that one — enterprise Microsoft integrations, multi-agent AI, mobile in production.',
+      'AWS SNS could not reach Colombian carriers fast enough, so I moved authentication to Firebase and kept the funnel alive. Eight years of calls like that one: enterprise Microsoft integrations, multi-agent AI, mobile in production.',
     sectionLead: 'Judgement is the part that does not transfer from a tutorial.',
     risk: 'An oblique opener. A recruiter skimming for a job title will not find one in the first line, and some will leave before the subhead explains.',
     aimedAt: 'Senior engineers and tech leads who read past the first line',
@@ -66,10 +66,10 @@ export const copyVariants: CopyVariant[] = [
   },
   {
     id: 'agentic',
-    strategy: 'Lead with the forward bet — the AI work the target roles screen for',
+    strategy: 'Lead with the forward bet: the AI work the target roles screen for',
     headline: 'The agents meet before the people do.',
     subhead:
-      'Mate gives every user an AI agent that represents them. The agents talk to each other and decide whether the humans should — LangGraph orchestration, vector memory, in development. It is one of four products I have taken end to end.',
+      'Mate gives every user an AI agent that represents them. The agents talk to each other and decide whether the humans should. LangGraph orchestration, vector memory, in development. It is one of four products I have taken end to end.',
     sectionLead: 'I learn a technology properly before I bet a product on it.',
     risk: 'The strongest headline points at the least finished work. Anyone who asks "is it live?" gets "not yet", and the answer has to land well.',
     aimedAt: 'Tech lead roles on greenfield AI and agentic projects',
@@ -81,7 +81,7 @@ export const copyVariants: CopyVariant[] = [
     strategy: 'Turn the generalist charge into the actual claim',
     headline: 'Eight years. Nothing built twice.',
     subhead:
-      'Microsoft enterprise integrations. A multi-agent AI system. A dating app in production. A safety platform with real-time alerts. Different domains, different constraints, the same method — learn it properly, ship it, then run it.',
+      'Microsoft enterprise integrations. A multi-agent AI system. A dating app in production. A safety platform with real-time alerts. Different domains, different constraints, the same method: learn it properly, ship it, then run it.',
     sectionLead: 'The stack is not the skill.',
     risk: 'Range claims read as unfocused unless the proof lands immediately. This one lives or dies on the four nouns in the subhead.',
     aimedAt: 'Product companies hiring for judgement rather than a keyword match',
@@ -96,13 +96,13 @@ export const copyVariants: CopyVariant[] = [
  * It shares a strategy with `ownership` but executes it differently: a single
  * falsifiable artifact instead of a punchy claim, and "I am its entire team"
  * rather than "solo". That phrasing fixes a problem none of the other versions
- * address — "solo" reads as scope owned to a founder, and as "has never led
+ * address: "solo" reads as scope owned to a founder, and as "has never led
  * anyone" to someone hiring a tech lead. "Entire team" only carries the first
  * meaning.
  */
 export const reviewPick: CopyVariant = {
   id: 'artifact',
-  strategy: 'Proof-first — one checkable artifact carries the claim',
+  strategy: 'Proof-first: one checkable artifact carries the claim',
   headline: 'There is a dating app live on Google Play. I am its entire team.',
   subhead:
     'The build, the VPS it runs on, the payments, the moderation, the store release, and the Meta and TikTok campaigns that acquire its users. Separately I am building Mate: agent-to-agent AI matchmaking on LangGraph.',
@@ -122,13 +122,13 @@ export const reviewPick: CopyVariant = {
  * shipped, including the app in Play Store production, was built with AI in the
  * loop. That part is finished and checkable.
  *
- * The claim is deliberately not "I use AI" — by 2026 every engineer says that,
+ * The claim is deliberately not "I use AI". By 2026 every engineer says that,
  * so it signals nothing. The differentiator the market is actually paying for
  * is judging the output, which is a discipline Henry already runs.
  */
 export const aiNative: CopyVariant = {
   id: 'verified',
-  strategy: 'AI-native delivery — the differentiator is checking it, not using it',
+  strategy: 'AI-native delivery: the differentiator is checking it, not using it',
   headline: 'Everything here was built with AI. That is not the interesting part.',
   subhead:
     'The interesting part is what I do next: run a second model adversarially against my own work, keep the spec matched to the diff that shipped, and treat a confident answer as a claim to verify. One of those products is live on Google Play.',
@@ -153,7 +153,7 @@ export const adversarial: CopyVariant = {
   strategy: 'Proof and method in one breath',
   headline: 'One engineer shipped this app. A second model tried to break it first.',
   subhead:
-    'Luxura is live on Google Play — I built it, moved its infrastructure to my own VPS, wired the payments, and I run the ads. Everything I ship goes through an adversarial AI review before it goes through me.',
+    'Luxura is live on Google Play, I built it, moved its infrastructure to my own VPS, wired the payments, and I run the ads. Everything I ship goes through an adversarial AI review before it goes through me.',
   sectionLead: 'The stack is not the skill.',
   risk: 'Two ideas in one hero. On a two-second skim the second sentence reads as a riddle until the subhead resolves it.',
   aimedAt: 'CTOs staffing greenfield AI work who still want production evidence',

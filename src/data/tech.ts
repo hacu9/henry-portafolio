@@ -62,7 +62,7 @@ export const TECH_ICON: Record<string, string> = {
   'Google Ads': 'googleads',
 };
 
-/** The set shown in the morphing wall. Short on purpose — each is a claim. */
+/** The set shown in the morphing wall. Short on purpose, each is a claim. */
 export const WALL_TECH: string[] = [
   'TypeScript',
   'Next.js',

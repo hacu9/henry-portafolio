@@ -10,7 +10,7 @@
  * Level60 is Henry's employer and is always safe to name, so it is NOT behind
  * this flag. The flag covers the clinic matching platform, the enterprise data
  * client, and the architecture studios in Spain. While it is false, those
- * projects still appear — they render under a neutral label instead.
+ * projects still appear, they render under a neutral label instead.
  */
 export const REVEAL_CLIENT_NAMES = false;
 
@@ -23,7 +23,7 @@ export const REVEAL_CLIENT_NAMES = false;
 export const COARSE_TIMELINE_DATES = false;
 
 /**
- * Web3Forms access key for the contact form — the same service
+ * Web3Forms access key for the contact form, the same service
  * victor-portafolio uses.
  *
  * GitHub Pages cannot process a form, so the browser POSTs straight to
@@ -31,7 +31,7 @@ export const COARSE_TIMELINE_DATES = false;
  * value by design: it names the destination inbox, not the sender, which is
  * why it is safe in client HTML.
  *
- * While this is empty the form still works — it falls back to the mailto
+ * While this is empty the form still works, it falls back to the mailto
  * action and opens the visitor's mail client. Nothing is broken, it just does
  * not land in an inbox automatically.
  *

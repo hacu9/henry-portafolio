@@ -1,6 +1,6 @@
 # henry-portafolio
 
-Personal portfolio — Henry Cabello. Four complete design directions over one
+Personal portfolio, Henry Cabello. Four complete design directions over one
 shared bilingual content layer. Pick one, delete three.
 
 ## Run it
@@ -22,17 +22,17 @@ npm run preview   # serve dist/ exactly as Pages will
 
 | | Argues | Best for |
 |---|---|---|
-| **Signal** — the instrument panel | Trust me with production | Tech leads, CTOs, contract work |
-| **Deep Field** — the spectacle | I make beautiful things | Studios, creative engineering |
-| **Kinetic** — type is the whole show | I have taste, in two languages | Design-led teams, agencies, founders |
-| **The Log** — the working record | I finish things properly | Senior engineers who read closely |
+| **Signal**, the instrument panel | Trust me with production | Tech leads, CTOs, contract work |
+| **Deep Field**, the spectacle | I make beautiful things | Studios, creative engineering |
+| **Kinetic**, type is the whole show | I have taste, in two languages | Design-led teams, agencies, founders |
+| **The Log**, the working record | I finish things properly | Senior engineers who read closely |
 
 Compare them at `/en/` or `/es/`.
 
 ## Where the content lives
 
 All of it is in `src/data/`. No variant hardcodes copy, so editing a case study
-once updates all four. Every string is bilingual — see
+once updates all four. Every string is bilingual, see
 [docs/architecture.md](docs/architecture.md).
 
 ## Before publishing

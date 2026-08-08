@@ -1,6 +1,6 @@
 ---
 /**
- * CV — one page, built from the same data as the site.
+ * CV, one page, built from the same data as the site.
  *
  * There is no PDF in the repo on purpose. A committed PDF goes stale the moment
  * a project status changes, and then the CV and the site disagree. This page
@@ -31,7 +31,7 @@ const study = timeline.filter((e) => e.kind === 'education');
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Henry Cabello — CV</title>
+    <title>Henry Cabello, CV</title>
     <meta name="description" content="Senior full-stack engineer, 8+ years. Curriculum vitae." />
     <meta name="robots" content="noindex" />
     <link
@@ -107,7 +107,7 @@ const study = timeline.filter((e) => e.kind === 'education');
               <div class="item-head">
                 <h3>{t(e.role, lang)}</h3>
                 <span class="meta">
-                  {e.from} — {e.to === 'Present' ? t(presentLabel, lang) : e.to}
+                  {e.from} to {e.to === 'Present' ? t(presentLabel, lang) : e.to}
                 </span>
               </div>
               <p class="sub">{e.org}</p>
@@ -130,7 +130,7 @@ const study = timeline.filter((e) => e.kind === 'education');
           {
             supportingProjects.map((p) => (
               <li>
-                <strong>{projectName(p, lang)}</strong> — {t(p.tagline, lang)}. {t(p.problem, lang)}
+                <strong>{projectName(p, lang)}</strong>, {t(p.tagline, lang)}. {t(p.problem, lang)}
               </li>
             ))
           }
@@ -165,7 +165,7 @@ const study = timeline.filter((e) => e.kind === 'education');
           {
             study.map((e) => (
               <li>
-                <strong>{t(e.role, lang)}</strong> — {e.org} ({e.from}–{e.to})
+                <strong>{t(e.role, lang)}</strong>, {e.org} ({e.from}–{e.to})
               </li>
             ))
           }
@@ -180,7 +180,7 @@ const study = timeline.filter((e) => e.kind === 'education');
               <blockquote>
                 <p>{t(r.quote, lang)}</p>
                 <cite>
-                  {r.name} — {t(r.role, lang)}
+                  {r.name}, {t(r.role, lang)}
                 </cite>
               </blockquote>
             ))}

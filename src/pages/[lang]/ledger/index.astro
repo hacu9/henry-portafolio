@@ -1,10 +1,10 @@
 ---
 /**
- * LEDGER — every decision has a cost.
+ * LEDGER, every decision has a cost.
  *
  * Henry is unusual in that he pays for his own users: he runs the ad campaigns
  * for the products he engineers. So this direction is an account book. Each
- * technical decision is an entry with a debit — what it cost him — and a
+ * technical decision is an entry with a debit, what it cost him, and a
  * credit, what it bought. Thermal-print register, ruled lines, tabular numbers.
  *
  * The costs are real ones already written in the case studies (owning uptime
@@ -47,7 +47,7 @@ const L = {
 
 <Base
   lang={lang}
-  title={`${profile.name} — ${t(profile.title, lang)}`}
+  title={`${profile.name}, ${t(profile.title, lang)}`}
   description={t(profile.summary, lang)}
   slug="ledger"
   themeColor="#0C1412"
@@ -190,7 +190,7 @@ const L = {
               <span class="when">
                 {COARSE_TIMELINE_DATES
                   ? e.yearsOnly
-                  : `${e.from} — ${e.to === 'Present' ? t(presentLabel, lang) : e.to}`}
+                  : `${e.from} to ${e.to === 'Present' ? t(presentLabel, lang) : e.to}`}
               </span>
               <span class="what">
                 <strong>{t(e.role, lang)}</strong>
@@ -507,7 +507,7 @@ const L = {
 
   .contact-id { display: flex; align-items: center; gap: 0.9rem; }
 
-  /* Portrait beside the contact heading — a face where someone decides to write. */
+  /* Portrait beside the contact heading, a face where someone decides to write. */
   .portrait {
     width: 72px;
     height: 72px;

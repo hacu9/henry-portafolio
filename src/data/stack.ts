@@ -10,7 +10,7 @@ export interface StackGroup {
 }
 
 /**
- * Technology names stay verbatim in both languages — only the group labels and
+ * Technology names stay verbatim in both languages, only the group labels and
  * notes translate.
  *
  * Three things are deliberately absent, per Henry's constraints:
@@ -55,8 +55,8 @@ export const stackGroups: StackGroup[] = [
       'Claude Code', 'OpenAI Codex CLI',
     ],
     note: {
-      en: 'I run MCP servers daily against AppsFlyer, Meta Ads and TikTok Ads — and when one did not fit my workflow, I extended it myself.',
-      es: 'Uso servidores MCP a diario contra AppsFlyer, Meta Ads y TikTok Ads — y cuando uno no encajaba con mi flujo, lo extendí yo mismo.',
+      en: 'I run MCP servers daily against AppsFlyer, Meta Ads and TikTok Ads. When one did not fit my workflow, I extended it myself.',
+      es: 'Uso servidores MCP a diario contra AppsFlyer, Meta Ads y TikTok Ads. Cuando uno no encajaba con mi flujo, lo extendí yo mismo.',
     },
   },
   {

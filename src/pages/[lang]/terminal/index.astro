@@ -1,6 +1,6 @@
 ---
 /**
- * TERMINAL — the site boots.
+ * TERMINAL: the site boots.
  *
  * The environment Henry actually works in, made literal: a boot sequence, a
  * ⌘K command palette, phosphor on black. The claim it makes is "I live here",
@@ -51,7 +51,7 @@ const boot =
 
 <Base
   lang={lang}
-  title={`${profile.name} — ${t(profile.title, lang)}`}
+  title={`${profile.name}, ${t(profile.title, lang)}`}
   description={t(profile.summary, lang)}
   slug="terminal"
   themeColor="#050706"
@@ -190,7 +190,7 @@ const boot =
                 <span class="when">
                   {COARSE_TIMELINE_DATES
                     ? e.yearsOnly
-                    : `${e.from} — ${e.to === 'Present' ? t(presentLabel, lang) : e.to}`}
+                    : `${e.from} to ${e.to === 'Present' ? t(presentLabel, lang) : e.to}`}
                 </span>
                 <span class="what">
                   <strong>{t(e.role, lang)}</strong> <span class="org">{e.org}</span>
@@ -489,7 +489,7 @@ const boot =
 <script>
   /* --------------------------------------------------------- boot stream */
   // Types the prompt lines out once. Purely a decoration over content that is
-  // already in the DOM — nothing is gated behind it.
+  // already in the DOM, nothing is gated behind it.
   const stream = document.querySelector<HTMLPreElement>('.stream');
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 

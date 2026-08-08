@@ -1,11 +1,11 @@
 ---
 /**
- * DOSSIER — what I can and cannot show you.
+ * DOSSIER, what I can and cannot show you.
  *
  * This direction turns Henry's biggest portfolio problem into the concept.
  * His strongest work is behind a client login or an NDA, so the site is built
  * as a case file: some material is open, some is redacted, and the redaction
- * is honest rather than teasing. Hovering a bar does not reveal a secret — it
+ * is honest rather than teasing. Hovering a bar does not reveal a secret, it
  * reveals WHY the thing is withheld.
  *
  * The redaction only ever covers content that genuinely is restricted. Nothing
@@ -55,7 +55,7 @@ const L = {
 
 <Base
   lang={lang}
-  title={`${profile.name} — ${t(profile.title, lang)}`}
+  title={`${profile.name}, ${t(profile.title, lang)}`}
   description={t(profile.summary, lang)}
   slug="dossier"
   themeColor="#12100C"
@@ -220,7 +220,7 @@ const L = {
                 <span class="when">
                   {COARSE_TIMELINE_DATES
                     ? e.yearsOnly
-                    : `${e.from} — ${e.to === 'Present' ? t(presentLabel, lang) : e.to}`}
+                    : `${e.from} to ${e.to === 'Present' ? t(presentLabel, lang) : e.to}`}
                 </span>
                 <span class="what">
                   <strong>{t(e.role, lang)}</strong>
@@ -604,7 +604,7 @@ const L = {
 
   .contact-id { display: flex; align-items: center; gap: 0.9rem; }
 
-  /* Portrait beside the contact heading — a face where someone decides to write. */
+  /* Portrait beside the contact heading, a face where someone decides to write. */
   .portrait {
     width: 72px;
     height: 72px;

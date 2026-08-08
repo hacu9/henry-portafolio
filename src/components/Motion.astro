@@ -3,7 +3,7 @@
  * Shared motion runtime. Drop once per page, after the content.
  *
  * Three jobs:
- *  1. Weighted smooth scroll (Lenis) — the By-Kin "one continuous surface"
+ *  1. Weighted smooth scroll (Lenis), the By-Kin "one continuous surface"
  *     feel. Lenis drives the real scroll position, so the native
  *     scroll-driven animations in motion.css stay in sync with it.
  *  2. Pointer tracking for `.spot`, written as --mx/--my percentages.
@@ -86,7 +86,7 @@ const { duration = 1.05 } = Astro.props;
 
   /* ----------------------------- fallback where scroll timelines are absent */
   // motion.css only hides content inside @supports, so there is nothing to
-  // undo in unsupporting browsers — but the reveal is worth having.
+  // undo in unsupporting browsers, but the reveal is worth having.
   const hasTimeline = CSS.supports('animation-timeline: view()');
   if (!hasTimeline && !reduce) {
     const targets = document.querySelectorAll<HTMLElement>(

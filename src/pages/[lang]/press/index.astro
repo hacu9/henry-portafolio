@@ -1,10 +1,10 @@
 ---
 /**
- * PRESS — Swiss grid, printed loud.
+ * PRESS, Swiss grid, printed loud.
  *
  * Uncommon Studio's "grid-breaking rhythm" needs a grid to break, so this one
  * is explicit: a visible 12-column rule, oversized numerals, hard black rules,
- * one red. Nothing decorative — the impact comes from scale contrast and from
+ * one red. Nothing decorative, the impact comes from scale contrast and from
  * type sitting exactly on the grid until it deliberately does not.
  */
 import Base from '../../../layouts/Base.astro';
@@ -34,7 +34,7 @@ const indexHref = path(base, lang);
 
 <Base
   lang={lang}
-  title={`${profile.name} — ${t(profile.title, lang)}`}
+  title={`${profile.name}, ${t(profile.title, lang)}`}
   description={t(profile.summary, lang)}
   slug="press"
   themeColor="#F2F0EC"
@@ -182,7 +182,7 @@ const indexHref = path(base, lang);
                 <span class="when">
                   {COARSE_TIMELINE_DATES
                     ? e.yearsOnly
-                    : `${e.from} — ${e.to === 'Present' ? t(presentLabel, lang) : e.to}`}
+                    : `${e.from} to ${e.to === 'Present' ? t(presentLabel, lang) : e.to}`}
                 </span>
                 <span class="what">
                   <strong>{t(e.role, lang)}</strong>
@@ -586,7 +586,7 @@ const indexHref = path(base, lang);
     background: var(--accent, currentColor);
   }
 
-  /* Portrait beside the contact heading — a face where someone decides to write. */
+  /* Portrait beside the contact heading, a face where someone decides to write. */
   .portrait {
     width: 72px;
     height: 72px;

@@ -18,7 +18,7 @@ export const ui = {
   basedIn: { en: 'Based in', es: 'Radicado en' } as L,
   yearsShipping: { en: 'Years shipping', es: 'Años construyendo' } as L,
 
-  // ---- case study structure — Henry's own four-beat shape
+  // ---- case study structure, Henry's own four-beat shape
   theProblem: { en: 'The problem', es: 'El problema' } as L,
   whatIBuilt: { en: 'What I built', es: 'Lo que construí' } as L,
   theDecision: { en: 'The hard call', es: 'La decisión difícil' } as L,

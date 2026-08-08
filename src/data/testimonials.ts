@@ -18,7 +18,7 @@ export interface Testimonial {
  * Henry asked for invented testimonials. I have not written any, and nothing
  * should ever be added here that a real person did not actually say. A
  * fabricated endorsement on a page whose job is to get someone hired is not
- * presentation — it is a false statement attributed to a named third party, and
+ * presentation; it is a false statement attributed to a named third party, and
  * it fails the moment anyone follows up.
  *
  * Every section that renders testimonials checks this array and hides itself

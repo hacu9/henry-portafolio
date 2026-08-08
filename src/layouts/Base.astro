@@ -32,7 +32,7 @@ const base = import.meta.env.BASE_URL;
 const altLang = OTHER_LANG[lang];
 const canonical = new URL(path(base, lang, slug ?? ''), Astro.site);
 const alternate = new URL(path(base, altLang, slug ?? ''), Astro.site);
-// Without this every shared link — LinkedIn, WhatsApp, email — previews blank.
+// Without this every shared link, LinkedIn, WhatsApp, email, previews blank.
 const ogImage = new URL(`${base.replace(/\/+$/, '')}/images/og.png`, Astro.site);
 ---
 

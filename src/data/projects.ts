@@ -11,7 +11,7 @@ export const STATUS_LABEL: Record<Status, L> = {
 };
 
 export interface Decision {
-  /** The fork in the road, phrased as the choice — not as the result. */
+  /** The fork in the road, phrased as the choice, not as the result. */
   title: L;
   body: L;
 }
@@ -56,8 +56,8 @@ const rawProjects: Project[] = [
     id: 'luxura',
     name: 'Luxura',
     tagline: {
-      en: 'Invitation-based dating app — Bogotá and Medellín',
-      es: 'App de citas por invitación — Bogotá y Medellín',
+      en: 'Invitation-based dating app, Bogotá and Medellín',
+      es: 'App de citas por invitación, Bogotá y Medellín',
     },
     status: 'live',
     statusNote: {
@@ -65,10 +65,10 @@ const rawProjects: Project[] = [
       es: 'Producción en Google Play, tras pruebas cerradas',
     },
     role: {
-      en: 'Sole engineer — plus infrastructure, monetization and paid acquisition',
-      es: 'Único ingeniero — más infraestructura, monetización y pauta',
+      en: 'Sole engineer, plus infrastructure, monetization and paid acquisition',
+      es: 'Único ingeniero, más infraestructura, monetización y pauta',
     },
-    period: '2025 — 2026',
+    period: '2025-2026',
     lead: true,
     url: 'https://play.google.com/store/apps/details?id=app.luxura.dating',
     urlLabel: { en: 'See it on Google Play', es: 'Verla en Google Play' },
@@ -87,8 +87,8 @@ const rawProjects: Project[] = [
       },
     ],
     problem: {
-      en: 'Open dating apps fill with unserious volume, which drives women off the platform and takes the men with them. Luxura inverts the funnel: men pay to send an invitation, women join free. That asymmetry only works if the product controls its own economics end to end — payments, moderation, and the cost of acquiring each user.',
-      es: 'Las apps de citas abiertas se llenan de volumen poco serio, eso hace que las mujeres se vayan y detrás se van los hombres. Luxura invierte el embudo: los hombres pagan por enviar una invitación, las mujeres entran gratis. Esa asimetría solo funciona si el producto controla su propia economía de punta a punta — pagos, moderación y el costo de adquirir cada usuario.',
+      en: 'Open dating apps fill with unserious volume, which drives women off the platform and takes the men with them. Luxura inverts the funnel: men pay to send an invitation, women join free. That asymmetry only works if the product controls its own economics end to end: payments, moderation, and the cost of acquiring each user.',
+      es: 'Las apps de citas abiertas se llenan de volumen poco serio, eso hace que las mujeres se vayan y detrás se van los hombres. Luxura invierte el embudo: los hombres pagan por enviar una invitación, las mujeres entran gratis. Esa asimetría solo funciona si el producto controla su propia economía de punta a punta: pagos, moderación y el costo de adquirir cada usuario.',
     },
     built: {
       en: [
@@ -97,7 +97,7 @@ const rawProjects: Project[] = [
         'RevenueCat paywall and subscription handling',
         'AppsFlyer and RevenueCat attribution, wired to Meta Pixel and the Conversions API',
         'Automated content moderation on Azure Content Safety',
-        'Full Google Play release pipeline — 12 testers for 14 days in closed testing, then production',
+        'Full Google Play release pipeline, 12 testers for 14 days in closed testing, then production',
         'Brand identity, logo and Play Store assets in a dark-and-gold direction',
       ],
       es: [
@@ -106,7 +106,7 @@ const rawProjects: Project[] = [
         'Paywall y suscripciones con RevenueCat',
         'Atribución con AppsFlyer y RevenueCat, conectada a Meta Pixel y la Conversions API',
         'Moderación automática de contenido con Azure Content Safety',
-        'Pipeline completo de release en Google Play — 12 testers por 14 días en prueba cerrada, luego producción',
+        'Pipeline completo de release en Google Play, 12 testers por 14 días en prueba cerrada, luego producción',
         'Identidad de marca, logo y assets de Play Store en una dirección oscura con dorado',
       ],
     },
@@ -117,8 +117,8 @@ const rawProjects: Project[] = [
           es: 'Migré toda la plataforma de Vercel y Supabase a un VPS de Hetzner con Coolify',
         },
         body: {
-          en: 'Managed platforms pick your database, your background workers and your failure modes for you. I wanted those decisions back before the product grew into them, so I moved both onto one Hetzner box running Coolify. When memory got tight I added swap and kept the same machine rather than sizing up — sizing up is how you stop noticing what your app costs to run. Development stayed on the same infrastructure as production, because two setups produce drift that only ever surfaces in the one that matters. Uptime, disk and Docker hygiene are mine now, and I run them.',
-          es: 'Las plataformas administradas eligen por ti la base de datos, los workers y los modos de falla. Quería esas decisiones de vuelta antes de que el producto creciera dentro de ellas, así que moví ambos a una sola máquina Hetzner con Coolify. Cuando la memoria quedó justa agregué swap y me quedé con la misma máquina en vez de subir de instancia — subir de instancia es la forma de dejar de notar lo que cuesta operar tu app. Desarrollo se quedó en la misma infraestructura que producción, porque dos montajes producen desviaciones que solo aparecen en el que importa. El uptime, el disco y la higiene de Docker ahora son míos, y los opero yo.',
+          en: 'Managed platforms pick your database, your background workers and your failure modes for you. I wanted those decisions back before the product grew into them, so I moved both onto one Hetzner box running Coolify. When memory got tight I added swap and kept the same machine rather than sizing up, sizing up is how you stop noticing what your app costs to run. Development stayed on the same infrastructure as production, because two setups produce drift that only ever surfaces in the one that matters. Uptime, disk and Docker hygiene are mine now, and I run them.',
+          es: 'Las plataformas administradas eligen por ti la base de datos, los workers y los modos de falla. Quería esas decisiones de vuelta antes de que el producto creciera dentro de ellas, así que moví ambos a una sola máquina Hetzner con Coolify. Cuando la memoria quedó justa agregué swap y me quedé con la misma máquina en vez de subir de instancia, subir de instancia es la forma de dejar de notar lo que cuesta operar tu app. Desarrollo se quedó en la misma infraestructura que producción, porque dos montajes producen desviaciones que solo aparecen en el que importa. El uptime, el disco y la higiene de Docker ahora son míos, y los opero yo.',
         },
       },
       {
@@ -137,14 +137,14 @@ const rawProjects: Project[] = [
           es: 'Cambié el género por un rol de invitación, para que un hombre pudiera invitar a otro',
         },
         body: {
-          en: 'The product started with the funnel keyed to gender, which quietly made same-sex invitations impossible. I moved the model to an INVITER / INVITEE role chosen at registration. Onboarding got simpler, and the paid tier now attaches to a role instead of a gender — fairer, and much easier to reason about in code.',
-          es: 'El producto arrancó con el embudo atado al género, lo que en la práctica hacía imposible una invitación entre personas del mismo sexo. Pasé el modelo a un rol INVITER / INVITEE que se elige al registrarse. El onboarding quedó más simple, y el plan pago ahora se ata a un rol y no a un género — más justo, y mucho más fácil de razonar en el código.',
+          en: 'The product started with the funnel keyed to gender, which quietly made same-sex invitations impossible. I moved the model to an INVITER / INVITEE role chosen at registration. Onboarding got simpler, and the paid tier now attaches to a role instead of a gender: fairer, and much easier to reason about in code.',
+          es: 'El producto arrancó con el embudo atado al género, lo que en la práctica hacía imposible una invitación entre personas del mismo sexo. Pasé el modelo a un rol INVITER / INVITEE que se elige al registrarse. El onboarding quedó más simple, y el plan pago ahora se ata a un rol y no a un género, más justo, y mucho más fácil de razonar en el código.',
         },
       },
     ],
     outcome: {
-      en: 'Live on Google Play. I run the Meta, TikTok and Google Ads campaigns myself, so every architecture decision shows up in the cost of the next user. This is not a portfolio piece — it is a product I operate daily.',
-      es: 'Publicada en Google Play. Yo mismo manejo las campañas de Meta, TikTok y Google Ads, así que cada decisión de arquitectura aparece en el costo del próximo usuario. Esto no es una pieza de portafolio — es un producto que opero todos los días.',
+      en: 'Live on Google Play. I run the Meta, TikTok and Google Ads campaigns myself, so every architecture decision shows up in the cost of the next user. This is not a portfolio piece, it is a product I operate daily.',
+      es: 'Publicada en Google Play. Yo mismo manejo las campañas de Meta, TikTok y Google Ads, así que cada decisión de arquitectura aparece en el costo del próximo usuario. Esto no es una pieza de portafolio, es un producto que opero todos los días.',
     },
     stack: [
       'Next.js', 'TypeScript', 'Capacitor', 'PostgreSQL', 'Hetzner', 'Coolify',
@@ -201,8 +201,8 @@ const rawProjects: Project[] = [
           es: 'Le di a los agentes memoria durable en una base vectorial en vez de un prompt más largo',
         },
         body: {
-          en: 'An agent that forgets between conversations does not represent a person — it represents whatever fit in the last context window. Persisting memory as retrievable vectors keeps the agent consistent as conversations accumulate, and keeps token cost flat rather than growing with the relationship.',
-          es: 'Un agente que olvida entre conversaciones no representa a una persona — representa lo que cupo en la última ventana de contexto. Guardar la memoria como vectores recuperables mantiene al agente consistente a medida que se acumulan las conversaciones, y deja el costo de tokens plano en lugar de crecer con la relación.',
+          en: 'An agent that forgets between conversations does not represent a person, it represents whatever fit in the last context window. Persisting memory as retrievable vectors keeps the agent consistent as conversations accumulate, and keeps token cost flat rather than growing with the relationship.',
+          es: 'Un agente que olvida entre conversaciones no representa a una persona, representa lo que cupo en la última ventana de contexto. Guardar la memoria como vectores recuperables mantiene al agente consistente a medida que se acumulan las conversaciones, y deja el costo de tokens plano en lugar de crecer con la relación.',
         },
       },
     ],
@@ -223,7 +223,7 @@ const rawProjects: Project[] = [
     status: 'building',
 
     role: { en: 'Mobile and real-time systems', es: 'Móvil y sistemas en tiempo real' },
-    period: '2025 — 2026',
+    period: '2025-2026',
     lead: true,
     problem: {
       en: 'A panic button is a blunt instrument. Real situations range from "I feel uneasy walking home" to an active emergency, and the response should vary with them. Femi grades alerts across five urgency levels and routes each one differently.',
@@ -233,7 +233,7 @@ const rawProjects: Project[] = [
       en: [
         'React Native and Expo application',
         'Five-level emergency alert system carrying GPS location',
-        'Dual response model — trusted personal contacts plus nearby verified helpers',
+        'Dual response model, trusted personal contacts plus nearby verified helpers',
         'Identity verification combining face recognition with document checks',
         'Live chat over WebSocket inside the alert itself, so responders coordinate in context',
         'Community forum and a hearts-based reputation system',
@@ -242,7 +242,7 @@ const rawProjects: Project[] = [
       es: [
         'Aplicación en React Native y Expo',
         'Sistema de alertas de emergencia en cinco niveles, con ubicación GPS',
-        'Modelo de respuesta doble — contactos de confianza más ayudantes verificados cercanos',
+        'Modelo de respuesta doble, contactos de confianza más ayudantes verificados cercanos',
         'Verificación de identidad que combina reconocimiento facial con validación de documento',
         'Chat en vivo por WebSocket dentro de la alerta, para que quien responde coordine en contexto',
         'Foro comunitario y sistema de reputación por corazones',
@@ -256,8 +256,8 @@ const rawProjects: Project[] = [
           es: 'Exigí verificación facial y de documento antes de dejar que alguien respondiera una alerta',
         },
         body: {
-          en: 'Alerting strangers near a woman in distress is only an improvement if those strangers are accountable. Face plus document verification adds real friction to signup and grows the helper network more slowly. On a safety product that is the correct direction to be wrong in — an unverified helper network is a liability, not a feature.',
-          es: 'Avisarle a desconocidos cerca de una mujer en riesgo solo es una mejora si esos desconocidos son identificables. La verificación facial más documento agrega fricción real al registro y hace crecer la red de ayudantes más despacio. En un producto de seguridad ese es el lado correcto para equivocarse — una red de ayudantes sin verificar es un riesgo, no una funcionalidad.',
+          en: 'Alerting strangers near a woman in distress is only an improvement if those strangers are accountable. Face plus document verification adds real friction to signup and grows the helper network more slowly. On a safety product that is the correct direction to be wrong in, an unverified helper network is a liability, not a feature.',
+          es: 'Avisarle a desconocidos cerca de una mujer en riesgo solo es una mejora si esos desconocidos son identificables. La verificación facial más documento agrega fricción real al registro y hace crecer la red de ayudantes más despacio. En un producto de seguridad ese es el lado correcto para equivocarse, una red de ayudantes sin verificar es un riesgo, no una funcionalidad.',
         },
       },
       {
@@ -272,8 +272,8 @@ const rawProjects: Project[] = [
       },
     ],
     outcome: {
-      en: 'Real-time alerting, identity verification and trust modelling, working as one system — the parts of a safety product you cannot retrofit.',
-      es: 'Alertas en tiempo real, verificación de identidad y modelado de confianza, funcionando como un solo sistema — las partes de un producto de seguridad que no se pueden agregar después.',
+      en: 'Real-time alerting, identity verification and trust modelling, working as one system, the parts of a safety product you cannot retrofit.',
+      es: 'Alertas en tiempo real, verificación de identidad y modelado de confianza, funcionando como un solo sistema, las partes de un producto de seguridad que no se pueden agregar después.',
     },
     stack: [
       'React Native', 'Expo', 'TypeScript', 'WebSockets', 'PostgreSQL',
@@ -288,11 +288,11 @@ const rawProjects: Project[] = [
     tagline: { en: 'Microsoft enterprise integration', es: 'Integración empresarial con Microsoft' },
     status: 'ongoing',
     role: { en: 'Full-stack engineer', es: 'Ingeniero full-stack' },
-    period: '2021 — 2026',
+    period: '2021-2026',
     lead: false,
     problem: {
-      en: 'Enterprise Microsoft estates where identity, Teams and reporting have to hold together across tenants — and keep holding when Microsoft retires an endpoint.',
-      es: 'Entornos empresariales de Microsoft donde identidad, Teams y reportería deben sostenerse entre tenants — y seguir sosteniéndose cuando Microsoft retira un endpoint.',
+      en: 'Enterprise Microsoft estates where identity, Teams and reporting have to hold together across tenants, and keep holding when Microsoft retires an endpoint.',
+      es: 'Entornos empresariales de Microsoft donde identidad, Teams y reportería deben sostenerse entre tenants, y seguir sosteniéndose cuando Microsoft retira un endpoint.',
     },
     built: {
       en: [
@@ -317,14 +317,14 @@ const rawProjects: Project[] = [
           es: 'Traté la deprecación de la API de Teams como un problema de investigación antes que de código',
         },
         body: {
-          en: 'When Microsoft retires an endpoint the replacement rarely maps one to one. Establishing exactly what the new surface could and could not do — before touching the integration — made the migration a known quantity instead of a discovery exercise in production.',
-          es: 'Cuando Microsoft retira un endpoint, el reemplazo casi nunca mapea uno a uno. Establecer exactamente qué podía y qué no podía hacer la nueva superficie — antes de tocar la integración — convirtió la migración en algo conocido en vez de un descubrimiento en producción.',
+          en: 'When Microsoft retires an endpoint the replacement rarely maps one to one. Establishing exactly what the new surface could and could not do, before touching the integration, made the migration a known quantity instead of a discovery exercise in production.',
+          es: 'Cuando Microsoft retira un endpoint, el reemplazo casi nunca mapea uno a uno. Establecer exactamente qué podía y qué no podía hacer la nueva superficie, antes de tocar la integración, convirtió la migración en algo conocido en vez de un descubrimiento en producción.',
         },
       },
     ],
     outcome: {
-      en: 'Five years of continuous enterprise work — long-lived, high-consequence, and running in someone else’s tenant.',
-      es: 'Cinco años de trabajo empresarial continuo — de larga vida, de alta consecuencia y corriendo en el tenant de otra empresa.',
+      en: 'Five years of continuous enterprise work, long-lived, high-consequence, and running in someone else’s tenant.',
+      es: 'Cinco años de trabajo empresarial continuo, de larga vida, de alta consecuencia y corriendo en el tenant de otra empresa.',
     },
     stack: [
       'Microsoft Graph', 'Teams API', 'Azure Functions', 'Azure SQL',
@@ -388,8 +388,8 @@ const rawProjects: Project[] = [
     },
     status: 'delivered',
     role: {
-      en: 'Contract — paid acquisition and channel strategy',
-      es: 'Contrato — pauta y estrategia de canales',
+      en: 'Contract, paid acquisition and channel strategy',
+      es: 'Contrato, pauta y estrategia de canales',
     },
     period: '2026',
     lead: false,
@@ -432,7 +432,7 @@ const rawProjects: Project[] = [
     tagline: { en: 'Running what I ship', es: 'Operar lo que construyo' },
     status: 'ongoing',
     role: { en: 'Operator', es: 'Operación' },
-    period: '2025 — 2026',
+    period: '2025-2026',
     lead: false,
     problem: {
       en: 'Self-hosting is a decision with a tail. Once you leave managed platforms, disk pressure, container sprawl and cache failures become yours at two in the morning.',

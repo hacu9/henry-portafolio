@@ -3,14 +3,14 @@
 ## Why one repo instead of four
 
 The four directions are four front-ends over **one content layer**. Building
-them as separate repos would fork the content four ways and guarantee drift —
+them as separate repos would fork the content four ways and guarantee drift -
 fix a typo in the Luxura case study and you fix it once here, not four times.
 
 Everything a visitor reads lives in `src/data/`. No variant hardcodes copy.
 
 ```
 src/
-├── data/           content — the single source of truth
+├── data/           content, the single source of truth
 │   ├── config.ts       permission flags (client names, timeline precision)
 │   ├── profile.ts      identity, positioning, the fast-learning thesis
 │   ├── projects.ts     case studies, four-beat structure
@@ -21,7 +21,7 @@ src/
 │   ├── types.ts        Lang, the L / LList shapes, t() and tl()
 │   └── ui.ts           every label and control string
 ├── layouts/Base.astro  html shell, theme boot, canonical + hreflang
-├── styles/reset.css    shared baseline only — no palette, no type
+├── styles/reset.css    shared baseline only, no palette, no type
 └── pages/
     ├── index.astro     language redirect with real links underneath
     └── [lang]/
@@ -38,7 +38,7 @@ Every content string is an `L`: `{ en: string, es: string }`. Lists are
 `LList`: `{ en: string[], es: string[] }`. Read them with `t(value, lang)` and
 `tl(value, lang)`.
 
-Technology names stay verbatim in both languages — only labels and prose
+Technology names stay verbatim in both languages, only labels and prose
 translate. `PostgreSQL` is `PostgreSQL` in Spanish.
 
 Routing generates both languages statically:
@@ -71,9 +71,9 @@ scrolled out of view.
 
 Palette is defined as custom properties at three levels, in this order:
 
-1. `:root` — light values.
-2. `@media (prefers-color-scheme: dark)` — the OS preference.
-3. `:root[data-theme="dark"]` and `:root[data-theme="light"]` — the toggle,
+1. `:root`, light values.
+2. `@media (prefers-color-scheme: dark)`, the OS preference.
+3. `:root[data-theme="dark"]` and `:root[data-theme="light"]`, the toggle,
    which must beat the media query in **both** directions.
 
 Components read tokens only. Nothing is styled inside the media query directly.
@@ -84,14 +84,14 @@ a `MutationObserver`, so the graphics follow the toggle.
 
 ## Hosting
 
-Static output, no SSR, no API routes — GitHub Pages serves files only.
+Static output, no SSR, no API routes, GitHub Pages serves files only.
 
 `astro.config.mjs` reads `SITE_BASE` so the same build works from a repo
 subpath or from the root. `.github/workflows/deploy.yml` sets it to
 `/henry-portafolio`. If the repo is renamed to `hacu9.github.io`, set it to `/`
 and change nothing else.
 
-Anything needing a secret — a contact form, view counts — has to live off
+Anything needing a secret, a contact form, view counts, has to live off
 Pages. Today the contact section is `mailto:` and profile links, which need
 nothing.
 

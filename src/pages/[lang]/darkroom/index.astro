@@ -1,6 +1,6 @@
 ---
 /**
- * DARKROOM — Iventions' lighting model taken literally.
+ * DARKROOM, Iventions' lighting model taken literally.
  *
  * The page is dark and the content is dimmed until the pointer lights it. That
  * is the whole mechanic: a guided walk-through rather than a grid, where the
@@ -38,7 +38,7 @@ const indexHref = path(base, lang);
 
 <Base
   lang={lang}
-  title={`${profile.name} — ${t(profile.title, lang)}`}
+  title={`${profile.name}, ${t(profile.title, lang)}`}
   description={t(profile.summary, lang)}
   slug="darkroom"
   themeColor="#07070A"
@@ -65,7 +65,7 @@ const indexHref = path(base, lang);
 
   <main id="main">
     <section class="open">
-      <p class="kick">{t(profile.title, lang)} — {t(profile.experience, lang)}</p>
+      <p class="kick">{t(profile.title, lang)}, {t(profile.experience, lang)}</p>
       <h1>{profile.name}</h1>
       <p class="lede">{t(profile.lede, lang)}</p>
       <p class="kick foot-note">{t(profile.location, lang)} · {t(profile.workingStyle, lang)}</p>
@@ -180,7 +180,7 @@ const indexHref = path(base, lang);
               <span class="when">
                 {COARSE_TIMELINE_DATES
                   ? e.yearsOnly
-                  : `${e.from} — ${e.to === 'Present' ? t(presentLabel, lang) : e.to}`}
+                  : `${e.from} to ${e.to === 'Present' ? t(presentLabel, lang) : e.to}`}
               </span>
               <span class="what">
                 <strong>{t(e.role, lang)}</strong>
@@ -378,7 +378,7 @@ const indexHref = path(base, lang);
   }
 
   /*
-   * The dimming. Only where a fine pointer exists and motion is welcome —
+   * The dimming. Only where a fine pointer exists and motion is welcome -
    * otherwise the page just reads normally.
    */
   @media (pointer: fine) and (prefers-reduced-motion: no-preference) {
@@ -481,7 +481,7 @@ const indexHref = path(base, lang);
     padding: 0;
   }
   .beats li::before {
-    content: '— ';
+    content: '- ';
     color: var(--accent);
   }
   .call {
@@ -707,7 +707,7 @@ const indexHref = path(base, lang);
 
   .contact-id { display: flex; align-items: center; gap: 0.9rem; }
 
-  /* Portrait beside the contact heading — a face where someone decides to write. */
+  /* Portrait beside the contact heading, a face where someone decides to write. */
   .portrait {
     width: 72px;
     height: 72px;

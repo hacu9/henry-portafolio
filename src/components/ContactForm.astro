@@ -1,6 +1,6 @@
 ---
 /**
- * Contact form for a static host — same approach as victor-portafolio.
+ * Contact form for a static host, same approach as victor-portafolio.
  *
  * GitHub Pages cannot process a form, so submissions go to Web3Forms, which
  * accepts a POST from the browser and forwards it to a real inbox. Two things
@@ -11,8 +11,8 @@
  *   2. With JS on but no access key configured, the submit handler returns
  *      without calling preventDefault, so that same mailto path fires.
  *
- * The Web3Forms access key is a public value by design — it identifies the
- * destination inbox, not the sender — which is why it can live in client HTML.
+ * The Web3Forms access key is a public value by design, it identifies the
+ * destination inbox, not the sender, which is why it can live in client HTML.
  * It must still be HENRY's own key: Victor's key would deliver Henry's
  * enquiries to Victor's inbox.
  */
@@ -74,7 +74,7 @@ const L = {
 
   {/* Web3Forms plumbing. access_key is injected by the script. */}
   <input type="hidden" name="subject" value="New message from the portfolio" />
-  <input type="hidden" name="from_name" value="Henry Cabello — portfolio" />
+  <input type="hidden" name="from_name" value="Henry Cabello, portfolio" />
   {/* Web3Forms' own honeypot. Real people never see or tick it. */}
   <input class="cform-hp" type="checkbox" name="botcheck" tabindex="-1" autocomplete="off" aria-hidden="true" />
 
@@ -133,7 +133,7 @@ const L = {
     outline-offset: 1px;
     border-color: transparent;
   }
-  /* Off-screen rather than display:none — some bots skip hidden inputs. */
+  /* Off-screen rather than display:none, some bots skip hidden inputs. */
   .cform-hp {
     position: absolute !important;
     left: -9999px !important;
@@ -182,7 +182,7 @@ const L = {
 
     form.addEventListener('submit', async (e) => {
       const key = form.dataset.accessKey?.trim();
-      // No key configured yet — let the native mailto action fire.
+      // No key configured yet, let the native mailto action fire.
       if (!key) return;
 
       e.preventDefault();

@@ -3,7 +3,7 @@
  *
  * Built on native scroll-driven animations (`animation-timeline: view()`), so
  * the reveals cost zero JavaScript and run on the compositor. Browsers without
- * support simply show the content — the `@supports` guard means the hidden
+ * support simply show the content, the `@supports` guard means the hidden
  * state is never applied unless the animation that undoes it can run.
  *
  * The reference points, from the 2026 award winners:

@@ -26,7 +26,7 @@ const indexHref = path(base, lang);
 /**
  * The hero word cycles through the same idea in both languages. This is the
  * mechanic the whole direction rests on, so the pairs are real vocabulary from
- * the work — not decoration.
+ * the work, not decoration.
  */
 const morphWords: [string, string][] = [
   ['SHIPPED', 'ENTREGADO'],
@@ -40,7 +40,7 @@ const first = lang === 'es' ? morphWords[0][1] : morphWords[0][0];
 
 <Base
   lang={lang}
-  title={`${profile.name} — ${t(profile.title, lang)}`}
+  title={`${profile.name}, ${t(profile.title, lang)}`}
   description={t(profile.summary, lang)}
   slug="kinetic"
   themeColor="#111014"
@@ -62,7 +62,7 @@ const first = lang === 'es' ? morphWords[0][1] : morphWords[0][0];
     <!-- ===================================================== HERO -->
     <section class="hero">
       <div class="hero-stick">
-        <p class="micro">{t(profile.title, lang)} — {t(profile.experience, lang)}</p>
+        <p class="micro">{t(profile.title, lang)}, {t(profile.experience, lang)}</p>
         <h1 class="morph-line">
           <span class="visually-hidden">{t(profile.positioning, lang)}</span>
           <span id="morph" aria-hidden="true" data-words={JSON.stringify(morphWords)}>{first}</span>
@@ -203,7 +203,7 @@ const first = lang === 'es' ? morphWords[0][1] : morphWords[0][0];
               <span class="when">
                 {COARSE_TIMELINE_DATES
                   ? e.yearsOnly
-                  : `${e.from} — ${e.to === 'Present' ? t(presentLabel, lang) : e.to}`}
+                  : `${e.from} to ${e.to === 'Present' ? t(presentLabel, lang) : e.to}`}
               </span>
               <span class="what">
                 <strong>{t(e.role, lang)}</strong>
@@ -346,7 +346,7 @@ const first = lang === 'es' ? morphWords[0][1] : morphWords[0][0];
   }
 
   /* ------------------------------------------------------------ hero */
-  /* Tall enough that scrolling through it advances the word — each pair owns
+  /* Tall enough that scrolling through it advances the word, each pair owns
      a slice of the height. The copy sticks while the words change. */
   .hero {
     max-width: var(--shell);
@@ -542,7 +542,7 @@ const first = lang === 'es' ? morphWords[0][1] : morphWords[0][0];
     padding: 0;
   }
   .cell ul li::before {
-    content: '— ';
+    content: '- ';
     color: var(--accent);
   }
   .call {
@@ -758,7 +758,7 @@ const first = lang === 'es' ? morphWords[0][1] : morphWords[0][0];
 
   .contact-id { display: flex; align-items: center; gap: 0.9rem; }
 
-  /* Portrait beside the contact heading — a face where someone decides to write. */
+  /* Portrait beside the contact heading, a face where someone decides to write. */
   .portrait {
     width: 72px;
     height: 72px;

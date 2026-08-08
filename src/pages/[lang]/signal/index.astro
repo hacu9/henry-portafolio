@@ -23,7 +23,7 @@ const other = OTHER_LANG[lang];
 const altHref = path(base, other, 'signal');
 const indexHref = path(base, lang);
 
-const title = `${profile.name} — ${t(profile.title, lang)}`;
+const title = `${profile.name}, ${t(profile.title, lang)}`;
 
 /**
  * The hero readout has to be defensible in an interview, so the numbers come
@@ -250,7 +250,7 @@ const liveCount = projects.filter((p) => p.status === 'live').length;
               <span class="when">
                 {COARSE_TIMELINE_DATES
                   ? e.yearsOnly
-                  : `${e.from} — ${e.to === 'Present' ? t(presentLabel, lang) : e.to}`}
+                  : `${e.from} to ${e.to === 'Present' ? t(presentLabel, lang) : e.to}`}
               </span>
               <span class="what">
                 <strong>{t(e.role, lang)}</strong>
@@ -944,7 +944,7 @@ const liveCount = projects.filter((p) => p.status === 'live').length;
 
   .contact-id { display: flex; align-items: center; gap: 0.9rem; }
 
-  /* Portrait beside the contact heading — a face where someone decides to write. */
+  /* Portrait beside the contact heading, a face where someone decides to write. */
   .portrait {
     width: 72px;
     height: 72px;

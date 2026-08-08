@@ -1,9 +1,9 @@
 ---
 /**
- * AURORA — soft light, hard evidence.
+ * AURORA, soft light, hard evidence.
  *
  * The premium-product register: an animated mesh gradient, frosted panels,
- * generous space. The argument is implicit — this looks like a finished
+ * generous space. The argument is implicit, this looks like a finished
  * product, and the person who made it builds finished products.
  *
  * The gradient is drawn on a canvas at low resolution and scaled up, which is
@@ -37,7 +37,7 @@ const indexHref = path(base, lang);
 
 <Base
   lang={lang}
-  title={`${profile.name} — ${t(profile.title, lang)}`}
+  title={`${profile.name}, ${t(profile.title, lang)}`}
   description={t(profile.summary, lang)}
   slug="aurora"
   themeColor="#0B0A16"
@@ -184,7 +184,7 @@ const indexHref = path(base, lang);
               <span class="when">
                 {COARSE_TIMELINE_DATES
                   ? e.yearsOnly
-                  : `${e.from} — ${e.to === 'Present' ? t(presentLabel, lang) : e.to}`}
+                  : `${e.from} to ${e.to === 'Present' ? t(presentLabel, lang) : e.to}`}
               </span>
               <span class="what">
                 <strong>{t(e.role, lang)}</strong>
@@ -524,7 +524,7 @@ const indexHref = path(base, lang);
 
   .contact-id { display: flex; align-items: center; gap: 0.9rem; }
 
-  /* Portrait beside the contact heading — a face where someone decides to write. */
+  /* Portrait beside the contact heading, a face where someone decides to write. */
   .portrait {
     width: 72px;
     height: 72px;

@@ -27,12 +27,12 @@ export const timeline: TimelineEntry[] = [
   {
     from: 'Jul 2021',
     to: 'Present',
-    yearsOnly: '2021 —',
+    yearsOnly: '2021 -',
     role: { en: 'Full-Stack Engineer', es: 'Ingeniero Full-Stack' },
     org: 'Level60 Consulting',
     detail: {
-      en: 'Microsoft enterprise integration for corporate clients — identity, Teams and reporting across tenants.',
-      es: 'Integración empresarial con Microsoft para clientes corporativos — identidad, Teams y reportería entre tenants.',
+      en: 'Microsoft enterprise integration for corporate clients: identity, Teams and reporting across tenants.',
+      es: 'Integración empresarial con Microsoft para clientes corporativos: identidad, Teams y reportería entre tenants.',
     },
     highlights: {
       en: [
@@ -40,14 +40,14 @@ export const timeline: TimelineEntry[] = [
         'Implemented single sign-on through Entra ID and ADFS across client tenants.',
         'Led the migration research when Microsoft retired the TeamworkDevice endpoint, establishing what the replacement surface could and could not do before any code changed.',
         'Diagnosed and remediated Azure SQL quota exhaustion on large archive tables.',
-        'Set and announced branch-protection policy for the team — required review before merge, PR-only on main and develop.',
+        'Set and announced branch-protection policy for the team, required review before merge, PR-only on main and develop.',
       ],
       es: [
         'Construí y mantuve integraciones con Microsoft Graph y la API de Teams, además de servicios en Azure Functions sobre Azure SQL.',
         'Implementé inicio de sesión único con Entra ID y ADFS entre tenants de clientes.',
         'Dirigí la investigación de migración cuando Microsoft retiró el endpoint TeamworkDevice, estableciendo qué podía y qué no la nueva superficie antes de tocar el código.',
         'Diagnostiqué y resolví el agotamiento de cuota en Azure SQL sobre tablas de archivo grandes.',
-        'Definí y comuniqué al equipo la política de protección de ramas — revisión obligatoria antes de mergear, solo PRs en main y develop.',
+        'Definí y comuniqué al equipo la política de protección de ramas, revisión obligatoria antes de mergear, solo PRs en main y develop.',
       ],
     },
     kind: 'work',
@@ -55,8 +55,8 @@ export const timeline: TimelineEntry[] = [
   {
     from: '2021',
     to: 'Present',
-    yearsOnly: '2021 —',
-    role: { en: 'Independent engineer — own products', es: 'Ingeniero independiente — productos propios' },
+    yearsOnly: '2021 -',
+    role: { en: 'Independent engineer, own products', es: 'Ingeniero independiente, productos propios' },
     org: 'Own products and direct contracts',
     detail: {
       en: 'Four products of my own, taken end to end alongside the Level60 work.',
@@ -64,15 +64,15 @@ export const timeline: TimelineEntry[] = [
     },
     highlights: {
       en: [
-        'Shipped Luxura to Google Play production alone — build, infrastructure, payments, moderation, store release and the ad campaigns.',
+        'Shipped Luxura to Google Play production alone: build, infrastructure, payments, moderation, store release and the ad campaigns.',
         'Moved off managed platforms onto a single VPS I operate, cutting hosting cost and taking back control of the database and the background workers.',
-        'Ran paid acquisition personally across Meta, TikTok and Google — campaign structure, creative, attribution and the cost per acquired user.',
+        'Ran paid acquisition personally across Meta, TikTok and Google, campaign structure, creative, attribution and the cost per acquired user.',
         'Delivered growth and measurement strategy as a contract engagement for a medical marketplace.',
       ],
       es: [
-        'Publiqué Luxura en producción en Google Play yo solo — build, infraestructura, pagos, moderación, release y campañas.',
+        'Publiqué Luxura en producción en Google Play yo solo: build, infraestructura, pagos, moderación, release y campañas.',
         'Salí de las plataformas administradas hacia un único VPS que opero yo, bajando el costo de hosting y recuperando el control de la base de datos y los workers.',
-        'Manejé la pauta personalmente en Meta, TikTok y Google — estructura de campañas, creativos, atribución y costo por usuario adquirido.',
+        'Manejé la pauta personalmente en Meta, TikTok y Google, estructura de campañas, creativos, atribución y costo por usuario adquirido.',
         'Entregué estrategia de crecimiento y medición como contrato para un marketplace médico.',
       ],
     },
@@ -81,30 +81,30 @@ export const timeline: TimelineEntry[] = [
   {
     from: 'Jul 2020',
     to: 'Feb 2021',
-    yearsOnly: '2020 — 2021',
+    yearsOnly: '2020-2021',
     role: { en: 'Full-Stack Developer', es: 'Desarrollador Full-Stack' },
     org: 'Gara Group Inc.',
     detail: {
-      en: 'Remote from Cúcuta for a Florida software firm — my first US client.',
-      es: 'Remoto desde Cúcuta para una firma de software en Florida — mi primer cliente en EE. UU.',
+      en: 'Remote from Cúcuta for a Florida software firm, my first US client.',
+      es: 'Remoto desde Cúcuta para una firma de software en Florida, mi primer cliente en EE. UU.',
     },
     highlights: {
       /*
        * Gara Group, Inc. is a real firm in Sunrise, Florida that builds
-       * platforms for direct-sales and network-marketing companies —
+       * platforms for direct-sales and network-marketing companies -
        * distributor back-offices, replicated customer-facing sites, and
        * corporate operations. That matches Henry's description of the work.
        *
        * TODO(henry): the Laravel and Vue stack is your recollection, prefaced
        * with "I think". Confirm before this goes to a recruiter, and add one
-       * concrete thing you shipped — this is still the thinnest role here.
+       * concrete thing you shipped, this is still the thinnest role here.
        */
       en: [
-        'Built web applications for a firm specialising in direct-sales and network-marketing platforms — distributor back-office, replicated customer-facing sites, and corporate operations.',
+        'Built web applications for a firm specialising in direct-sales and network-marketing platforms, distributor back-office, replicated customer-facing sites, and corporate operations.',
         'Worked in Laravel with Vue on the front end.',
       ],
       es: [
-        'Construí aplicaciones web para una firma especializada en plataformas de venta directa y mercadeo en red — back-office de distribuidores, sitios replicados de cara al cliente y operaciones corporativas.',
+        'Construí aplicaciones web para una firma especializada en plataformas de venta directa y mercadeo en red, back-office de distribuidores, sitios replicados de cara al cliente y operaciones corporativas.',
         'Trabajé en Laravel con Vue en el front end.',
       ],
     },
@@ -113,7 +113,7 @@ export const timeline: TimelineEntry[] = [
   {
     from: '2016',
     to: '2017',
-    yearsOnly: '2016 — 2017',
+    yearsOnly: '2016-2017',
     role: { en: 'Full Stack certification', es: 'Certificación Full Stack' },
     org: 'freeCodeCamp',
     kind: 'education',
@@ -121,9 +121,9 @@ export const timeline: TimelineEntry[] = [
   {
     from: '2014',
     to: '2016',
-    yearsOnly: '2014 — 2016',
+    yearsOnly: '2014-2016',
     role: { en: 'Ingeniería Informática', es: 'Ingeniería Informática' },
-    org: 'UNET — Universidad Nacional Experimental del Táchira',
+    org: 'UNET, Universidad Nacional Experimental del Táchira',
     kind: 'education',
   },
 ];

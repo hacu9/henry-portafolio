@@ -99,7 +99,7 @@ const repos = [...new Set(entries.map((e) => e.repo))];
 
 <Base
   lang={lang}
-  title={`${profile.name} — ${t(profile.title, lang)}`}
+  title={`${profile.name}, ${t(profile.title, lang)}`}
   description={t(profile.summary, lang)}
   slug="log"
   themeColor="#0B0F0D"
@@ -142,7 +142,7 @@ const repos = [...new Set(entries.map((e) => e.repo))];
     <!-- ======================================================= LOG -->
     <section id="work" class="log-wrap">
       <div class="log-head">
-        <p class="k">{t(ui.work, lang)} — {entries.length}</p>
+        <p class="k">{t(ui.work, lang)}, {entries.length}</p>
         <div class="filters" role="group" aria-label={t(ui.work, lang)}>
           <button class="f on" data-filter="all" type="button">
             all <span>{entries.length}</span>
@@ -191,7 +191,7 @@ const repos = [...new Set(entries.map((e) => e.repo))];
           ))
         }
       </ol>
-      <p class="empty" hidden>—</p>
+      <p class="empty" hidden>-</p>
     </section>
 
     <!-- ===================================================== STACK -->
@@ -221,7 +221,7 @@ const repos = [...new Set(entries.map((e) => e.repo))];
               <span class="when">
                 {COARSE_TIMELINE_DATES
                   ? e.yearsOnly
-                  : `${e.from} — ${e.to === 'Present' ? t(presentLabel, lang) : e.to}`}
+                  : `${e.from} to ${e.to === 'Present' ? t(presentLabel, lang) : e.to}`}
               </span>
               <span class="what">
                 <strong>{t(e.role, lang)}</strong>
@@ -733,7 +733,7 @@ const repos = [...new Set(entries.map((e) => e.repo))];
 
   .contact-id { display: flex; align-items: center; gap: 0.9rem; }
 
-  /* Portrait beside the contact heading — a face where someone decides to write. */
+  /* Portrait beside the contact heading, a face where someone decides to write. */
   .portrait {
     width: 72px;
     height: 72px;
@@ -775,7 +775,7 @@ const repos = [...new Set(entries.map((e) => e.repo))];
 
 <script>
   // Two independent filters over the same stream: entry kind and project.
-  // Filtering happens in the DOM — the whole log is already on the page, so
+  // Filtering happens in the DOM, the whole log is already on the page, so
   // there is nothing to fetch and it works with the network off.
   const rows = Array.from(document.querySelectorAll<HTMLLIElement>('.log .row'));
   const kindBtns = Array.from(document.querySelectorAll<HTMLButtonElement>('[data-filter]'));

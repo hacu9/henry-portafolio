@@ -73,4 +73,66 @@ export const variants: Variant[] = [
     accent: '#186B52',
     accentDark: '#4FC79B',
   },
+
+  /* ------------------------------------------------------ second round -- */
+  {
+    slug: 'darkroom',
+    name: { en: 'Darkroom', es: 'Cuarto Oscuro' },
+    tagline: { en: 'Lit only where you look', es: 'Iluminado solo donde miras' },
+    argues: {
+      en: 'Look closer. It holds up.',
+      es: 'Mira de cerca. Aguanta.',
+    },
+    bestFor: {
+      en: 'Studios and design-led product teams',
+      es: 'Estudios y equipos con foco en producto',
+    },
+    accent: '#8A6A2F',
+    accentDark: '#E8B23F',
+  },
+  {
+    slug: 'atlas',
+    name: { en: 'Atlas', es: 'Atlas' },
+    tagline: { en: 'Travel sideways through the work', es: 'Recorre el trabajo de lado' },
+    argues: {
+      en: 'Every project is a place I went.',
+      es: 'Cada proyecto es un lugar donde estuve.',
+    },
+    bestFor: {
+      en: 'Anyone who will actually explore',
+      es: 'Quien de verdad va a explorar',
+    },
+    accent: '#1E5FA8',
+    accentDark: '#6FB3F2',
+  },
+  {
+    slug: 'terminal',
+    name: { en: 'Terminal', es: 'Terminal' },
+    tagline: { en: 'The site boots', es: 'El sitio arranca' },
+    argues: {
+      en: 'I live in this environment.',
+      es: 'Yo vivo en este entorno.',
+    },
+    bestFor: {
+      en: 'Engineers, infra and developer-tool teams',
+      es: 'Ingenieros, infra y equipos de herramientas',
+    },
+    accent: '#0F7B4A',
+    accentDark: '#3DDC84',
+  },
+  {
+    slug: 'press',
+    name: { en: 'Press', es: 'Press' },
+    tagline: { en: 'Swiss grid, printed loud', es: 'Retícula suiza, impresa fuerte' },
+    argues: {
+      en: 'The work is the headline.',
+      es: 'El trabajo es el titular.',
+    },
+    bestFor: {
+      en: 'Founders and agencies who scan fast',
+      es: 'Fundadores y agencias que escanean rápido',
+    },
+    accent: '#C22118',
+    accentDark: '#FF6152',
+  },
 ];

@@ -1,0 +1,85 @@
+---
+import type { Lang } from '../i18n/types';
+import { OTHER_LANG, path } from '../i18n/types';
+
+interface Props {
+  lang: Lang;
+  title: string;
+  description: string;
+  /** Variant slug, or undefined on the chooser. Used for the alternate link. */
+  slug?: string;
+  /** Theme colour for the browser chrome. */
+  themeColor?: string;
+}
+
+const { lang, title, description, slug, themeColor = '#0C1017' } = Astro.props;
+
+const base = import.meta.env.BASE_URL;
+const altLang = OTHER_LANG[lang];
+const canonical = new URL(path(base, lang, slug ?? ''), Astro.site);
+const alternate = new URL(path(base, altLang, slug ?? ''), Astro.site);
+---
+
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="theme-color" content={themeColor} />
+    <link rel="canonical" href={canonical.href} />
+    <link rel="alternate" hreflang={altLang} href={alternate.href} />
+    <link rel="alternate" hreflang={lang} href={canonical.href} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="profile" />
+    <meta property="og:locale" content={lang === 'es' ? 'es_CO' : 'en_US'} />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ctext y='26' font-size='26'%3E%E2%97%89%3C/text%3E%3C/svg%3E"
+    />
+
+    <!-- Restore the saved theme before first paint so the page never flashes. -->
+    <script is:inline>
+      (function () {
+        try {
+          var t = localStorage.getItem('hc-theme');
+          if (t === 'dark' || t === 'light') {
+            document.documentElement.setAttribute('data-theme', t);
+          }
+        } catch (e) {
+          /* private mode: fall back to prefers-color-scheme */
+        }
+      })();
+    </script>
+  </head>
+  <body>
+    <slot />
+
+    <script is:inline>
+      // Theme toggle. Every variant renders a [data-theme-toggle] button.
+      (function () {
+        var root = document.documentElement;
+        function current() {
+          var set = root.getAttribute('data-theme');
+          if (set) return set;
+          return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        }
+        document.querySelectorAll('[data-theme-toggle]').forEach(function (b) {
+          b.addEventListener('click', function () {
+            var next = current() === 'dark' ? 'light' : 'dark';
+            root.setAttribute('data-theme', next);
+            try {
+              localStorage.setItem('hc-theme', next);
+            } catch (e) {
+              /* nothing to persist to */
+            }
+            b.setAttribute('aria-pressed', String(next === 'dark'));
+          });
+          b.setAttribute('aria-pressed', String(current() === 'dark'));
+        });
+      })();
+    </script>
+  </body>
+</html>

@@ -1,0 +1,274 @@
+---
+import Base from '../../layouts/Base.astro';
+import { LANGS, t, OTHER_LANG, LANG_LABEL, path } from '../../i18n/types';
+import type { Lang } from '../../i18n/types';
+import { ui } from '../../i18n/ui';
+import { profile } from '../../data/profile';
+import { variants } from '../../data/variants';
+import '../../styles/reset.css';
+
+export function getStaticPaths() {
+  return LANGS.map((lang) => ({ params: { lang } }));
+}
+
+const lang = Astro.params.lang as Lang;
+const base = import.meta.env.BASE_URL;
+const other = OTHER_LANG[lang];
+const altHref = path(base, other);
+const link = (slug: string) => path(base, lang, slug);
+---
+
+<Base
+  lang={lang}
+  title={`${profile.name} — ${t(ui.chooserTitle, lang)}`}
+  description={t(ui.chooserLede, lang)}
+  themeColor="#0C1017"
+>
+  <a class="skip" href="#main">{t(ui.skipToContent, lang)}</a>
+
+  <div class="page">
+    <header class="top">
+      <span class="mark">{profile.name}</span>
+      <div class="tools">
+        <a class="lang" href={altHref} hreflang={other} lang={other}>{LANG_LABEL[other]}</a>
+        <button class="tog" data-theme-toggle type="button">
+          <span class="visually-hidden">{t(ui.toggleTheme, lang)}</span>
+          <span aria-hidden="true">◐</span>
+        </button>
+      </div>
+    </header>
+
+    <main id="main">
+      <p class="eyebrow">{t(ui.chooserEyebrow, lang)}</p>
+      <h1>{t(ui.chooserTitle, lang)}</h1>
+      <p class="lede">{t(ui.chooserLede, lang)}</p>
+
+      <ul class="cards">
+        {
+          variants.map((v) => (
+            <li style={`--a:${v.accent};--ad:${v.accentDark}`}>
+              <a href={link(v.slug)}>
+                <span class="swatch" aria-hidden="true" />
+                <span class="name">{t(v.name, lang)}</span>
+                <span class="tag">{t(v.tagline, lang)}</span>
+                <span class="rows">
+                  <span>
+                    <b>{t(ui.argues, lang)}</b>
+                    {t(v.argues, lang)}
+                  </span>
+                  <span>
+                    <b>{t(ui.bestFor, lang)}</b>
+                    {t(v.bestFor, lang)}
+                  </span>
+                </span>
+                <span class="go">{t(ui.openVersion, lang)} →</span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+
+      <p class="note">{t(ui.builtNote, lang)} {t(ui.reducedMotionNote, lang)}</p>
+    </main>
+  </div>
+</Base>
+
+<style>
+  :root {
+    --ground: #e9ebef;
+    --raise: #f5f6f8;
+    --ink: #10151d;
+    --ink-2: #3a4453;
+    --dim: #6b7787;
+    --line: #c9cfd8;
+    --focus: #10151d;
+    --sans: system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    --mono: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --ground: #0c1017;
+      --raise: #131924;
+      --ink: #d8dee7;
+      --ink-2: #a3aebe;
+      --dim: #6b7787;
+      --line: #232c3a;
+      --focus: #d8dee7;
+    }
+  }
+  :global(:root[data-theme='dark']) {
+    --ground: #0c1017;
+    --raise: #131924;
+    --ink: #d8dee7;
+    --ink-2: #a3aebe;
+    --dim: #6b7787;
+    --line: #232c3a;
+    --focus: #d8dee7;
+  }
+  :global(:root[data-theme='light']) {
+    --ground: #e9ebef;
+    --raise: #f5f6f8;
+    --ink: #10151d;
+    --ink-2: #3a4453;
+    --dim: #6b7787;
+    --line: #c9cfd8;
+    --focus: #10151d;
+  }
+
+  :global(body) {
+    background: var(--ground);
+    color: var(--ink);
+    font-family: var(--sans);
+    line-height: 1.6;
+  }
+
+  .page {
+    max-width: 62rem;
+    margin-inline: auto;
+    padding: 1rem clamp(1.15rem, 4vw, 2.5rem) 4rem;
+  }
+  .top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    padding-block: 0.8rem 3rem;
+  }
+  .mark,
+  .lang,
+  .tog {
+    font-family: var(--mono);
+    font-size: 0.6875rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  .mark {
+    font-weight: 600;
+  }
+  .tools {
+    display: flex;
+    gap: 0.6rem;
+  }
+  .lang,
+  .tog {
+    color: var(--dim);
+    text-decoration: none;
+    border: 1px solid var(--line);
+    padding: 0.2rem 0.5rem;
+  }
+  .lang:hover,
+  .tog:hover {
+    color: var(--ink);
+  }
+
+  .eyebrow {
+    font-family: var(--mono);
+    font-size: 0.6875rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--dim);
+  }
+  h1 {
+    font-size: clamp(1.9rem, 5vw, 3rem);
+    line-height: 1.1;
+    letter-spacing: -0.025em;
+    font-weight: 600;
+    text-wrap: balance;
+    margin-top: 0.6rem;
+  }
+  .lede {
+    color: var(--ink-2);
+    max-width: 44rem;
+    margin-top: 1rem;
+    font-size: 1.02rem;
+  }
+
+  .cards {
+    display: grid;
+    gap: 1rem;
+    margin-top: 2.5rem;
+  }
+  /* Each card carries its own --a / --ad inline; pick the one that matches
+     the active theme here, where both are actually in scope. */
+  .cards li {
+    --accent: var(--a);
+  }
+  @media (prefers-color-scheme: dark) {
+    .cards li {
+      --accent: var(--ad);
+    }
+  }
+  :global(:root[data-theme='dark']) .cards li {
+    --accent: var(--ad);
+  }
+  :global(:root[data-theme='light']) .cards li {
+    --accent: var(--a);
+  }
+  @media (min-width: 760px) {
+    .cards {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  .cards a {
+    display: grid;
+    gap: 0.55rem;
+    text-decoration: none;
+    border: 1px solid var(--line);
+    background: var(--raise);
+    padding: 1.2rem 1.3rem;
+    height: 100%;
+    align-content: start;
+    transition: border-color 0.18s ease, transform 0.18s ease;
+  }
+  .cards a:hover {
+    border-color: var(--accent);
+    transform: translateY(-2px);
+  }
+  .swatch {
+    height: 4px;
+    width: 3rem;
+    background: var(--accent);
+  }
+  .name {
+    font-size: 1.35rem;
+    font-weight: 650;
+    letter-spacing: -0.015em;
+  }
+  .tag {
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    color: var(--dim);
+  }
+  .rows {
+    display: grid;
+    gap: 0.35rem;
+    margin-top: 0.5rem;
+    padding-top: 0.7rem;
+    border-top: 1px solid var(--line);
+    font-size: 0.875rem;
+    color: var(--ink-2);
+  }
+  .rows b {
+    display: block;
+    font-family: var(--mono);
+    font-size: 0.625rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--dim);
+    font-weight: 500;
+  }
+  .go {
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    color: var(--accent);
+    margin-top: 0.4rem;
+  }
+
+  .note {
+    margin-top: 2.5rem;
+    font-family: var(--mono);
+    font-size: 0.6875rem;
+    color: var(--dim);
+    letter-spacing: 0.04em;
+  }
+</style>

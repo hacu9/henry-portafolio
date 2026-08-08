@@ -1,0 +1,935 @@
+---
+import Base from '../../../layouts/Base.astro';
+import { LANGS, t, tl, OTHER_LANG, LANG_LABEL, path } from '../../../i18n/types';
+import type { Lang } from '../../../i18n/types';
+import { ui } from '../../../i18n/ui';
+import { profile } from '../../../data/profile';
+import { leadProjects, supportingProjects, STATUS_LABEL, projectName } from '../../../data/projects';
+import { stackGroups } from '../../../data/stack';
+import { timeline, presentLabel } from '../../../data/timeline';
+import { COARSE_TIMELINE_DATES } from '../../../data/config';
+import '../../../styles/reset.css';
+
+export function getStaticPaths() {
+  return LANGS.map((lang) => ({ params: { lang } }));
+}
+
+const lang = Astro.params.lang as Lang;
+const base = import.meta.env.BASE_URL;
+const other = OTHER_LANG[lang];
+const altHref = path(base, other, 'deep-field');
+const indexHref = path(base, lang);
+---
+
+<Base
+  lang={lang}
+  title={`${profile.name} — ${t(profile.title, lang)}`}
+  description={t(profile.positioning, lang)}
+  slug="deep-field"
+  themeColor="#08070F"
+>
+  <a class="skip" href="#main">{t(ui.skipToContent, lang)}</a>
+
+  <header class="bar">
+    <a class="mark" href={indexHref}>{profile.name}</a>
+    <nav>
+      <a href="#work">{t(ui.work, lang)}</a>
+      <a href="#approach">{t(ui.about, lang)}</a>
+      <a href="#contact">{t(ui.contact, lang)}</a>
+    </nav>
+    <div class="tools">
+      <a href={altHref} hreflang={other} lang={other}>{LANG_LABEL[other]}</a>
+      <button data-theme-toggle type="button">
+        <span class="visually-hidden">{t(ui.toggleTheme, lang)}</span>
+        <span aria-hidden="true">◐</span>
+      </button>
+    </div>
+  </header>
+
+  <main id="main">
+    <!-- ============================================ HERO / THE OBJECT -->
+    <section class="stage">
+      <canvas id="field" aria-hidden="true"></canvas>
+      <div class="stage-copy">
+        <p class="kicker">
+          {t(profile.title, lang)} — {t(profile.experience, lang)}
+        </p>
+        <h1>{profile.name}</h1>
+        <p class="stage-lede">{t(profile.positioning, lang)}</p>
+        <p class="place">{t(profile.location, lang)} · {t(profile.workingStyle, lang)}</p>
+      </div>
+      <div class="scroll-hint" aria-hidden="true"><span></span></div>
+    </section>
+
+    <!-- ================================================== APPROACH -->
+    <section id="approach" class="hold">
+      <div class="rail">
+        <p class="kicker">{t(ui.howIWork, lang)}</p>
+      </div>
+      <div class="col">
+        <h2 class="display">{t(profile.thesis.lead, lang)}</h2>
+        {tl(profile.thesis.body, lang).map((p) => <p class="lede">{p}</p>)}
+        <p class="counter">
+          <span class="kicker">{t(ui.theTradeoff, lang)}</span>
+          {t(profile.thesis.tradeoff, lang)}
+        </p>
+      </div>
+    </section>
+
+    <!-- ====================================== WORK / INSTALLATIONS -->
+    <section id="work">
+      {
+        leadProjects.map((p, i) => (
+          <article class="inst" data-reveal>
+            <div class="inst-head">
+              <span class="idx" aria-hidden="true">
+                {String(i + 1).padStart(2, '0')}
+              </span>
+              <div>
+                <h2 class="display">{projectName(p, lang)}</h2>
+                <p class="tag">{t(p.tagline, lang)}</p>
+              </div>
+              <span class={`status s-${p.status}`}>{t(STATUS_LABEL[p.status], lang)}</span>
+            </div>
+
+            <div class="inst-body">
+              <div class="beat">
+                <p class="kicker">{t(ui.theProblem, lang)}</p>
+                <p class="lede">{t(p.problem, lang)}</p>
+              </div>
+
+              <div class="beat">
+                <p class="kicker">{t(ui.whatIBuilt, lang)}</p>
+                <ul class="built">
+                  {tl(p.built, lang).map((b) => (
+                    <li>{b}</li>
+                  ))}
+                </ul>
+              </div>
+
+              <div class="beat span">
+                <p class="kicker">
+                  {p.decisions.length > 1 ? t(ui.theDecisions, lang) : t(ui.theDecision, lang)}
+                </p>
+                <div class="calls">
+                  {p.decisions.map((d) => (
+                    <div class="call">
+                      <h3>{t(d.title, lang)}</h3>
+                      <p>{t(d.body, lang)}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div class="beat span">
+                <p class="kicker">{t(ui.theOutcome, lang)}</p>
+                <p class="lede">{t(p.outcome, lang)}</p>
+              </div>
+            </div>
+
+            <ul class="tech">
+              {p.stack.map((s) => (
+                <li>{s}</li>
+              ))}
+            </ul>
+          </article>
+        ))
+      }
+    </section>
+
+    <!-- ================================================ SUPPORTING -->
+    <section class="hold">
+      <div class="rail"><p class="kicker">{t(ui.supportingWork, lang)}</p></div>
+      <div class="col">
+        <div class="minis">
+          {
+            supportingProjects.map((p) => (
+              <article class="mini" data-reveal>
+                <h3>
+                  {projectName(p, lang)}
+                  <span class={`status s-${p.status}`}>{t(STATUS_LABEL[p.status], lang)}</span>
+                </h3>
+                <p class="tag">{t(p.tagline, lang)}</p>
+                <p>{t(p.problem, lang)}</p>
+                <p class="call-inline">
+                  <strong>{t(p.decisions[0].title, lang)}</strong> — {t(p.decisions[0].body, lang)}
+                </p>
+              </article>
+            ))
+          }
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================== STACK -->
+    <section class="hold">
+      <div class="rail"><p class="kicker">{t(ui.whatIUse, lang)}</p></div>
+      <div class="col">
+        {
+          stackGroups.map((g) => (
+            <div class="sgroup">
+              <h3>{t(g.label, lang)}</h3>
+              <ul class="tech flat">
+                {g.items.map((i) => (
+                  <li>{i}</li>
+                ))}
+              </ul>
+              {g.note && <p class="note">{t(g.note, lang)}</p>}
+            </div>
+          ))
+        }
+      </div>
+    </section>
+
+    <!-- ==================================================== RECORD -->
+    <section class="hold">
+      <div class="rail"><p class="kicker">{t(ui.timeline, lang)}</p></div>
+      <div class="col">
+        <ol class="record">
+          {
+            timeline.map((e) => (
+              <li>
+                <span class="when">
+                  {COARSE_TIMELINE_DATES
+                    ? e.yearsOnly
+                    : `${e.from} — ${e.to === 'Present' ? t(presentLabel, lang) : e.to}`}
+                </span>
+                <span class="what">
+                  <strong>{t(e.role, lang)}</strong>
+                  <span>{e.org}</span>
+                  {e.detail && <span class="det">{t(e.detail, lang)}</span>}
+                </span>
+              </li>
+            ))
+          }
+        </ol>
+      </div>
+    </section>
+
+    <!-- =================================================== CONTACT -->
+    <section id="contact" class="close">
+      <p class="kicker">{t(ui.getInTouch, lang)}</p>
+      <h2 class="display big">{t(ui.contactLede, lang)}</h2>
+      <div class="links">
+        <a href={`mailto:${profile.email}`}>{profile.email}</a>
+        <a href={profile.linkedinUrl} rel="me noopener">LinkedIn</a>
+        <a href={profile.githubUrl} rel="me noopener">GitHub</a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="foot">
+    <span>{profile.name} · {t(profile.location, lang)}</span>
+    <a href={indexHref}>{t(ui.backToIndex, lang)}</a>
+  </footer>
+</Base>
+
+<style>
+  :root {
+    --ground: #f4f3f8;
+    --raise: #ffffff;
+    --ink: #14111f;
+    --ink-2: #4a4459;
+    --dim: #7d7691;
+    --line: #d9d5e4;
+    --accent: #6d3bd4;
+    --accent-flat: #8b5cf6;
+    --focus: #6d3bd4;
+
+    --display: 'Iowan Old Style', 'Charter', 'Palatino Linotype', Georgia, serif;
+    --sans: system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    --mono: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace;
+
+    --shell: 68rem;
+    --read: 36rem;
+    --pad: clamp(1.15rem, 4vw, 3rem);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --ground: #08070f;
+      --raise: #100e1b;
+      --ink: #e6e3f0;
+      --ink-2: #a9a2c0;
+      --dim: #6f6889;
+      --line: #211d33;
+      --accent: #a886ff;
+      --accent-flat: #a886ff;
+      --focus: #a886ff;
+    }
+  }
+  :global(:root[data-theme='dark']) {
+    --ground: #08070f;
+    --raise: #100e1b;
+    --ink: #e6e3f0;
+    --ink-2: #a9a2c0;
+    --dim: #6f6889;
+    --line: #211d33;
+    --accent: #a886ff;
+    --accent-flat: #a886ff;
+    --focus: #a886ff;
+  }
+  :global(:root[data-theme='light']) {
+    --ground: #f4f3f8;
+    --raise: #ffffff;
+    --ink: #14111f;
+    --ink-2: #4a4459;
+    --dim: #7d7691;
+    --line: #d9d5e4;
+    --accent: #6d3bd4;
+    --accent-flat: #8b5cf6;
+    --focus: #6d3bd4;
+  }
+
+  :global(body) {
+    background: var(--ground);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 1rem;
+    line-height: 1.68;
+  }
+
+  .kicker {
+    font-family: var(--mono);
+    font-size: 0.6875rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--dim);
+  }
+  .display {
+    font-family: var(--display);
+    font-weight: 400;
+    letter-spacing: -0.02em;
+    line-height: 1.08;
+    text-wrap: balance;
+  }
+  .lede {
+    color: var(--ink-2);
+    max-width: var(--read);
+  }
+  .lede + .lede {
+    margin-top: 0.9rem;
+  }
+
+  /* ------------------------------------------------------------- bar */
+  .bar {
+    position: fixed;
+    inset: 0 0 auto 0;
+    z-index: 50;
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    padding: 0.9rem var(--pad);
+    font-family: var(--mono);
+    font-size: 0.6875rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    mix-blend-mode: difference;
+    color: #fff;
+  }
+  .bar a {
+    text-decoration: none;
+  }
+  .bar .mark {
+    font-weight: 600;
+  }
+  .bar nav {
+    display: flex;
+    gap: 1.1rem;
+    margin-inline-start: auto;
+  }
+  .bar nav a:hover,
+  .bar .tools a:hover {
+    opacity: 0.6;
+  }
+  .bar .tools {
+    display: flex;
+    gap: 0.8rem;
+    align-items: center;
+  }
+  .bar button {
+    color: inherit;
+    font-size: 0.8rem;
+  }
+  @media (max-width: 640px) {
+    .bar nav {
+      display: none;
+    }
+  }
+
+  /* ----------------------------------------------------------- stage */
+  .stage {
+    position: relative;
+    min-height: 100svh;
+    display: grid;
+    align-items: end;
+    overflow: hidden;
+  }
+  #field {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+  .stage-copy {
+    position: relative;
+    max-width: var(--shell);
+    margin-inline: auto;
+    width: 100%;
+    /* Clear the fixed bar at the top, and keep the block off the fold edge. */
+    padding: 5rem var(--pad) clamp(3.5rem, 10vh, 7rem);
+    display: grid;
+    gap: 1rem;
+  }
+  /* The name carries the display size. The positioning sentence is far too
+     long to set at 4rem — it ran twelve lines and pushed past the viewport. */
+  .stage h1 {
+    font-family: var(--display);
+    font-weight: 400;
+    font-size: clamp(3rem, 10vw, 8rem);
+    line-height: 0.94;
+    letter-spacing: -0.035em;
+    text-wrap: balance;
+  }
+  .stage-lede {
+    font-size: clamp(1.05rem, 1.9vw, 1.4rem);
+    line-height: 1.42;
+    color: var(--ink-2);
+    max-width: 34ch;
+    text-wrap: pretty;
+    margin-top: 0.4rem;
+  }
+  .place {
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--dim);
+  }
+  .scroll-hint {
+    position: absolute;
+    left: 50%;
+    bottom: 1.4rem;
+    translate: -50% 0;
+    width: 1px;
+    height: 2.4rem;
+    background: var(--line);
+    overflow: hidden;
+  }
+  .scroll-hint span {
+    position: absolute;
+    inset: 0;
+    background: var(--accent);
+    animation: drop 2.2s ease-in-out infinite;
+  }
+  @keyframes drop {
+    0% {
+      transform: translateY(-100%);
+    }
+    60%,
+    100% {
+      transform: translateY(100%);
+    }
+  }
+
+  /* ------------------------------------------------------ hold/rail */
+  .hold {
+    max-width: var(--shell);
+    margin-inline: auto;
+    padding: clamp(3.5rem, 9vw, 7rem) var(--pad);
+    display: grid;
+    gap: 1.5rem;
+  }
+  @media (min-width: 900px) {
+    .hold {
+      grid-template-columns: 10rem 1fr;
+      gap: 3rem;
+    }
+    .rail {
+      position: sticky;
+      top: 5rem;
+      align-self: start;
+    }
+  }
+  .col {
+    display: grid;
+    gap: 1.6rem;
+    align-content: start;
+  }
+  .col h2 {
+    font-size: clamp(1.7rem, 3.6vw, 2.6rem);
+  }
+  .counter {
+    border-top: 1px solid var(--line);
+    padding-top: 1rem;
+    color: var(--dim);
+    max-width: var(--read);
+    display: grid;
+    gap: 0.4rem;
+    font-size: 0.9375rem;
+  }
+
+  /* ---------------------------------------------------- installations */
+  .inst {
+    max-width: var(--shell);
+    margin-inline: auto;
+    padding: clamp(3rem, 8vw, 6rem) var(--pad);
+    border-top: 1px solid var(--line);
+    display: grid;
+    gap: 2rem;
+  }
+  .inst-head {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 0.5rem 1.25rem;
+    align-items: start;
+  }
+  .idx {
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    color: var(--accent);
+    padding-top: 0.7rem;
+    font-variant-numeric: tabular-nums;
+  }
+  .inst-head h2 {
+    font-size: clamp(2.1rem, 6vw, 3.6rem);
+  }
+  .tag {
+    font-family: var(--mono);
+    font-size: 0.8125rem;
+    color: var(--dim);
+    margin-top: 0.4rem;
+  }
+  .status {
+    grid-column: 2;
+    justify-self: start;
+    font-family: var(--mono);
+    font-size: 0.625rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    border: 1px solid currentColor;
+    padding: 0.12rem 0.4rem;
+  }
+  @media (min-width: 800px) {
+    .inst-head {
+      grid-template-columns: auto 1fr auto;
+    }
+    .status {
+      grid-column: 3;
+      justify-self: end;
+      margin-top: 0.9rem;
+    }
+  }
+  .s-live {
+    color: #2f9e6b;
+  }
+  .s-building {
+    color: var(--accent);
+  }
+  .s-ongoing {
+    color: var(--dim);
+  }
+  .s-delivered {
+    color: var(--dim);
+  }
+
+  .inst-body {
+    display: grid;
+    gap: 2rem;
+  }
+  @media (min-width: 860px) {
+    .inst-body {
+      grid-template-columns: 1fr 1fr;
+      gap: 2.4rem 3rem;
+    }
+    .beat.span {
+      grid-column: 1 / -1;
+    }
+  }
+  .beat {
+    display: grid;
+    gap: 0.7rem;
+    align-content: start;
+  }
+  .built {
+    display: grid;
+    gap: 0.4rem;
+    color: var(--ink-2);
+    max-width: var(--read);
+  }
+  .built li {
+    padding-left: 1.2rem;
+    position: relative;
+  }
+  .built li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.68em;
+    width: 7px;
+    height: 7px;
+    border: 1px solid var(--accent);
+    rotate: 45deg;
+  }
+
+  .calls {
+    display: grid;
+    gap: 1.2rem;
+  }
+  @media (min-width: 860px) {
+    .calls {
+      grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
+    }
+  }
+  .call {
+    background: var(--raise);
+    border: 1px solid var(--line);
+    padding: 1.1rem 1.25rem;
+    display: grid;
+    gap: 0.5rem;
+  }
+  .call h3 {
+    font-family: var(--display);
+    font-size: 1.2rem;
+    font-weight: 400;
+    line-height: 1.25;
+    letter-spacing: -0.01em;
+  }
+  .call p {
+    color: var(--ink-2);
+    font-size: 0.9375rem;
+  }
+
+  .tech {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+  .tech li {
+    font-family: var(--mono);
+    font-size: 0.6875rem;
+    color: var(--dim);
+    border: 1px solid var(--line);
+    padding: 0.15rem 0.45rem;
+    border-radius: 999px;
+  }
+
+  /* --------------------------------------------------------- minis */
+  .minis {
+    display: grid;
+    gap: 1.6rem;
+  }
+  @media (min-width: 760px) {
+    .minis {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  .mini {
+    display: grid;
+    gap: 0.5rem;
+    align-content: start;
+    border-top: 1px solid var(--line);
+    padding-top: 1rem;
+  }
+  .mini h3 {
+    font-family: var(--display);
+    font-weight: 400;
+    font-size: 1.4rem;
+    display: flex;
+    gap: 0.7rem;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  .mini h3 .status {
+    grid-column: auto;
+    margin: 0;
+  }
+  .mini p {
+    color: var(--ink-2);
+    font-size: 0.9375rem;
+  }
+  .call-inline strong {
+    color: var(--ink);
+  }
+
+  /* --------------------------------------------------------- stack */
+  .sgroup {
+    display: grid;
+    gap: 0.7rem;
+    border-top: 1px solid var(--line);
+    padding-top: 1rem;
+  }
+  .sgroup h3 {
+    font-family: var(--mono);
+    font-size: 0.6875rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--accent);
+    font-weight: 500;
+  }
+  .note {
+    color: var(--dim);
+    font-size: 0.875rem;
+    max-width: var(--read);
+  }
+
+  /* -------------------------------------------------------- record */
+  .record {
+    display: grid;
+  }
+  .record li {
+    display: grid;
+    gap: 0.15rem 2rem;
+    padding: 0.9rem 0;
+    border-top: 1px solid var(--line);
+  }
+  @media (min-width: 640px) {
+    .record li {
+      grid-template-columns: 11rem 1fr;
+    }
+  }
+  .when {
+    font-family: var(--mono);
+    font-size: 0.6875rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--dim);
+    font-variant-numeric: tabular-nums;
+    padding-top: 0.25rem;
+  }
+  .what {
+    display: grid;
+    gap: 0.1rem;
+  }
+  .what span {
+    color: var(--ink-2);
+    font-size: 0.9375rem;
+  }
+  .what .det {
+    color: var(--dim);
+    font-size: 0.875rem;
+  }
+
+  /* --------------------------------------------------------- close */
+  .close {
+    max-width: var(--shell);
+    margin-inline: auto;
+    padding: clamp(4rem, 12vw, 9rem) var(--pad);
+    border-top: 1px solid var(--line);
+    display: grid;
+    gap: 1.2rem;
+  }
+  .big {
+    font-size: clamp(2rem, 6vw, 4rem);
+    max-width: 16ch;
+  }
+  .links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    margin-top: 0.8rem;
+    font-family: var(--mono);
+    font-size: 0.875rem;
+  }
+  .links a {
+    color: var(--accent);
+    text-underline-offset: 4px;
+  }
+
+  .foot {
+    max-width: var(--shell);
+    margin-inline: auto;
+    padding: 1.5rem var(--pad) 3rem;
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+    border-top: 1px solid var(--line);
+    font-family: var(--mono);
+    font-size: 0.6875rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--dim);
+  }
+  .foot a {
+    color: var(--accent);
+  }
+
+  /* -------------------------------------------------------- reveal */
+  [data-reveal] {
+    opacity: 0;
+    transform: translateY(18px);
+    transition: opacity 0.7s ease, transform 0.7s cubic-bezier(0.2, 0.9, 0.2, 1);
+  }
+  [data-reveal].seen {
+    opacity: 1;
+    transform: none;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    [data-reveal] {
+      opacity: 1;
+      transform: none;
+    }
+  }
+</style>
+
+<script>
+  // Scroll reveal.
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const targets = document.querySelectorAll('[data-reveal]');
+  if (reduce) {
+    targets.forEach((el) => el.classList.add('seen'));
+  } else {
+    const rio = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => {
+          if (e.isIntersecting) {
+            e.target.classList.add('seen');
+            rio.unobserve(e.target);
+          }
+        });
+      },
+      { rootMargin: '0px 0px -12% 0px' },
+    );
+    targets.forEach((el) => rio.observe(el));
+  }
+
+  // The object. A domain-warped noise field lit from inside, written as a raw
+  // WebGL fragment shader — no library, so the whole hero costs a few KB
+  // instead of the ~600 KB a three.js build would add.
+  const cv = document.getElementById('field') as HTMLCanvasElement | null;
+  const gl = cv?.getContext('webgl', { antialias: false, alpha: false }) ?? null;
+
+  if (cv && gl) {
+    const VS = 'attribute vec2 p;void main(){gl_Position=vec4(p,0.,1.);}';
+    const FS = `precision highp float;
+uniform vec2 u_res;uniform float u_time;uniform vec2 u_mouse;
+uniform vec3 u_bg,u_a,u_b;
+float hash(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453);}
+float noise(vec2 p){vec2 i=floor(p),f=fract(p);f=f*f*(3.-2.*f);
+ return mix(mix(hash(i),hash(i+vec2(1.,0.)),f.x),mix(hash(i+vec2(0.,1.)),hash(i+vec2(1.,1.)),f.x),f.y);}
+float fbm(vec2 p){float v=0.,a=.5;for(int i=0;i<5;i++){v+=a*noise(p);p*=2.03;a*=.5;}return v;}
+void main(){
+ vec2 uv=(gl_FragCoord.xy-.5*u_res)/u_res.y;
+ vec2 m=(u_mouse-.5)*1.1;
+ float t=u_time*.11;
+ vec2 q=vec2(fbm(uv*2.0+t),fbm(uv*2.0+vec2(3.1,1.7)-t));
+ vec2 r=vec2(fbm(uv*2.3+q*1.9+t*1.2+m*.5),fbm(uv*2.3+q*1.9+vec2(8.3,2.8)-t));
+ float f=fbm(uv*1.7+r*1.6);
+ float d=length(uv-m*.28);
+ float sph=smoothstep(.66,.12,d);
+ float sh=f*.95+.10;
+ vec3 col=mix(u_bg,u_a,smoothstep(.22,.88,sh)*sph);
+ col=mix(col,u_b,smoothstep(.52,.97,f*sph)*.62);
+ float rim=smoothstep(.62,.42,d)-smoothstep(.44,.22,d);
+ col+=u_b*rim*.35;
+ col+=u_a*pow(max(0.,1.-d*1.8),7.)*.18;
+ gl_FragColor=vec4(col,1.);
+}`;
+
+    const compile = (type: number, src: string) => {
+      const s = gl.createShader(type)!;
+      gl.shaderSource(s, src);
+      gl.compileShader(s);
+      return s;
+    };
+    const prog = gl.createProgram()!;
+    gl.attachShader(prog, compile(gl.VERTEX_SHADER, VS));
+    gl.attachShader(prog, compile(gl.FRAGMENT_SHADER, FS));
+    gl.linkProgram(prog);
+    gl.useProgram(prog);
+
+    const buf = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 3, -1, -1, 3]), gl.STATIC_DRAW);
+    const loc = gl.getAttribLocation(prog, 'p');
+    gl.enableVertexAttribArray(loc);
+    gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
+
+    const uRes = gl.getUniformLocation(prog, 'u_res');
+    const uTime = gl.getUniformLocation(prog, 'u_time');
+    const uMouse = gl.getUniformLocation(prog, 'u_mouse');
+    const uBg = gl.getUniformLocation(prog, 'u_bg');
+    const uA = gl.getUniformLocation(prog, 'u_a');
+    const uB = gl.getUniformLocation(prog, 'u_b');
+
+    const hexToRgb = (h: string): [number, number, number] => {
+      let s = h.replace('#', '').trim();
+      if (s.length === 3) s = s[0] + s[0] + s[1] + s[1] + s[2] + s[2];
+      const n = parseInt(s, 16);
+      return [((n >> 16) & 255) / 255, ((n >> 8) & 255) / 255, (n & 255) / 255];
+    };
+
+    let bg = '#08070F';
+    let ca = '#A886FF';
+    let cb = '#4CC9F0';
+    const readPalette = () => {
+      const s = getComputedStyle(document.documentElement);
+      bg = s.getPropertyValue('--ground').trim() || bg;
+      ca = s.getPropertyValue('--accent-flat').trim() || ca;
+    };
+    readPalette();
+    new MutationObserver(readPalette).observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['data-theme'],
+    });
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', readPalette);
+
+    let mx = 0.5;
+    let my = 0.5;
+    let tx = 0.5;
+    let ty = 0.5;
+    cv.addEventListener('pointermove', (e) => {
+      const r = cv.getBoundingClientRect();
+      tx = (e.clientX - r.left) / r.width;
+      ty = 1 - (e.clientY - r.top) / r.height;
+    });
+
+    // Mobile GPUs cook on a full-resolution fragment shader; cap the buffer.
+    const cap = window.matchMedia('(max-width: 768px)').matches ? 1 : 1.5;
+
+    let visible = true;
+    new IntersectionObserver((es) => es.forEach((e) => (visible = e.isIntersecting))).observe(cv);
+
+    let time = 0;
+    const draw = () => {
+      if (!visible) {
+        requestAnimationFrame(draw);
+        return;
+      }
+      const dpr = Math.min(window.devicePixelRatio || 1, cap);
+      const rect = cv.getBoundingClientRect();
+      const w = Math.max(1, Math.round(rect.width * dpr));
+      const h = Math.max(1, Math.round(rect.height * dpr));
+      if (cv.width !== w || cv.height !== h) {
+        cv.width = w;
+        cv.height = h;
+      }
+      gl.viewport(0, 0, w, h);
+
+      mx += (tx - mx) * 0.05;
+      my += (ty - my) * 0.05;
+      if (!reduce) time += 1 / 60;
+
+      gl.uniform2f(uRes, w, h);
+      gl.uniform1f(uTime, time);
+      gl.uniform2f(uMouse, mx, my);
+      const [r0, g0, b0] = hexToRgb(bg);
+      const [r1, g1, b1] = hexToRgb(ca);
+      const [r2, g2, b2] = hexToRgb(cb);
+      gl.uniform3f(uBg, r0, g0, b0);
+      gl.uniform3f(uA, r1, g1, b1);
+      gl.uniform3f(uB, r2, g2, b2);
+      gl.drawArrays(gl.TRIANGLES, 0, 3);
+      requestAnimationFrame(draw);
+    };
+    requestAnimationFrame(draw);
+  } else if (cv) {
+    // No WebGL: a CSS gradient stands in so the hero still reads as designed.
+    cv.style.display = 'none';
+    const stage = cv.parentElement;
+    if (stage) {
+      stage.style.background =
+        'radial-gradient(60% 60% at 50% 45%, color-mix(in srgb, var(--accent) 30%, transparent), transparent 70%)';
+    }
+  }
+</script>

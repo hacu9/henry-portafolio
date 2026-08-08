@@ -1,0 +1,721 @@
+---
+import Base from '../../../layouts/Base.astro';
+import { LANGS, t, tl, OTHER_LANG, LANG_LABEL, path } from '../../../i18n/types';
+import type { Lang } from '../../../i18n/types';
+import { ui } from '../../../i18n/ui';
+import { profile } from '../../../data/profile';
+import { projects, projectName } from '../../../data/projects';
+import { stackGroups } from '../../../data/stack';
+import { timeline, presentLabel } from '../../../data/timeline';
+import { COARSE_TIMELINE_DATES } from '../../../data/config';
+import '../../../styles/reset.css';
+
+export function getStaticPaths() {
+  return LANGS.map((lang) => ({ params: { lang } }));
+}
+
+const lang = Astro.params.lang as Lang;
+const base = import.meta.env.BASE_URL;
+const other = OTHER_LANG[lang];
+const altHref = path(base, other, 'log');
+const indexHref = path(base, lang);
+
+/**
+ * The log is one flat stream. Each entry is an artifact of real work, tagged so
+ * the reader can filter to what they care about. Order is newest first.
+ */
+type Kind = 'ship' | 'build' | 'call' | 'ops';
+
+const KIND_LABEL: Record<Kind, { en: string; es: string }> = {
+  ship: { en: 'SHIP', es: 'ENTREGA' },
+  build: { en: 'BUILD', es: 'BUILD' },
+  call: { en: 'CALL', es: 'DECISIÓN' },
+  ops: { en: 'OPS', es: 'OPS' },
+};
+
+interface Entry {
+  kind: Kind;
+  repo: string;
+  when: string;
+  head: string;
+  detail: string;
+  stack: string[];
+}
+
+const entries: Entry[] = [];
+
+for (const p of projects) {
+  const name = projectName(p, lang);
+
+  entries.push({
+    kind: p.status === 'live' ? 'ship' : p.status === 'ongoing' ? 'ops' : 'build',
+    repo: name,
+    when: p.period,
+    head: t(p.tagline, lang),
+    detail: t(p.problem, lang),
+    stack: p.stack,
+  });
+
+  for (const b of tl(p.built, lang)) {
+    entries.push({ kind: 'build', repo: name, when: p.period, head: b, detail: '', stack: [] });
+  }
+
+  for (const d of p.decisions) {
+    entries.push({
+      kind: 'call',
+      repo: name,
+      when: p.period,
+      head: t(d.title, lang),
+      detail: t(d.body, lang),
+      stack: [],
+    });
+  }
+
+  entries.push({
+    kind: p.status === 'live' ? 'ship' : 'ops',
+    repo: name,
+    when: p.period,
+    head: t(ui.theOutcome, lang),
+    detail: t(p.outcome, lang),
+    stack: [],
+  });
+}
+
+const kinds: Kind[] = ['ship', 'build', 'call', 'ops'];
+const counts = Object.fromEntries(
+  kinds.map((k) => [k, entries.filter((e) => e.kind === k).length]),
+) as Record<Kind, number>;
+const repos = [...new Set(entries.map((e) => e.repo))];
+---
+
+<Base
+  lang={lang}
+  title={`${profile.name} — ${t(profile.title, lang)}`}
+  description={t(profile.positioning, lang)}
+  slug="log"
+  themeColor="#0B0F0D"
+>
+  <a class="skip" href="#main">{t(ui.skipToContent, lang)}</a>
+
+  <header class="bar">
+    <a class="mark" href={indexHref}>{profile.name}</a>
+    <span class="sub">{t(profile.title, lang)} · {t(profile.location, lang)}</span>
+    <div class="tools">
+      <a href={altHref} hreflang={other} lang={other}>{LANG_LABEL[other]}</a>
+      <button data-theme-toggle type="button">
+        <span class="visually-hidden">{t(ui.toggleTheme, lang)}</span>
+        <span aria-hidden="true">◐</span>
+      </button>
+    </div>
+  </header>
+
+  <main id="main">
+    <!-- ==================================================== HEADER -->
+    <section class="intro">
+      <h1>{t(profile.positioning, lang)}</h1>
+      <div class="intro-cols">
+        <div>
+          <p class="k">{t(ui.howIWork, lang)}</p>
+          {tl(profile.thesis.body, lang).map((p) => <p class="body">{p}</p>)}
+          <p class="body dim tradeoff">{t(profile.thesis.tradeoff, lang)}</p>
+        </div>
+        <dl class="facts">
+          <div><dt>{t(ui.basedIn, lang)}</dt><dd>{t(profile.location, lang)}</dd></div>
+          <div><dt>{t(ui.yearsShipping, lang)}</dt><dd>{t(profile.experience, lang)}</dd></div>
+          <div><dt>{t(ui.stack, lang)}</dt><dd>TS · Next · RN · PostgreSQL</dd></div>
+          <div><dt>Email</dt><dd><a href={`mailto:${profile.email}`}>{profile.email}</a></dd></div>
+          <div><dt>GitHub</dt><dd><a href={profile.githubUrl} rel="me noopener">{profile.github}</a></dd></div>
+          <div><dt>LinkedIn</dt><dd><a href={profile.linkedinUrl} rel="me noopener">{profile.linkedin}</a></dd></div>
+        </dl>
+      </div>
+    </section>
+
+    <!-- ======================================================= LOG -->
+    <section id="work" class="log-wrap">
+      <div class="log-head">
+        <p class="k">{t(ui.work, lang)} — {entries.length}</p>
+        <div class="filters" role="group" aria-label={t(ui.work, lang)}>
+          <button class="f on" data-filter="all" type="button">
+            all <span>{entries.length}</span>
+          </button>
+          {
+            kinds.map((k) => (
+              <button class={`f f-${k}`} data-filter={k} type="button">
+                {KIND_LABEL[k][lang].toLowerCase()} <span>{counts[k]}</span>
+              </button>
+            ))
+          }
+        </div>
+        <div class="filters repos" role="group">
+          <button class="r on" data-repo="all" type="button">·</button>
+          {repos.map((r) => <button class="r" data-repo={r} type="button">{r}</button>)}
+        </div>
+      </div>
+
+      <ol class="log">
+        {
+          entries.map((e) => (
+            <li class="row" data-kind={e.kind} data-repo={e.repo}>
+              <span class={`kind k-${e.kind}`}>{KIND_LABEL[e.kind][lang]}</span>
+              <span class="repo">{e.repo}</span>
+              <span class="when">{e.when}</span>
+              <span class="msg">
+                <span class="head">{e.head}</span>
+                {e.detail && <span class="detail">{e.detail}</span>}
+                {e.stack.length > 0 && <span class="st">{e.stack.join(' · ')}</span>}
+              </span>
+            </li>
+          ))
+        }
+      </ol>
+      <p class="empty" hidden>—</p>
+    </section>
+
+    <!-- ===================================================== STACK -->
+    <section class="block">
+      <p class="k">{t(ui.whatIUse, lang)}</p>
+      <div class="stack-grid">
+        {
+          stackGroups.map((g) => (
+            <div class="sg">
+              <h2>{t(g.label, lang)}</h2>
+              <p class="items">{g.items.join(' · ')}</p>
+              {g.note && <p class="body dim">{t(g.note, lang)}</p>}
+            </div>
+          ))
+        }
+      </div>
+    </section>
+
+    <!-- ==================================================== RECORD -->
+    <section class="block">
+      <p class="k">{t(ui.timeline, lang)}</p>
+      <ol class="record">
+        {
+          timeline.map((e) => (
+            <li>
+              <span class="when">
+                {COARSE_TIMELINE_DATES
+                  ? e.yearsOnly
+                  : `${e.from} — ${e.to === 'Present' ? t(presentLabel, lang) : e.to}`}
+              </span>
+              <span class="what">
+                <strong>{t(e.role, lang)}</strong>
+                <span>{e.org}</span>
+                {e.detail && <span class="det">{t(e.detail, lang)}</span>}
+              </span>
+            </li>
+          ))
+        }
+      </ol>
+    </section>
+
+    <!-- =================================================== CONTACT -->
+    <section id="contact" class="block close">
+      <p class="k">{t(ui.getInTouch, lang)}</p>
+      <h2>{t(ui.contactLede, lang)}</h2>
+      <p class="links">
+        <a href={`mailto:${profile.email}`}>{profile.email}</a>
+        <a href={profile.linkedinUrl} rel="me noopener">LinkedIn</a>
+        <a href={profile.githubUrl} rel="me noopener">GitHub</a>
+      </p>
+    </section>
+  </main>
+
+  <footer class="foot">
+    <span>{profile.name}</span>
+    <a href={indexHref}>{t(ui.backToIndex, lang)}</a>
+  </footer>
+</Base>
+
+<style>
+  :root {
+    --ground: #f2f4f2;
+    --raise: #ffffff;
+    --ink: #0e1512;
+    --ink-2: #3d4a44;
+    --dim: #6d7c75;
+    --line: #cdd6d1;
+    --line-soft: #dee5e1;
+    --accent: #186b52;
+    --ship: #186b52;
+    --build: #2e6ba8;
+    --call: #9a5a10;
+    --ops: #6d7c75;
+    --focus: #186b52;
+
+    --sans: system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    --mono: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, 'Liberation Mono', monospace;
+
+    --shell: 78rem;
+    --read: 40rem;
+    --pad: clamp(1rem, 3vw, 2.25rem);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --ground: #0b0f0d;
+      --raise: #121816;
+      --ink: #dfe7e3;
+      --ink-2: #a3b0aa;
+      --dim: #6d7c75;
+      --line: #1e2723;
+      --line-soft: #18201d;
+      --accent: #4fc79b;
+      --ship: #4fc79b;
+      --build: #6fa8dc;
+      --call: #d9a441;
+      --ops: #7d8c85;
+      --focus: #4fc79b;
+    }
+  }
+  :global(:root[data-theme='dark']) {
+    --ground: #0b0f0d;
+    --raise: #121816;
+    --ink: #dfe7e3;
+    --ink-2: #a3b0aa;
+    --dim: #6d7c75;
+    --line: #1e2723;
+    --line-soft: #18201d;
+    --accent: #4fc79b;
+    --ship: #4fc79b;
+    --build: #6fa8dc;
+    --call: #d9a441;
+    --ops: #7d8c85;
+    --focus: #4fc79b;
+  }
+  :global(:root[data-theme='light']) {
+    --ground: #f2f4f2;
+    --raise: #ffffff;
+    --ink: #0e1512;
+    --ink-2: #3d4a44;
+    --dim: #6d7c75;
+    --line: #cdd6d1;
+    --line-soft: #dee5e1;
+    --accent: #186b52;
+    --ship: #186b52;
+    --build: #2e6ba8;
+    --call: #9a5a10;
+    --ops: #6d7c75;
+    --focus: #186b52;
+  }
+
+  :global(body) {
+    background: var(--ground);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 0.9375rem;
+    line-height: 1.6;
+  }
+
+  .k {
+    font-family: var(--mono);
+    font-size: 0.625rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--dim);
+  }
+  .body {
+    color: var(--ink-2);
+    max-width: var(--read);
+  }
+  .body + .body {
+    margin-top: 0.7rem;
+  }
+  .dim {
+    color: var(--dim);
+    font-size: 0.875rem;
+  }
+
+  .bar {
+    position: sticky;
+    top: 0;
+    z-index: 30;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.55rem var(--pad);
+    background: color-mix(in srgb, var(--ground) 92%, transparent);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--line);
+    font-family: var(--mono);
+    font-size: 0.625rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+  .bar a {
+    text-decoration: none;
+  }
+  .mark {
+    font-weight: 700;
+  }
+  .bar .sub {
+    color: var(--dim);
+  }
+  @media (max-width: 720px) {
+    .bar .sub {
+      display: none;
+    }
+  }
+  .tools {
+    margin-inline-start: auto;
+    display: flex;
+    gap: 0.8rem;
+    align-items: center;
+    color: var(--dim);
+  }
+  .tools a:hover,
+  .tools button:hover {
+    color: var(--accent);
+  }
+
+  .intro {
+    max-width: var(--shell);
+    margin-inline: auto;
+    padding: clamp(2.5rem, 7vw, 4.5rem) var(--pad) clamp(2rem, 4vw, 3rem);
+    display: grid;
+    gap: 1.8rem;
+  }
+  .intro h1 {
+    font-size: clamp(1.5rem, 3.2vw, 2.35rem);
+    line-height: 1.22;
+    letter-spacing: -0.02em;
+    font-weight: 600;
+    max-width: 30ch;
+    text-wrap: balance;
+  }
+  .intro-cols {
+    display: grid;
+    gap: 2rem;
+  }
+  @media (min-width: 900px) {
+    .intro-cols {
+      grid-template-columns: 1.5fr 1fr;
+    }
+  }
+  .tradeoff {
+    border-top: 1px solid var(--line-soft);
+    padding-top: 0.7rem;
+    margin-top: 0.9rem;
+  }
+  .facts {
+    display: grid;
+    align-content: start;
+    /* Without this the panel stretches to the height of the prose beside it. */
+    align-self: start;
+    border: 1px solid var(--line);
+    background: var(--raise);
+    font-family: var(--mono);
+    font-size: 0.75rem;
+  }
+  .facts div {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.45rem 0.7rem;
+    border-bottom: 1px solid var(--line-soft);
+  }
+  .facts div:last-child {
+    border-bottom: 0;
+  }
+  .facts dt {
+    color: var(--dim);
+  }
+  .facts dd {
+    margin: 0;
+    text-align: right;
+  }
+  .facts a {
+    color: var(--accent);
+  }
+
+  /* -------------------------------------------------------------- log */
+  .log-wrap {
+    max-width: var(--shell);
+    margin-inline: auto;
+    padding: 0 var(--pad) clamp(2rem, 5vw, 3.5rem);
+  }
+  .log-head {
+    display: grid;
+    gap: 0.6rem;
+    padding-block: 0.9rem;
+    border-bottom: 1px solid var(--line);
+    position: sticky;
+    top: 2.1rem;
+    background: color-mix(in srgb, var(--ground) 94%, transparent);
+    backdrop-filter: blur(6px);
+    z-index: 20;
+  }
+  .filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+  }
+  .f,
+  .r {
+    font-family: var(--mono);
+    font-size: 0.625rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--dim);
+    border: 1px solid var(--line);
+    padding: 0.18rem 0.45rem;
+    background: var(--raise);
+  }
+  .f span {
+    opacity: 0.55;
+    font-variant-numeric: tabular-nums;
+  }
+  .f:hover,
+  .r:hover {
+    color: var(--ink);
+    border-color: var(--dim);
+  }
+  .f.on,
+  .r.on {
+    color: var(--ground);
+    background: var(--ink);
+    border-color: var(--ink);
+  }
+  .repos .r {
+    text-transform: none;
+    letter-spacing: 0.02em;
+  }
+
+  .log {
+    display: grid;
+    list-style: none;
+    padding: 0;
+    font-family: var(--mono);
+    font-size: 0.75rem;
+  }
+  .row {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.15rem 0.9rem;
+    padding: 0.55rem 0.2rem;
+    border-bottom: 1px solid var(--line-soft);
+    align-items: start;
+  }
+  @media (min-width: 860px) {
+    .row {
+      grid-template-columns: 4.6rem 10rem 7rem 1fr;
+      gap: 0 1rem;
+    }
+  }
+  .row:hover {
+    background: var(--raise);
+  }
+  .row[hidden] {
+    display: none;
+  }
+  .kind {
+    letter-spacing: 0.1em;
+    font-size: 0.625rem;
+    border-left: 3px solid currentColor;
+    padding-left: 0.4rem;
+    line-height: 1.5;
+  }
+  .k-ship {
+    color: var(--ship);
+  }
+  .k-build {
+    color: var(--build);
+  }
+  .k-call {
+    color: var(--call);
+  }
+  .k-ops {
+    color: var(--ops);
+  }
+  .repo {
+    color: var(--dim);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .row .when {
+    color: var(--dim);
+    font-variant-numeric: tabular-nums;
+    font-size: 0.6875rem;
+  }
+  .msg {
+    display: grid;
+    gap: 0.25rem;
+    min-width: 0;
+  }
+  .head {
+    color: var(--ink);
+  }
+  .detail {
+    font-family: var(--sans);
+    font-size: 0.875rem;
+    color: var(--ink-2);
+    max-width: var(--read);
+    line-height: 1.55;
+  }
+  .msg .st {
+    color: var(--dim);
+    font-size: 0.625rem;
+  }
+  .empty {
+    padding: 2rem 0;
+    text-align: center;
+    color: var(--dim);
+    font-family: var(--mono);
+    font-size: 0.75rem;
+  }
+
+  /* ------------------------------------------------------------ blocks */
+  .block {
+    max-width: var(--shell);
+    margin-inline: auto;
+    padding: clamp(2.5rem, 6vw, 4rem) var(--pad);
+    border-top: 1px solid var(--line);
+    display: grid;
+    gap: 1.2rem;
+  }
+  .stack-grid {
+    display: grid;
+    gap: 1.2rem;
+  }
+  @media (min-width: 800px) {
+    .stack-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  .sg {
+    display: grid;
+    gap: 0.45rem;
+    align-content: start;
+  }
+  .sg h2 {
+    font-family: var(--mono);
+    font-size: 0.625rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--accent);
+    font-weight: 500;
+  }
+  .items {
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    color: var(--ink-2);
+    line-height: 1.9;
+  }
+
+  .record {
+    display: grid;
+    list-style: none;
+    padding: 0;
+  }
+  .record li {
+    display: grid;
+    gap: 0.1rem 1.5rem;
+    padding: 0.7rem 0;
+    border-bottom: 1px solid var(--line-soft);
+  }
+  @media (min-width: 640px) {
+    .record li {
+      grid-template-columns: 11rem 1fr;
+    }
+  }
+  .record .when {
+    font-family: var(--mono);
+    font-size: 0.6875rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--dim);
+    font-variant-numeric: tabular-nums;
+  }
+  .what {
+    display: grid;
+    gap: 0.05rem;
+  }
+  .what span {
+    color: var(--ink-2);
+  }
+  .what .det {
+    color: var(--dim);
+    font-size: 0.875rem;
+  }
+
+  .close h2 {
+    font-size: clamp(1.3rem, 2.6vw, 1.9rem);
+    font-weight: 600;
+    letter-spacing: -0.015em;
+    max-width: 26ch;
+    text-wrap: balance;
+  }
+  .links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.4rem;
+    font-family: var(--mono);
+    font-size: 0.8125rem;
+    margin-top: 0.4rem;
+  }
+  .links a {
+    color: var(--accent);
+    text-underline-offset: 4px;
+  }
+
+  .foot {
+    max-width: var(--shell);
+    margin-inline: auto;
+    padding: 1.4rem var(--pad) 3rem;
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+    border-top: 1px solid var(--line);
+    font-family: var(--mono);
+    font-size: 0.625rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--dim);
+  }
+  .foot a {
+    color: var(--accent);
+  }
+</style>
+
+<script>
+  // Two independent filters over the same stream: entry kind and project.
+  // Filtering happens in the DOM — the whole log is already on the page, so
+  // there is nothing to fetch and it works with the network off.
+  const rows = Array.from(document.querySelectorAll<HTMLLIElement>('.log .row'));
+  const kindBtns = Array.from(document.querySelectorAll<HTMLButtonElement>('[data-filter]'));
+  const repoBtns = Array.from(document.querySelectorAll<HTMLButtonElement>('[data-repo]'));
+  const empty = document.querySelector<HTMLParagraphElement>('.empty');
+
+  let kind = 'all';
+  let repo = 'all';
+
+  const apply = () => {
+    let shown = 0;
+    for (const row of rows) {
+      const okKind = kind === 'all' || row.dataset.kind === kind;
+      const okRepo = repo === 'all' || row.dataset.repo === repo;
+      const show = okKind && okRepo;
+      row.hidden = !show;
+      if (show) shown += 1;
+    }
+    if (empty) empty.hidden = shown > 0;
+  };
+
+  kindBtns.forEach((b) =>
+    b.addEventListener('click', () => {
+      kind = b.dataset.filter || 'all';
+      kindBtns.forEach((o) => o.classList.toggle('on', o === b));
+      apply();
+    }),
+  );
+
+  repoBtns.forEach((b) =>
+    b.addEventListener('click', () => {
+      repo = b.dataset.repo || 'all';
+      repoBtns.forEach((o) => o.classList.toggle('on', o === b));
+      apply();
+    }),
+  );
+</script>

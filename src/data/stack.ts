@@ -27,14 +27,15 @@ export const stackGroups: StackGroup[] = [
      * product behind it. Conflating them would be the easiest lie on the page.
      */
     id: 'method',
-    label: { en: 'How I deliver', es: 'Cómo entrego' },
+    label: { en: 'How I build with AI', es: 'Cómo construyo con IA' },
     items: [
-      'Claude Code', 'OpenAI Codex CLI', 'Spec-driven development',
-      'Adversarial review', 'Context engineering',
+      'Agentic coding loops', 'Multi-model adversarial review', 'Claude Code',
+      'OpenAI Codex CLI', 'Spec-driven development', 'Context engineering',
+      'Subagent orchestration',
     ],
     note: {
-      en: 'I built everything here with AI in the loop, including the app in Play Store production. I run a second model adversarially against my own work, keep the spec matched to the diff that shipped, and treat a confident answer as a claim to verify. That has caught a wrong platform fact, a field-mapping bug hiding behind a zero, and a missed permissions toggle breaking attribution.',
-      es: 'Construí todo esto con IA en el proceso, incluida la app en producción en Play Store. Corro un segundo modelo de forma adversarial contra mi propio trabajo, mantengo la especificación alineada con el diff que salió, y trato una respuesta segura como una afirmación por verificar. Eso detectó un dato de plataforma equivocado, un error de mapeo escondido detrás de un cero, y un permiso que rompía la atribución.',
+      en: 'I build inside agentic loops and gate the output with adversarial review: frontier models from two different labs, each briefed blind so neither ratifies the other, run against my own diffs before anything merges. The spec stays matched to what actually shipped, and a confident answer counts as a claim to verify, not a result. That discipline has caught a wrong platform fact, a field-mapping bug hiding behind a zero, and a missed permissions toggle silently breaking attribution.',
+      es: 'Construyo dentro de bucles agénticos y filtro la salida con revisión adversarial: modelos frontera de dos laboratorios distintos, cada uno informado a ciegas para que ninguno ratifique al otro, corriendo contra mis propios diffs antes de cualquier merge. La especificación se mantiene alineada con lo que realmente salió, y una respuesta segura cuenta como afirmación por verificar, no como resultado. Esa disciplina detectó un dato de plataforma equivocado, un error de mapeo escondido detrás de un cero, y un permiso que rompía la atribución en silencio.',
     },
   },
   {

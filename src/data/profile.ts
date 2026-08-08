@@ -55,8 +55,8 @@ export const profile = {
 
   /** Carries the evidence the headline no longer has room for. */
   lede: {
-    en: 'Eight years of it: Microsoft enterprise integrations, multi-agent AI systems, and an app live on Google Play that I built, host, monetise and still operate. Nothing ships until a second model has tried to break it.',
-    es: 'Ocho años de eso: integraciones empresariales con Microsoft, sistemas de IA multiagente, y una app publicada en Google Play que construí, alojo, monetizo y sigo operando. Nada sale hasta que un segundo modelo intentó romperlo.',
+    en: 'Eight years of it: Microsoft enterprise integrations, multi-agent AI systems, and an app live on Google Play that I built, host, monetise and still operate. I build inside agentic loops and gate every merge with adversarial review — frontier models from two different labs, set against my own diffs.',
+    es: 'Ocho años de eso: integraciones empresariales con Microsoft, sistemas de IA multiagente, y una app publicada en Google Play que construí, alojo, monetizo y sigo operando. Construyo dentro de bucles agénticos y cada merge pasa por revisión adversarial — modelos frontera de dos laboratorios distintos, puestos en contra de mis propios diffs.',
   } as L,
 
   /** Used where a plain description is needed, such as meta tags. */

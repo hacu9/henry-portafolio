@@ -34,19 +34,28 @@ export const profile = {
   thesis: {
     lead: { en: 'The stack is not the skill.', es: 'El stack no es la habilidad.' } as L,
     body: {
+      /*
+       * Restructured after review. The old opener — "my real expertise is
+       * learning new technology quickly and properly, curious about how it
+       * works and disciplined about whether it does the job" — was the
+       * weakest line on the page: self-awarded adjectives with no receipt,
+       * and a sentence every applicant writes.
+       *
+       * Henry's thesis has not changed. It is now demonstrated first and
+       * named second, instead of asserted and then supported.
+       *
+       * The section also no longer ends on ad campaigns. For a hiring
+       * manager the last word should be engineering, so the ads sit mid-list.
+       */
       en: [
-        'My real expertise is learning new technology quickly and properly — curious about how it works, and disciplined about whether it actually does the job.',
-        'Over 8+ years that has meant building things with very little in common: enterprise Microsoft integrations, a multi-agent AI system, a dating app live on the Play Store, a personal-safety platform with real-time alerts. Different domains, different constraints, the same method.',
-        // The previous draft promised "the same method" and never said what it
-        // was. Naming it is what turns the paragraph above into a claim.
-        'The method is specific: watch which number is falling, work out whether the problem belongs to the code or to the vendor underneath it, change the piece that actually controls the outcome, then stay and operate it.',
-        'That is why I own the parts most engineers hand off — infrastructure migrations, release pipelines, payment integration, attribution, and the ad campaigns that bring the users in.',
+        'The method is specific: watch which number is falling, work out whether the problem belongs to the code or to the vendor underneath it, change the piece that controls the outcome, then stay and operate it.',
+        'That is how a domain I have not worked in becomes a product that ships. Over 8+ years it has meant enterprise Microsoft integrations, a multi-agent AI system, a dating app in production and a safety platform with real-time alerts — four things with almost nothing in common.',
+        'It is also why I own the parts most engineers hand off: payment integration, attribution, the ad campaigns that bring the users in, release pipelines, and the infrastructure migration underneath all of it.',
       ],
       es: [
-        'Mi verdadera ventaja es aprender tecnologías nuevas rápido y bien — con curiosidad por cómo funcionan y con criterio para saber si de verdad sirven.',
-        'En 8+ años eso me llevó a construir cosas muy distintas entre sí: integraciones empresariales con Microsoft, un sistema de IA multiagente, una app de citas publicada en Play Store, una plataforma de seguridad personal con alertas en tiempo real. Dominios distintos, restricciones distintas, el mismo método.',
-        'El método es concreto: miro qué número se está cayendo, averiguo si el problema es del código o del proveedor que lo sostiene, cambio la pieza que de verdad lo controla, y me quedo operándolo después.',
-        'Eso significa que me hago cargo de lo que la mayoría delega — migraciones de infraestructura, pipelines de release, integración de pagos, atribución y las campañas que traen a los usuarios.',
+        'El método es concreto: miro qué número se está cayendo, averiguo si el problema es del código o del proveedor que lo sostiene, cambio la pieza que controla el resultado, y me quedo operándolo después.',
+        'Así es como un dominio en el que nunca trabajé termina siendo un producto que sale. En 8+ años eso significó integraciones empresariales con Microsoft, un sistema de IA multiagente, una app de citas en producción y una plataforma de seguridad con alertas en tiempo real — cuatro cosas que casi no se parecen en nada.',
+        'También es la razón por la que me hago cargo de lo que la mayoría delega: integración de pagos, atribución, las campañas que traen usuarios, pipelines de release y la migración de infraestructura debajo de todo eso.',
       ],
     } as LList,
     /**
@@ -69,8 +78,8 @@ export const profile = {
      * is precisely why it is worth saying.
      */
     tradeoff: {
-      en: 'Two things worth saying before you find them yourself. The agentic work is the newest thing here and it is not in production yet — Luxura is what shipped, Mate is the bet. And I have led small teams and collaborated across others, but my depth is in owning delivery end to end, not in managing headcount. If the role is mostly people, someone else has run that further than I have.',
-      es: 'Dos cosas que prefiero decir antes de que las descubras. El trabajo agéntico es lo más nuevo y todavía no está en producción — lo publicado es Luxura, Mate es la apuesta. Y he liderado equipos pequeños y he colaborado en otros, pero mi profundidad está en hacerme cargo de la entrega de punta a punta, no en gestionar personas. Si el rol es sobre todo de gente, alguien más ha llegado más lejos que yo en eso.',
+      en: 'Two things worth saying before you find them yourself. The agentic work is the newest thing here and it is not in production yet — Luxura is what shipped, Mate is the bet. And I lead architecture, technical direction and delivery — I have led small teams and worked across others — but I am not selling headcount management. If the job is mostly org chart, someone else has run that further than I have.',
+      es: 'Dos cosas que prefiero decir antes de que las descubras. El trabajo agéntico es lo más nuevo y todavía no está en producción — lo publicado es Luxura, Mate es la apuesta. Y lidero arquitectura, dirección técnica y entrega — he liderado equipos pequeños y trabajado dentro de otros — pero no vendo gestión de personal. Si el trabajo es sobre todo organigrama, alguien más ha llegado más lejos que yo en eso.',
     } as L,
   },
 

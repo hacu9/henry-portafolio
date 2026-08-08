@@ -1,0 +1,560 @@
+---
+/**
+ * AURORA — soft light, hard evidence.
+ *
+ * The premium-product register: an animated mesh gradient, frosted panels,
+ * generous space. The argument is implicit — this looks like a finished
+ * product, and the person who made it builds finished products.
+ *
+ * The gradient is drawn on a canvas at low resolution and scaled up, which is
+ * how a smooth mesh stays cheap: a 64px buffer costs almost nothing to paint
+ * and the browser's own smoothing does the blending.
+ */
+import Base from '../../../layouts/Base.astro';
+import { LANGS, t, tl, OTHER_LANG, LANG_LABEL, path } from '../../../i18n/types';
+import type { Lang } from '../../../i18n/types';
+import { ui } from '../../../i18n/ui';
+import { profile } from '../../../data/profile';
+import { leadProjects, supportingProjects, STATUS_LABEL, projectName } from '../../../data/projects';
+import { stackGroups } from '../../../data/stack';
+import { timeline, presentLabel } from '../../../data/timeline';
+import { COARSE_TIMELINE_DATES } from '../../../data/config';
+import '../../../styles/reset.css';
+
+export function getStaticPaths() {
+  return LANGS.map((lang) => ({ params: { lang } }));
+}
+
+const lang = Astro.params.lang as Lang;
+const base = import.meta.env.BASE_URL;
+const other = OTHER_LANG[lang];
+const altHref = path(base, other, 'aurora');
+const indexHref = path(base, lang);
+---
+
+<Base
+  lang={lang}
+  title={`${profile.name} — ${t(profile.title, lang)}`}
+  description={t(profile.positioning, lang)}
+  slug="aurora"
+  themeColor="#0B0A16"
+  grain={false}
+  scrollDuration={1.15}
+>
+  <a class="skip" href="#main">{t(ui.skipToContent, lang)}</a>
+  <canvas id="mesh" aria-hidden="true"></canvas>
+
+  <header class="bar glass">
+    <a class="mark" href={indexHref}>{profile.name}</a>
+    <nav>
+      <a href="#work">{t(ui.work, lang)}</a>
+      <a href="#approach">{t(ui.about, lang)}</a>
+      <a href="#contact">{t(ui.contact, lang)}</a>
+    </nav>
+    <div class="tools">
+      <a href={altHref} hreflang={other} lang={other}>{LANG_LABEL[other]}</a>
+      <button data-theme-toggle type="button">
+        <span class="visually-hidden">{t(ui.toggleTheme, lang)}</span>
+        <span aria-hidden="true">◐</span>
+      </button>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="hero">
+      <p class="pill">{t(profile.title, lang)} · {t(profile.experience, lang)}</p>
+      <h1>{t(profile.positioning, lang)}</h1>
+      <ul class="tags">
+        {tl(profile.fitFor, lang).map((f) => <li>{f}</li>)}
+      </ul>
+      <div class="stats glass">
+        <div><b><span data-count="8" data-suffix="+">0</span></b><span>{t(ui.yearsShipping, lang)}</span></div>
+        <div><b><span data-count="4">0</span></b><span>{lang === 'es' ? 'Productos propios' : 'Products built'}</span></div>
+        <div><b><span data-count="1">0</span></b><span>{lang === 'es' ? 'En producción' : 'In production'}</span></div>
+      </div>
+    </section>
+
+    <section id="approach" class="wrap">
+      <p class="eyebrow" data-rise>{t(ui.howIWork, lang)}</p>
+      <div class="panel glass" data-camera>
+        <h2>{t(profile.thesis.lead, lang)}</h2>
+        <div class="cols" data-stagger>
+          {tl(profile.thesis.body, lang).map((p) => <p>{p}</p>)}
+        </div>
+        <p class="caveat">
+          <span class="eyebrow">{t(ui.theTradeoff, lang)}</span>
+          {t(profile.thesis.tradeoff, lang)}
+        </p>
+      </div>
+    </section>
+
+    <section id="work" class="wrap">
+      <p class="eyebrow" data-rise>{t(ui.leadWork, lang)}</p>
+      {
+        leadProjects.map((p) => (
+          <article class="panel glass card spot" data-camera>
+            <div class="card-head">
+              <h2>{projectName(p, lang)}</h2>
+              <span class={`st st-${p.status}`}>{t(STATUS_LABEL[p.status], lang)}</span>
+            </div>
+            <p class="tag">{t(p.tagline, lang)}</p>
+            <div class="beats" data-stagger>
+              <div>
+                <p class="eyebrow">{t(ui.theProblem, lang)}</p>
+                <p>{t(p.problem, lang)}</p>
+              </div>
+              <div>
+                <p class="eyebrow">{t(ui.whatIBuilt, lang)}</p>
+                <ul class="ticks">{tl(p.built, lang).map((b) => <li>{b}</li>)}</ul>
+              </div>
+              <div class="wide">
+                <p class="eyebrow">
+                  {p.decisions.length > 1 ? t(ui.theDecisions, lang) : t(ui.theDecision, lang)}
+                </p>
+                <div class="calls">
+                  {p.decisions.map((d) => (
+                    <div class="call">
+                      <h3>{t(d.title, lang)}</h3>
+                      <p>{t(d.body, lang)}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              <div class="wide">
+                <p class="eyebrow">{t(ui.theOutcome, lang)}</p>
+                <p class="out">{t(p.outcome, lang)}</p>
+              </div>
+            </div>
+            <ul class="chips">{p.stack.map((s) => <li>{s}</li>)}</ul>
+          </article>
+        ))
+      }
+    </section>
+
+    <section class="wrap">
+      <p class="eyebrow" data-rise>{t(ui.supportingWork, lang)}</p>
+      <div class="minis" data-stagger>
+        {
+          supportingProjects.map((p) => (
+            <article class="panel glass mini spot">
+              <h3>
+                {projectName(p, lang)}
+                <span class={`st st-${p.status}`}>{t(STATUS_LABEL[p.status], lang)}</span>
+              </h3>
+              <p class="tag">{t(p.tagline, lang)}</p>
+              <p>{t(p.problem, lang)}</p>
+              <p class="inline-call">
+                <strong>{t(p.decisions[0].title, lang)}.</strong> {t(p.decisions[0].body, lang)}
+              </p>
+            </article>
+          ))
+        }
+      </div>
+    </section>
+
+    <section class="wrap">
+      <p class="eyebrow" data-rise>{t(ui.whatIUse, lang)}</p>
+      <div class="panel glass" data-camera>
+        {
+          stackGroups.map((g) => (
+            <div class="sg">
+              <h3>{t(g.label, lang)}</h3>
+              <ul class="chips">{g.items.map((i) => <li>{i}</li>)}</ul>
+              {g.note && <p class="note">{t(g.note, lang)}</p>}
+            </div>
+          ))
+        }
+      </div>
+    </section>
+
+    <section class="wrap">
+      <p class="eyebrow" data-rise>{t(ui.timeline, lang)}</p>
+      <ol class="record panel glass" data-camera>
+        {
+          timeline.map((e) => (
+            <li>
+              <span class="when">
+                {COARSE_TIMELINE_DATES
+                  ? e.yearsOnly
+                  : `${e.from} — ${e.to === 'Present' ? t(presentLabel, lang) : e.to}`}
+              </span>
+              <span class="what">
+                <strong>{t(e.role, lang)}</strong>
+                <span>{e.org}</span>
+                {e.detail && <span class="det">{t(e.detail, lang)}</span>}
+              </span>
+            </li>
+          ))
+        }
+      </ol>
+    </section>
+
+    <section id="contact" class="wrap">
+      <div class="panel glass close spot" data-camera>
+        <p class="eyebrow">{t(ui.getInTouch, lang)}</p>
+        <h2 class="big">{t(ui.contactLede, lang)}</h2>
+        <p class="links">
+          <a class="btn" href={`mailto:${profile.email}`}>{profile.email}</a>
+          <a href={profile.linkedinUrl} rel="me noopener">LinkedIn</a>
+          <a href={profile.githubUrl} rel="me noopener">GitHub</a>
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="foot">
+    <span>{profile.name} · {t(profile.location, lang)}</span>
+    <a href={indexHref}>{t(ui.backToIndex, lang)}</a>
+  </footer>
+</Base>
+
+<style>
+  :root {
+    --ground: #f6f5fc;
+    --ink: #14122a;
+    --ink-2: #4a4670;
+    --dim: #7b76a0;
+    --line: color-mix(in srgb, #14122a 12%, transparent);
+    --glass: color-mix(in srgb, #ffffff 62%, transparent);
+    --accent: #5b49d6;
+    --focus: #5b49d6;
+    --sans: system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    --mono: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace;
+    --shell: 68rem;
+    --read: 34rem;
+    --pad: clamp(1.15rem, 4vw, 3rem);
+    --r: 18px;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --ground: #0b0a16;
+      --ink: #ecebf7;
+      --ink-2: #b0acd4;
+      --dim: #7b76a0;
+      --line: color-mix(in srgb, #ecebf7 14%, transparent);
+      --glass: color-mix(in srgb, #171531 58%, transparent);
+      --accent: #9c8cff;
+    }
+  }
+  :global(:root[data-theme='dark']) {
+    --ground: #0b0a16;
+    --ink: #ecebf7;
+    --ink-2: #b0acd4;
+    --dim: #7b76a0;
+    --line: color-mix(in srgb, #ecebf7 14%, transparent);
+    --glass: color-mix(in srgb, #171531 58%, transparent);
+    --accent: #9c8cff;
+  }
+  :global(:root[data-theme='light']) {
+    --ground: #f6f5fc;
+    --ink: #14122a;
+    --ink-2: #4a4670;
+    --dim: #7b76a0;
+    --line: color-mix(in srgb, #14122a 12%, transparent);
+    --glass: color-mix(in srgb, #ffffff 62%, transparent);
+    --accent: #5b49d6;
+  }
+
+  :global(body) {
+    background: var(--ground);
+    color: var(--ink);
+    font-family: var(--sans);
+    line-height: 1.62;
+  }
+
+  #mesh {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    opacity: 0.75;
+    filter: blur(0.5px);
+  }
+  main, .bar, .foot { position: relative; z-index: 1; }
+
+  .glass {
+    background: var(--glass);
+    backdrop-filter: blur(20px) saturate(140%);
+    border: 1px solid var(--line);
+  }
+
+  .eyebrow {
+    font-family: var(--mono);
+    font-size: 0.625rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--dim);
+  }
+
+  .bar {
+    position: sticky;
+    top: 0.7rem;
+    z-index: 40;
+    margin: 0.7rem auto 0;
+    max-width: var(--shell);
+    width: calc(100% - 2 * var(--pad));
+    display: flex;
+    align-items: center;
+    gap: 1.2rem;
+    padding: 0.55rem 1rem;
+    border-radius: 999px;
+    font-family: var(--mono);
+    font-size: 0.625rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+  .bar a { text-decoration: none; }
+  .mark { font-weight: 700; }
+  .bar nav { display: flex; gap: 1.1rem; margin-inline-start: auto; }
+  .bar nav a:hover, .tools a:hover, .tools button:hover { color: var(--accent); }
+  .tools { display: flex; gap: 0.8rem; align-items: center; color: var(--dim); }
+  @media (max-width: 680px) { .bar nav { display: none; } .tools { margin-inline-start: auto; } }
+
+  .hero {
+    max-width: var(--shell);
+    margin-inline: auto;
+    padding: clamp(3.5rem, 11vh, 7rem) var(--pad) clamp(2rem, 5vw, 3.5rem);
+    display: grid;
+    gap: 1.5rem;
+  }
+  .pill {
+    justify-self: start;
+    font-family: var(--mono);
+    font-size: 0.625rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--accent);
+    border: 1px solid color-mix(in srgb, var(--accent) 40%, transparent);
+    background: color-mix(in srgb, var(--accent) 10%, transparent);
+    padding: 0.25rem 0.7rem;
+    border-radius: 999px;
+  }
+  /* The positioning sentence runs 34 words. A 22ch measure turned it into
+     eight lines of display type; it needs a reading measure, not a headline
+     measure, until a shorter headline is chosen. */
+  .hero h1 {
+    font-size: clamp(1.5rem, 2.9vw, 2.3rem);
+    line-height: 1.24;
+    letter-spacing: -0.026em;
+    font-weight: 600;
+    max-width: 38ch;
+    margin: 0;
+    text-wrap: pretty;
+  }
+  .tags { display: flex; flex-wrap: wrap; gap: 0.45rem; }
+  .tags li {
+    font-size: 0.8125rem;
+    color: var(--ink-2);
+    border: 1px solid var(--line);
+    padding: 0.22rem 0.7rem;
+    border-radius: 999px;
+  }
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.5rem;
+    border-radius: var(--r);
+    padding: 1.1rem 1.2rem;
+    margin-top: 0.6rem;
+  }
+  .stats div { display: grid; gap: 0.1rem; }
+  .stats b {
+    font-size: clamp(1.5rem, 3.4vw, 2.2rem);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    color: var(--accent);
+    font-variant-numeric: tabular-nums;
+    line-height: 1;
+  }
+  .stats span { font-family: var(--mono); font-size: 0.625rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--dim); }
+
+  .wrap {
+    max-width: var(--shell);
+    margin-inline: auto;
+    padding: clamp(1.5rem, 4vw, 2.5rem) var(--pad);
+    display: grid;
+    gap: 1rem;
+  }
+  .panel { border-radius: var(--r); padding: clamp(1.2rem, 3vw, 2rem); display: grid; gap: 1rem; }
+  .panel h2 {
+    font-size: clamp(1.4rem, 3vw, 2rem);
+    line-height: 1.15;
+    letter-spacing: -0.025em;
+    font-weight: 650;
+    margin: 0;
+  }
+  .cols { display: grid; gap: 1rem; color: var(--ink-2); }
+  @media (min-width: 860px) { .cols { grid-template-columns: repeat(3, 1fr); gap: 1.8rem; } }
+  .caveat {
+    border-top: 1px solid var(--line);
+    padding-top: 0.9rem;
+    color: var(--dim);
+    max-width: 46rem;
+    display: grid;
+    gap: 0.35rem;
+    font-size: 0.9375rem;
+  }
+
+  .card { --spot-color: var(--accent); }
+  .card + .card { margin-top: 1rem; }
+  .card-head { display: flex; align-items: baseline; gap: 1rem; flex-wrap: wrap; }
+  .st {
+    font-family: var(--mono);
+    font-size: 0.5625rem;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+    border: 1px solid currentColor;
+    padding: 0.08rem 0.4rem;
+    border-radius: 999px;
+    white-space: nowrap;
+  }
+  .st-live { color: #2f9e6b; }
+  .st-building { color: var(--accent); }
+  .st-ongoing, .st-delivered { color: var(--dim); }
+  @media (prefers-color-scheme: dark) { .st-live { color: #57d39b; } }
+  .tag { font-family: var(--mono); font-size: 0.6875rem; color: var(--dim); margin-top: -0.5rem; }
+
+  .beats { display: grid; gap: 1.3rem; }
+  @media (min-width: 860px) { .beats { grid-template-columns: 1fr 1fr; gap: 1.5rem 2.4rem; } .beats .wide { grid-column: 1 / -1; } }
+  .beats > div { display: grid; gap: 0.45rem; align-content: start; }
+  .beats p, .beats ul { color: var(--ink-2); max-width: var(--read); }
+  .ticks { display: grid; gap: 0.28rem; list-style: none; padding: 0; }
+  .ticks li { padding-left: 1.1rem; position: relative; }
+  .ticks li::before { content: ''; position: absolute; left: 0; top: 0.6em; width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
+  .calls { display: grid; gap: 1rem; }
+  @media (min-width: 900px) { .calls { grid-template-columns: 1fr 1fr; gap: 1.4rem; } }
+  .call { display: grid; gap: 0.3rem; }
+  .call h3 { font-size: 1rem; font-weight: 650; margin: 0; line-height: 1.3; color: var(--ink); }
+  .out { color: var(--ink) !important; }
+  .chips { display: flex; flex-wrap: wrap; gap: 0.35rem; border-top: 1px solid var(--line); padding-top: 0.9rem; list-style: none; }
+  .chips li { font-family: var(--mono); font-size: 0.625rem; color: var(--dim); border: 1px solid var(--line); padding: 0.15rem 0.5rem; border-radius: 999px; }
+
+  .minis { display: grid; gap: 1rem; }
+  @media (min-width: 820px) { .minis { grid-template-columns: 1fr 1fr; } }
+  .mini { --spot-color: var(--accent); align-content: start; }
+  .mini h3 { font-size: 1.05rem; display: flex; gap: 0.7rem; align-items: center; flex-wrap: wrap; margin: 0; font-weight: 650; }
+  .mini p { color: var(--ink-2); font-size: 0.9rem; }
+  .inline-call strong { color: var(--ink); }
+
+  .sg { display: grid; gap: 0.5rem; }
+  .sg + .sg { border-top: 1px solid var(--line); padding-top: 0.9rem; }
+  .sg h3 { font-family: var(--mono); font-size: 0.625rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent); font-weight: 500; margin: 0; }
+  .sg .chips { border-top: 0; padding-top: 0; }
+  .note { color: var(--dim); font-size: 0.875rem; max-width: var(--read); }
+
+  .record { list-style: none; }
+  .record li { display: grid; gap: 0.1rem 2rem; padding: 0.7rem 0; }
+  .record li + li { border-top: 1px solid var(--line); }
+  @media (min-width: 660px) { .record li { grid-template-columns: 11rem 1fr; } }
+  .when { font-family: var(--mono); font-size: 0.625rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--dim); font-variant-numeric: tabular-nums; padding-top: 0.25rem; }
+  .what { display: grid; gap: 0.05rem; }
+  .what span { color: var(--ink-2); font-size: 0.9375rem; }
+  .what .det { color: var(--dim); font-size: 0.875rem; }
+
+  .close { --spot-color: var(--accent); }
+  .big { font-size: clamp(1.5rem, 3.6vw, 2.4rem); max-width: 22ch; }
+  .links { display: flex; flex-wrap: wrap; gap: 1.2rem; align-items: center; font-family: var(--mono); font-size: 0.875rem; }
+  .links a { color: var(--accent); text-underline-offset: 4px; }
+  .btn {
+    background: var(--accent);
+    color: var(--ground);
+    text-decoration: none;
+    padding: 0.55rem 1.1rem;
+    border-radius: 999px;
+    font-weight: 600;
+  }
+  .btn:hover { filter: brightness(1.08); }
+
+  .foot {
+    max-width: var(--shell);
+    margin-inline: auto;
+    padding: 1.5rem var(--pad) 3rem;
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+    font-family: var(--mono);
+    font-size: 0.625rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--dim);
+  }
+  .foot a { color: var(--accent); }
+</style>
+
+<script>
+  // Mesh gradient. Painted into a tiny buffer and stretched, so the smoothing
+  // is free and the per-frame cost stays trivial even on a phone.
+  const cv = document.getElementById('mesh') as HTMLCanvasElement | null;
+  const ctx = cv?.getContext('2d') ?? null;
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if (cv && ctx) {
+    const W = 64;
+    const H = 64;
+    cv.width = W;
+    cv.height = H;
+
+    type Blob = { x: number; y: number; r: number; vx: number; vy: number; c: string };
+    let blobs: Blob[] = [];
+
+    const readPalette = () => {
+      const s = getComputedStyle(document.documentElement);
+      const accent = s.getPropertyValue('--accent').trim() || '#5B49D6';
+      const dark = document.documentElement.getAttribute('data-theme')
+        ? document.documentElement.getAttribute('data-theme') === 'dark'
+        : window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+      // Two companions either side of the accent keep the mesh from reading as
+      // one flat wash without introducing a second brand colour.
+      const palette = dark
+        ? [accent, '#2B6CB0', '#6B2D8C', '#123047']
+        : [accent, '#8FB8F0', '#E7C7F5', '#CFE3FF'];
+      blobs = palette.map((c, i) => ({
+        x: 0.5 + Math.cos((i / palette.length) * Math.PI * 2) * 0.3,
+        y: 0.5 + Math.sin((i / palette.length) * Math.PI * 2) * 0.3,
+        r: 0.45 + i * 0.05,
+        vx: (i % 2 === 0 ? 1 : -1) * (0.0009 + i * 0.0004),
+        vy: (i % 3 === 0 ? -1 : 1) * (0.0011 + i * 0.0003),
+        c,
+      }));
+    };
+    readPalette();
+    new MutationObserver(readPalette).observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['data-theme'],
+    });
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', readPalette);
+
+    const ground = () =>
+      getComputedStyle(document.documentElement).getPropertyValue('--ground').trim() || '#0B0A16';
+
+    const draw = () => {
+      ctx.fillStyle = ground();
+      ctx.fillRect(0, 0, W, H);
+
+      for (const b of blobs) {
+        if (!reduce) {
+          b.x += b.vx;
+          b.y += b.vy;
+          // Bounce, so the mesh drifts forever without ever leaving frame.
+          if (b.x < 0.15 || b.x > 0.85) b.vx *= -1;
+          if (b.y < 0.15 || b.y > 0.85) b.vy *= -1;
+        }
+        const g = ctx.createRadialGradient(
+          b.x * W, b.y * H, 0,
+          b.x * W, b.y * H, b.r * W,
+        );
+        g.addColorStop(0, b.c);
+        g.addColorStop(1, 'transparent');
+        ctx.globalAlpha = 0.55;
+        ctx.fillStyle = g;
+        ctx.fillRect(0, 0, W, H);
+      }
+      ctx.globalAlpha = 1;
+      requestAnimationFrame(draw);
+    };
+    requestAnimationFrame(draw);
+  }
+</script>

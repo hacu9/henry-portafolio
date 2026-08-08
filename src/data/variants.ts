@@ -135,4 +135,66 @@ export const variants: Variant[] = [
     accent: '#C22118',
     accentDark: '#FF6152',
   },
+
+  /* ------------------------------------------------------- third round -- */
+  {
+    slug: 'dossier',
+    name: { en: 'Dossier', es: 'Expediente' },
+    tagline: { en: 'What I can and cannot show you', es: 'Lo que puedo y no puedo mostrarte' },
+    argues: {
+      en: 'The best work is the work under NDA.',
+      es: 'El mejor trabajo es el que está bajo NDA.',
+    },
+    bestFor: {
+      en: 'Enterprise and consultancy hiring',
+      es: 'Contratación empresarial y de consultoría',
+    },
+    accent: '#8A5A12',
+    accentDark: '#D9A441',
+  },
+  {
+    slug: 'aurora',
+    name: { en: 'Aurora', es: 'Aurora' },
+    tagline: { en: 'Soft light, hard evidence', es: 'Luz suave, evidencia dura' },
+    argues: {
+      en: 'This is a finished product, and so am I.',
+      es: 'Esto es un producto terminado, y yo también.',
+    },
+    bestFor: {
+      en: 'Product companies and modern SaaS teams',
+      es: 'Empresas de producto y equipos SaaS',
+    },
+    accent: '#5B49D6',
+    accentDark: '#9C8CFF',
+  },
+  {
+    slug: 'ledger',
+    name: { en: 'Ledger', es: 'Ledger' },
+    tagline: { en: 'Every decision has a cost', es: 'Cada decisión tiene un costo' },
+    argues: {
+      en: 'I account for what I build.',
+      es: 'Respondo por lo que construyo.',
+    },
+    bestFor: {
+      en: 'Founders who think in unit economics',
+      es: 'Fundadores que piensan en economía unitaria',
+    },
+    accent: '#1F6F63',
+    accentDark: '#5FD3C0',
+  },
+  {
+    slug: 'deck',
+    name: { en: 'Deck', es: 'Deck' },
+    tagline: { en: 'The work, stacked and dealt', es: 'El trabajo, apilado y repartido' },
+    argues: {
+      en: 'Four products. Deal them out.',
+      es: 'Cuatro productos. Repártelos.',
+    },
+    bestFor: {
+      en: 'Anyone who reads on a phone',
+      es: 'Quien lee desde el teléfono',
+    },
+    accent: '#A8341F',
+    accentDark: '#FF8A6B',
+  },
 ];

@@ -139,5 +139,47 @@ export const aiNative: CopyVariant = {
   accentDark: '#C58BE0',
 };
 
-export const copyCandidates: CopyVariant[] = [...copyVariants, reviewPick, aiNative];
+/**
+ * Two candidates from the second independent review, which judged both of them
+ * better than anything already on the table.
+ *
+ * The argument for `adversarial`: the checkable production fact and the AI
+ * method land in the same breath, so the greenfield-AI reader and the
+ * ownership reader are both answered above the fold. Every other candidate
+ * answers one and postpones the other.
+ */
+export const adversarial: CopyVariant = {
+  id: 'adversarial',
+  strategy: 'Proof and method in one breath',
+  headline: 'One engineer shipped this app. A second model tried to break it first.',
+  subhead:
+    'Luxura is live on Google Play — I built it, moved its infrastructure to my own VPS, wired the payments, and I run the ads. Everything I ship goes through an adversarial AI review before it goes through me.',
+  sectionLead: 'The stack is not the skill.',
+  risk: 'Two ideas in one hero. On a two-second skim the second sentence reads as a riddle until the subhead resolves it.',
+  aimedAt: 'CTOs staffing greenfield AI work who still want production evidence',
+  accent: '#1F6F63',
+  accentDark: '#5FD3C0',
+};
+
+/** Aims at the 2026 hiring anxiety: generated code with nobody accountable. */
+export const judgment: CopyVariant = {
+  id: 'judgment-scarce',
+  strategy: 'Judgment as the scarce skill',
+  headline: 'AI writes the code fast now. Judgment is still slow to fake.',
+  subhead:
+    'Every product here shipped with AI in the loop, including the one live on Google Play. My job is the part the model cannot do: know which vendor to fire, keep the spec matched to the diff that shipped, treat a confident answer as a claim.',
+  sectionLead: 'Anyone can generate code now. Judging it is the job.',
+  risk: 'The headline is positioning, not evidence. Any candidate could write the sentence, so the subhead carries the entire proof burden.',
+  aimedAt: 'CTOs worried about AI-generated code with nobody accountable',
+  accent: '#A8341F',
+  accentDark: '#FF8A6B',
+};
+
+export const copyCandidates: CopyVariant[] = [
+  ...copyVariants,
+  reviewPick,
+  aiNative,
+  adversarial,
+  judgment,
+];
 export const allCopy: CopyVariant[] = [...copyCandidates, currentCopy];

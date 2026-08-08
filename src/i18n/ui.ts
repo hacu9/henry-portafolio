@@ -37,9 +37,15 @@ export const ui = {
 
   // ---- contact
   getInTouch: { en: 'Get in touch', es: 'Hablemos' } as L,
+  /*
+   * The old line listed three roles with no priority and no AI, at the exact
+   * point where a reader decides whether to write. Bogotá is UTC-5, which
+   * overlaps US Eastern all year, and that is a practical fact US hiring
+   * managers check.
+   */
   contactLede: {
-    en: 'Open to senior full-stack, tech lead and senior mobile roles — remote.',
-    es: 'Disponible para roles senior full-stack, tech lead y mobile senior — remoto.',
+    en: 'I am looking for tech lead work on AI and agentic products. Senior full-stack and senior mobile also fit. Remote, on US Eastern hours, in English or Spanish.',
+    es: 'Busco trabajo de tech lead en productos de IA y sistemas agénticos. También encajo en full-stack senior y mobile senior. Remoto, en horario del Este de EE. UU., en inglés o español.',
   } as L,
   emailMe: { en: 'Email', es: 'Correo' } as L,
 

@@ -1,0 +1,362 @@
+---
+/**
+ * INTERVIEW: the page is the first call, already answered.
+ *
+ * Reading model is dialogue, not document. No sections, no case-study cards,
+ * no scroll-through-my-work. A hiring manager arrives with a fixed set of
+ * questions and this page answers them in the order they get asked.
+ *
+ * Grounded in two things. The questions are the ones documented as standard in
+ * technical and portfolio interviews ("walk me through your process", "what was
+ * the hardest problem", "how did you know your decision was right"). And the
+ * format follows the FAQ guidance that under about ten questions, plain Q&A
+ * beats an accordion: hiding an answer behind a click costs more than the
+ * vertical space it saves.
+ *
+ * Every answer is pulled from the same data as the other variants. Nothing is
+ * written specially for this page, which is the test of whether the content is
+ * actually good.
+ */
+import Base from '../../../layouts/Base.astro';
+import Testimonials from '../../../components/Testimonials.astro';
+import ContactSwitch from '../../../components/ContactSwitch.astro';
+import TechRow from '../../../components/TechRow.astro';
+import { LANGS, t, tl, OTHER_LANG, LANG_LABEL, path, asset } from '../../../i18n/types';
+import type { Lang } from '../../../i18n/types';
+import { ui } from '../../../i18n/ui';
+import { profile } from '../../../data/profile';
+import { leadProjects, supportingProjects, STATUS_LABEL, projectName } from '../../../data/projects';
+import { stackGroups } from '../../../data/stack';
+import { timeline, presentLabel } from '../../../data/timeline';
+import '../../../styles/reset.css';
+
+export function getStaticPaths() {
+  return LANGS.map((lang) => ({ params: { lang } }));
+}
+
+const lang = Astro.params.lang as Lang;
+const base = import.meta.env.BASE_URL;
+const other = OTHER_LANG[lang];
+const altHref = path(base, other, 'interview');
+const indexHref = path(base, lang);
+const cvHref = `${base.replace(/\/+$/, '')}/cv/`;
+
+const luxura = leadProjects.find((p) => p.id === 'luxura')!;
+const mate = leadProjects.find((p) => p.id === 'mate')!;
+const femi = leadProjects.find((p) => p.id === 'femi')!;
+const method = stackGroups.find((g) => g.id === 'method')!;
+
+const Q = {
+  who: { en: 'So, who are you?', es: 'Entonces, ¿quién eres?' },
+  shipped: {
+    en: 'What have you actually shipped?',
+    es: '¿Qué has publicado realmente?',
+  },
+  hardest: {
+    en: 'What is the hardest problem you have solved?',
+    es: '¿Cuál es el problema más difícil que has resuelto?',
+  },
+  wrong: {
+    en: 'Tell me about a decision you had to reverse.',
+    es: 'Cuéntame de una decisión que tuviste que revertir.',
+  },
+  ai: { en: 'How do you work with AI?', es: '¿Cómo trabajas con IA?' },
+  right: {
+    en: 'How do you know your decisions were right?',
+    es: '¿Cómo sabes que tus decisiones fueron correctas?',
+  },
+  next: { en: 'What are you building now?', es: '¿Qué estás construyendo ahora?' },
+  learn: {
+    en: 'You have used a lot of different stacks. How?',
+    es: 'Has usado muchos stacks distintos. ¿Cómo?',
+  },
+  where: { en: 'Where are you and how do you work?', es: '¿Dónde estás y cómo trabajas?' },
+  why: { en: 'Why should we call you?', es: '¿Por qué deberíamos llamarte?' },
+} as const;
+
+const A = {
+  where: {
+    en: 'Bogotá. Remote, and I have worked with US clients since 2020. English and Spanish, both working level.',
+    es: 'Bogotá. Remoto, y trabajo con clientes en EE. UU. desde 2020. Inglés y español, ambos a nivel de trabajo.',
+  },
+  why: {
+    en: 'Because you can check every claim on this page in about five minutes, and because the thing you are hiring for in 2026 is not someone who can produce code. It is someone who can tell you which parts of it are wrong.',
+    es: 'Porque puedes comprobar cada afirmación de esta página en unos cinco minutos, y porque lo que estás contratando en 2026 no es a alguien que produzca código. Es a alguien que te diga qué partes están mal.',
+  },
+} as const;
+---
+
+<Base
+  lang={lang}
+  title={`${profile.name}, ${t(profile.title, lang)}`}
+  description={t(profile.summary, lang)}
+  slug="interview"
+  themeColor="#12101A"
+>
+  <a class="skip" href="#main">{t(ui.skipToContent, lang)}</a>
+
+  <header class="bar">
+    <a class="mark" href={indexHref}>{profile.name}</a>
+    <div class="tools">
+      <a class="cv-link" href={cvHref}>CV</a>
+      <a href={altHref} hreflang={other} lang={other}>{LANG_LABEL[other]}</a>
+      <button data-theme-toggle type="button">
+        <span class="visually-hidden">{t(ui.toggleTheme, lang)}</span>
+        <span aria-hidden="true">◐</span>
+      </button>
+    </div>
+  </header>
+
+  <main id="main">
+    <p class="preamble">
+      {
+        lang === 'es'
+          ? 'Estas son las preguntas que me harías en la primera llamada. Ya están respondidas, así que la llamada puede empezar en la segunda.'
+          : 'These are the questions you would ask on the first call. They are already answered, so the call can start at the second one.'
+      }
+    </p>
+
+    <dl class="qa">
+      <dt>{t(Q.who, lang)}</dt>
+      <dd>
+        <p class="lead">{t(profile.positioning, lang)}</p>
+        <p>{t(profile.lede, lang)}</p>
+      </dd>
+
+      <dt>{t(Q.shipped, lang)}</dt>
+      <dd>
+        <p>
+          {t(luxura.tagline, lang)}, {t(STATUS_LABEL[luxura.status], lang).toLowerCase()}.{' '}
+          <a class="verify-link" href={luxura.url} target="_blank" rel="noopener">
+            {luxura.urlLabel ? t(luxura.urlLabel, lang) : t(ui.verify, lang)} ↗
+          </a>
+        </p>
+        <p>{t(luxura.outcome, lang)}</p>
+        {luxura.shots && (
+          <div class="shots">
+            {luxura.shots.map((sh) => (
+              <img src={asset(base, sh.src)} alt={t(sh.alt, lang)} loading="lazy" decoding="async" />
+            ))}
+          </div>
+        )}
+      </dd>
+
+      <dt>{t(Q.hardest, lang)}</dt>
+      <dd>
+        <p class="q-sub">{t(femi.tagline, lang)}</p>
+        <p>{t(femi.problem, lang)}</p>
+        <p><strong>{t(femi.decisions[0].title, lang)}.</strong> {t(femi.decisions[0].body, lang)}</p>
+      </dd>
+
+      <dt>{t(Q.wrong, lang)}</dt>
+      <dd>
+        <p><strong>{t(luxura.decisions[1].title, lang)}.</strong> {t(luxura.decisions[1].body, lang)}</p>
+      </dd>
+
+      <dt>{t(Q.ai, lang)}</dt>
+      <dd>
+        <p>{t(method.note!, lang)}</p>
+        <TechRow items={method.items} size="sm" />
+      </dd>
+
+      <dt>{t(Q.right, lang)}</dt>
+      <dd>
+        <p class="q-sub">
+          {
+            lang === 'es'
+              ? 'A veces no lo eran, y esas son las que vale la pena contar.'
+              : 'Sometimes they were not, and those are the ones worth telling.'
+          }
+        </p>
+        <ul class="checks">
+          {tl(profile.verification, lang).map((v) => <li>{v}</li>)}
+        </ul>
+      </dd>
+
+      <dt>{t(Q.learn, lang)}</dt>
+      <dd>
+        <p class="lead">{t(profile.thesis.lead, lang)}</p>
+        {tl(profile.thesis.body, lang).map((p) => <p>{p}</p>)}
+      </dd>
+
+      <dt>{t(Q.next, lang)}</dt>
+      <dd>
+        <p class="q-sub">{t(mate.tagline, lang)}, {t(STATUS_LABEL[mate.status], lang).toLowerCase()}.</p>
+        <p>{t(mate.problem, lang)}</p>
+        <p><strong>{t(mate.decisions[1].title, lang)}.</strong> {t(mate.decisions[1].body, lang)}</p>
+        <p class="also">
+          {lang === 'es' ? 'También: ' : 'Also: '}
+          {supportingProjects.map((p, i) => (
+            <>
+              {i > 0 && ', '}
+              <span class="also-name">{projectName(p, lang)}</span> ({t(p.tagline, lang).toLowerCase()})
+            </>
+          ))}
+        </p>
+      </dd>
+
+      <dt>{t(ui.timeline, lang)}</dt>
+      <dd>
+        <ol class="hist">
+          {
+            timeline.map((e) => (
+              <li>
+                <span class="when">
+                  {e.from} to {e.to === 'Present' ? t(presentLabel, lang) : e.to}
+                </span>
+                <span>
+                  <strong>{t(e.role, lang)}</strong>, {e.org}
+                </span>
+              </li>
+            ))
+          }
+        </ol>
+      </dd>
+
+      <dt>{t(Q.where, lang)}</dt>
+      <dd><p>{t(A.where, lang)}</p></dd>
+
+      <dt>{t(Q.why, lang)}</dt>
+      <dd><p class="lead">{t(A.why, lang)}</p></dd>
+    </dl>
+
+    <Testimonials lang={lang} />
+
+    <section id="contact" class="closing">
+      <p class="k">{t(ui.getInTouch, lang)}</p>
+      <ContactSwitch lang={lang} />
+    </section>
+  </main>
+
+  <footer class="foot">
+    <span>{profile.name}</span>
+    <a href={indexHref}>{t(ui.backToIndex, lang)}</a>
+  </footer>
+</Base>
+
+<style>
+  :root {
+    --ground: #f6f4f9;
+    --raise: #ffffff;
+    --ink: #16121f;
+    --ink-2: #453d54;
+    --dim: #7d7490;
+    --line: #d9d3e2;
+    --accent: #7a3e8f;
+    --focus: #7a3e8f;
+    --serif: 'Iowan Old Style', 'Charter', 'Palatino Linotype', Georgia, serif;
+    --sans: system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    --mono: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace;
+    --shell: 52rem;
+    --pad: clamp(1.15rem, 4vw, 2.5rem);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --ground: #12101a;
+      --raise: #191524;
+      --ink: #ece8f4;
+      --ink-2: #b0a8c2;
+      --dim: #7d7490;
+      --line: #262033;
+      --accent: #c58be0;
+    }
+  }
+  :global(:root[data-theme='dark']) {
+    --ground: #12101a; --raise: #191524; --ink: #ece8f4;
+    --ink-2: #b0a8c2; --dim: #7d7490; --line: #262033; --accent: #c58be0;
+  }
+  :global(:root[data-theme='light']) {
+    --ground: #f6f4f9; --raise: #ffffff; --ink: #16121f;
+    --ink-2: #453d54; --dim: #7d7490; --line: #d9d3e2; --accent: #7a3e8f;
+  }
+
+  :global(body) {
+    background: var(--ground);
+    color: var(--ink);
+    font-family: var(--sans);
+    line-height: 1.62;
+  }
+
+  .bar {
+    position: sticky; top: 0; z-index: 30;
+    display: flex; align-items: center; gap: 1rem;
+    padding: 0.6rem var(--pad);
+    background: color-mix(in srgb, var(--ground) 92%, transparent);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--line);
+    font-family: var(--mono); font-size: 0.625rem;
+    letter-spacing: 0.14em; text-transform: uppercase;
+  }
+  .bar a { text-decoration: none; }
+  .mark { font-weight: 700; }
+  .tools { margin-inline-start: auto; display: flex; gap: 0.8rem; align-items: center; color: var(--dim); }
+  .tools a:hover, .tools button:hover { color: var(--accent); }
+  .cv-link { color: var(--accent); font-weight: 700; }
+
+  .preamble {
+    max-width: var(--shell); margin-inline: auto;
+    padding: clamp(2.5rem, 7vw, 4rem) var(--pad) 0;
+    color: var(--dim); font-size: 0.9375rem; font-style: italic;
+  }
+
+  /* The interview itself. Questions are the voice of the reader, so they are
+     set in the serif and left of the answers on wide screens. */
+  .qa {
+    max-width: var(--shell);
+    margin: 0 auto;
+    padding: 1.5rem var(--pad) 0;
+  }
+  .qa dt {
+    font-family: var(--serif);
+    font-size: clamp(1.35rem, 3vw, 1.9rem);
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    margin-top: 2.6rem;
+    padding-left: 1.1rem;
+    border-left: 3px solid var(--accent);
+    text-wrap: balance;
+  }
+  .qa dd {
+    margin: 0.9rem 0 0;
+    padding-left: 1.1rem;
+    display: grid;
+    gap: 0.7rem;
+    color: var(--ink-2);
+  }
+  .qa dd p { max-width: 40rem; }
+  .qa dd strong { color: var(--ink); }
+  .lead { font-size: 1.08rem; color: var(--ink) !important; }
+  .q-sub { font-family: var(--mono); font-size: 0.6875rem; color: var(--dim) !important; letter-spacing: 0.06em; }
+  .verify-link { color: var(--accent); font-weight: 600; white-space: nowrap; }
+
+  .checks { display: grid; gap: 0.5rem; margin: 0; padding-left: 1.1rem; max-width: 40rem; }
+  .checks li::marker { color: var(--accent); }
+
+  .shots { display: flex; gap: 0.7rem; overflow-x: auto; padding-bottom: 0.3rem; }
+  .shots img { width: clamp(120px, 20vw, 170px); height: auto; border-radius: 10px; flex: none; }
+
+  .hist { display: grid; gap: 0.4rem; margin: 0; padding: 0; list-style: none; }
+  .hist li { display: grid; gap: 0 1rem; }
+  @media (min-width: 600px) { .hist li { grid-template-columns: 11rem 1fr; } }
+  .when { font-family: var(--mono); font-size: 0.625rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--dim); }
+  .also-name { color: var(--ink); font-weight: 600; }
+  .also { font-size: 0.9rem; }
+
+  .closing {
+    max-width: var(--shell); margin-inline: auto;
+    padding: clamp(3rem, 7vw, 4.5rem) var(--pad);
+    border-top: 1px solid var(--line); margin-top: 3rem;
+  }
+  .k { font-family: var(--mono); font-size: 0.625rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--dim); }
+
+  .foot {
+    max-width: var(--shell); margin-inline: auto;
+    padding: 1.4rem var(--pad) 3rem;
+    display: flex; justify-content: space-between; gap: 1rem; flex-wrap: wrap;
+    border-top: 1px solid var(--line);
+    font-family: var(--mono); font-size: 0.625rem;
+    letter-spacing: 0.14em; text-transform: uppercase; color: var(--dim);
+  }
+  .foot a { color: var(--accent); }
+</style>

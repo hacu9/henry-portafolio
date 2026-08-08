@@ -1,0 +1,294 @@
+---
+/**
+ * LETTER: one continuous piece of prose, addressed to the reader.
+ *
+ * Reading model is a single argument read top to bottom. No sections, no
+ * cards, no filters, no navigation, no status badges. Everything the other
+ * variants split into components is written here as connected paragraphs, and
+ * the only interactive element on the page is a link.
+ *
+ * The reason this belongs in the set: every other variant lets a reader skim
+ * and leave with fragments. This one cannot be skimmed, so it is the only test
+ * of whether the writing itself is any good. If a reader will not read it, no
+ * amount of layout was going to save the content.
+ *
+ * The measure is deliberately narrow and the type is large. Nothing is
+ * fixed to the viewport, so there is no chrome competing with the text.
+ */
+import Base from '../../../layouts/Base.astro';
+import { LANGS, t, tl, OTHER_LANG, LANG_LABEL, path } from '../../../i18n/types';
+import type { Lang } from '../../../i18n/types';
+import { ui } from '../../../i18n/ui';
+import { profile } from '../../../data/profile';
+import { leadProjects, projectName } from '../../../data/projects';
+import { stackGroups } from '../../../data/stack';
+import { testimonials } from '../../../data/testimonials';
+import '../../../styles/reset.css';
+
+export function getStaticPaths() {
+  return LANGS.map((lang) => ({ params: { lang } }));
+}
+
+const lang = Astro.params.lang as Lang;
+const base = import.meta.env.BASE_URL;
+const other = OTHER_LANG[lang];
+const altHref = path(base, other, 'letter');
+const indexHref = path(base, lang);
+const cvHref = `${base.replace(/\/+$/, '')}/cv/`;
+
+const luxura = leadProjects.find((p) => p.id === 'luxura')!;
+const mate = leadProjects.find((p) => p.id === 'mate')!;
+const femi = leadProjects.find((p) => p.id === 'femi')!;
+const method = stackGroups.find((g) => g.id === 'method')!;
+
+const L = {
+  greeting: { en: 'Hello,', es: 'Hola,' },
+  intro: {
+    en: 'You are probably reading this because you have a role to fill and a stack of tabs open. This one is prose, so it will take three minutes, and you can decide at the end.',
+    es: 'Probablemente lees esto porque tienes una vacante que llenar y una pila de pestañas abiertas. Esta es texto corrido, te tomará tres minutos, y al final decides.',
+  },
+  onShipping: { en: 'On what is actually live', es: 'Sobre lo que está publicado' },
+  onHard: { en: 'On the parts that were hard', es: 'Sobre las partes difíciles' },
+  onAi: { en: 'On working with AI', es: 'Sobre trabajar con IA' },
+  onNext: { en: 'On what is next', es: 'Sobre lo que viene' },
+  close: {
+    en: 'If any of that is useful to you, the calendar link below goes straight to me. If it is not, thank you for reading this far, which is more than most.',
+    es: 'Si algo de eso te sirve, el enlace de abajo lleva directo a mi calendario. Si no, gracias por llegar hasta aquí, que es más de lo que hace la mayoría.',
+  },
+  sign: { en: 'Henry', es: 'Henry' },
+  book: { en: 'Book thirty minutes', es: 'Agendar treinta minutos' },
+} as const;
+---
+
+<Base
+  lang={lang}
+  title={`${profile.name}, ${t(profile.title, lang)}`}
+  description={t(profile.summary, lang)}
+  slug="letter"
+  themeColor="#14120E"
+  grain={false}
+>
+  <a class="skip" href="#main">{t(ui.skipToContent, lang)}</a>
+
+  <article class="letter" id="main">
+    <header class="head">
+      <p class="from">
+        {profile.name} · {t(profile.title, lang)} · {t(profile.location, lang)}
+      </p>
+      <div class="head-links">
+        <a class="cv-link" href={cvHref}>CV</a>
+        <a href={altHref} hreflang={other} lang={other}>{LANG_LABEL[other]}</a>
+        <button data-theme-toggle type="button">
+          <span class="visually-hidden">{t(ui.toggleTheme, lang)}</span>
+          <span aria-hidden="true">◐</span>
+        </button>
+      </div>
+    </header>
+
+    <p class="greeting">{t(L.greeting, lang)}</p>
+
+    <p class="opening">{t(profile.positioning, lang)}</p>
+
+    <p>{t(L.intro, lang)}</p>
+
+    <p>{t(profile.lede, lang)}</p>
+
+    <h2>{t(L.onShipping, lang)}</h2>
+
+    <p>
+      {t(luxura.problem, lang)}
+    </p>
+
+    <p>
+      {t(luxura.outcome, lang)}{' '}
+      <a href={luxura.url} target="_blank" rel="noopener">
+        {luxura.urlLabel ? t(luxura.urlLabel, lang) : t(ui.verify, lang)}
+      </a>.
+    </p>
+
+    <h2>{t(L.onHard, lang)}</h2>
+
+    <p>{t(luxura.decisions[1].body, lang)}</p>
+
+    <p>
+      {t(luxura.decisions[0].body, lang)}
+    </p>
+
+    <p>
+      {t(femi.problem, lang)} {t(femi.decisions[0].body, lang)}
+    </p>
+
+    <h2>{t(L.onAi, lang)}</h2>
+
+    <p>{t(method.note!, lang)}</p>
+
+    <p>
+      {tl(profile.verification, lang)[0]} {tl(profile.verification, lang)[1]}
+    </p>
+
+    <h2>{t(L.onNext, lang)}</h2>
+
+    <p>
+      <em>{projectName(mate, lang)}</em>. {t(mate.problem, lang)}
+    </p>
+
+    <p>{t(mate.decisions[1].body, lang)}</p>
+
+    <h2>{t(profile.thesis.lead, lang)}</h2>
+
+    {tl(profile.thesis.body, lang).map((p) => <p>{p}</p>)}
+
+    {
+      testimonials.length > 0 && (
+        <blockquote class="said">
+          <p>{t(testimonials[0].quote, lang)}</p>
+          <cite>
+            {testimonials[0].name}, {t(testimonials[0].role, lang)}
+          </cite>
+        </blockquote>
+      )
+    }
+
+    <p class="closing">{t(L.close, lang)}</p>
+
+    <p class="sign">{t(L.sign, lang)}</p>
+
+    <p class="actions">
+      <a class="book" href={profile.calendly} target="_blank" rel="noopener">
+        {t(L.book, lang)}
+      </a>
+      <a href={`mailto:${profile.email}`}>{profile.email}</a>
+      <a href={profile.linkedinUrl} rel="me noopener">LinkedIn</a>
+      <a href={profile.githubUrl} rel="me noopener">GitHub</a>
+      <a href={indexHref}>{t(ui.backToIndex, lang)}</a>
+    </p>
+  </article>
+</Base>
+
+<style>
+  :root {
+    --ground: #faf7f0;
+    --ink: #1c1810;
+    --ink-2: #443c2c;
+    --dim: #857b66;
+    --line: #ddd5c3;
+    --accent: #8a5a12;
+    --focus: #8a5a12;
+    --serif: 'Iowan Old Style', 'Charter', 'Palatino Linotype', Georgia, serif;
+    --mono: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --ground: #14120e; --ink: #ece5d6; --ink-2: #b8ad97;
+      --dim: #857b66; --line: #2a251c; --accent: #d9a441;
+    }
+  }
+  :global(:root[data-theme='dark']) {
+    --ground: #14120e; --ink: #ece5d6; --ink-2: #b8ad97;
+    --dim: #857b66; --line: #2a251c; --accent: #d9a441;
+  }
+  :global(:root[data-theme='light']) {
+    --ground: #faf7f0; --ink: #1c1810; --ink-2: #443c2c;
+    --dim: #857b66; --line: #ddd5c3; --accent: #8a5a12;
+  }
+
+  :global(body) {
+    background: var(--ground);
+    color: var(--ink-2);
+    font-family: var(--serif);
+    /* Larger than the other variants on purpose: this one is only text, so the
+       text gets the room. */
+    font-size: clamp(1.05rem, 1.35vw, 1.2rem);
+    line-height: 1.72;
+  }
+
+  /* One column, one measure, nothing fixed to the viewport. */
+  .letter {
+    max-width: 34rem;
+    margin-inline: auto;
+    padding: clamp(2rem, 6vw, 4.5rem) clamp(1.25rem, 5vw, 2rem) 5rem;
+  }
+
+  .head {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+    align-items: baseline;
+    padding-bottom: 1.6rem;
+    border-bottom: 1px solid var(--line);
+    margin-bottom: 2.4rem;
+  }
+  .from,
+  .head-links {
+    font-family: var(--mono);
+    font-size: 0.625rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--dim);
+  }
+  .head-links { display: flex; gap: 0.8rem; align-items: center; }
+  .head-links a { text-decoration: none; }
+  .head-links a:hover, .head-links button:hover { color: var(--accent); }
+  .cv-link { color: var(--accent); font-weight: 700; }
+
+  .greeting { margin-bottom: 1.4rem; }
+  .opening {
+    font-size: clamp(1.35rem, 2.6vw, 1.75rem);
+    line-height: 1.3;
+    color: var(--ink);
+    letter-spacing: -0.015em;
+    margin-bottom: 1.4rem;
+    text-wrap: balance;
+  }
+
+  .letter p { margin-bottom: 1.4rem; text-wrap: pretty; }
+  .letter em { color: var(--ink); font-style: italic; }
+  .letter a { color: var(--accent); text-underline-offset: 3px; }
+
+  /* Headings are asides, not section markers. They sit small and quiet so the
+     prose keeps its momentum. */
+  .letter h2 {
+    font-family: var(--mono);
+    font-size: 0.625rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--dim);
+    font-weight: 400;
+    margin: 2.6rem 0 1.2rem;
+  }
+
+  .said {
+    margin: 0 0 1.6rem;
+    padding-left: 1.1rem;
+    border-left: 2px solid var(--accent);
+  }
+  .said p { margin-bottom: 0.4rem; color: var(--ink); }
+  .said cite { font-family: var(--mono); font-size: 0.6875rem; font-style: normal; color: var(--dim); }
+
+  .closing { margin-top: 2.4rem; }
+  .sign {
+    font-size: 1.4rem;
+    color: var(--ink);
+    margin-bottom: 2.4rem;
+  }
+
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem 1.4rem;
+    align-items: center;
+    padding-top: 1.6rem;
+    border-top: 1px solid var(--line);
+    font-family: var(--mono);
+    font-size: 0.75rem;
+  }
+  .book {
+    background: var(--ink);
+    color: var(--ground);
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    font-weight: 700;
+  }
+  .book:hover { filter: brightness(1.15); }
+</style>

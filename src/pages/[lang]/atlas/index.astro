@@ -36,6 +36,7 @@ const base = import.meta.env.BASE_URL;
 const other = OTHER_LANG[lang];
 const altHref = path(base, other, 'atlas');
 const indexHref = path(base, lang);
+const cvHref = `${base.replace(/\/+$/, '')}/cv/`;
 
 /** Rooms in the gallery: the opening, one per lead project, then the close. */
 // Opening + two rooms per project + the closing room.
@@ -56,6 +57,7 @@ const rooms = leadProjects.length * 2 + 2;
     <a class="mark" href={indexHref}>{profile.name}</a>
     <div class="progress" aria-hidden="true"><span id="pbar"></span></div>
     <div class="tools">
+      <a class="cv-link" href={cvHref}>CV</a>
       <a href={altHref} hreflang={other} lang={other}>{LANG_LABEL[other]}</a>
       <button data-theme-toggle type="button">
         <span class="visually-hidden">{t(ui.toggleTheme, lang)}</span>
@@ -552,6 +554,13 @@ const rooms = leadProjects.length * 2 + 2;
     scroll-snap-align: start;
     background: var(--raise, transparent);
   }
+
+  .cv-link {
+    color: var(--accent, currentColor);
+    font-weight: 700;
+    text-decoration: none;
+  }
+  .cv-link:hover { text-decoration: underline; }
 </style>
 
 <script>

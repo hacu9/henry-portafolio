@@ -51,4 +51,36 @@ export const testimonials: Testimonial[] = [
   // },
 ];
 
-export const hasTestimonials = testimonials.length > 0;
+/**
+ * Placeholders so the section can be seen and styled while it is empty.
+ *
+ * These exist ONLY in `npm run dev`. `import.meta.env.DEV` is false in every
+ * production build, so they can never reach the live site: the names are
+ * obviously fake and they are gated behind the build mode, not behind a
+ * promise to remember to delete them.
+ */
+const devPlaceholders: Testimonial[] = [
+  {
+    name: 'PLACEHOLDER — replace with a real name',
+    role: { en: 'Their role, their company', es: 'Su rol, su empresa' },
+    quote: {
+      en: 'This is where a real recommendation goes. Paste it exactly as they wrote it.',
+      es: 'Aquí va una recomendación real. Pégala tal como la escribieron.',
+    },
+    source: 'LinkedIn',
+  },
+  {
+    name: 'PLACEHOLDER — replace with a real name',
+    role: { en: 'Their role, their company', es: 'Su rol, su empresa' },
+    quote: {
+      en: 'Two or three real ones outperform ten invented ones, because a reader can click through and find the person.',
+      es: 'Dos o tres reales valen más que diez inventadas, porque quien lee puede hacer clic y encontrar a la persona.',
+    },
+    source: 'LinkedIn',
+  },
+];
+
+export const visibleTestimonials: Testimonial[] =
+  testimonials.length > 0 ? testimonials : import.meta.env.DEV ? devPlaceholders : [];
+
+export const hasTestimonials = visibleTestimonials.length > 0;

@@ -105,4 +105,46 @@ export const variants: Variant[] = [
     accent: '#A8341F',
     accentDark: '#FF8A6B',
   },
+
+  /* ------------------------------------------------------- fourth round --
+   * Each of these changes the reading model, not the palette. The previous
+   * batch was cut because ten of twelve shared one section order and differed
+   * only in colour; nothing here repeats a model already in use.
+   */
+  {
+    slug: 'interview',
+    name: { en: 'Interview', es: 'Entrevista' },
+    tagline: { en: 'The questions, answered', es: 'Las preguntas, respondidas' },
+    argues: { en: 'Ask me anything. It is already here.', es: 'Pregúntame lo que sea. Ya está aquí.' },
+    bestFor: { en: 'Hiring managers with objections', es: 'Managers con objeciones' },
+    accent: '#7A3E8F',
+    accentDark: '#C58BE0',
+  },
+  {
+    slug: 'chronicle',
+    name: { en: 'Chronicle', es: 'Crónica' },
+    tagline: { en: 'One axis, eight years', es: 'Un eje, ocho años' },
+    argues: { en: 'Watch it accumulate.', es: 'Míralo acumularse.' },
+    bestFor: { en: 'Anyone assessing trajectory', es: 'Quien evalúa trayectoria' },
+    accent: '#0E6F80',
+    accentDark: '#56C7D6',
+  },
+  {
+    slug: 'spec',
+    name: { en: 'Spec', es: 'Ficha' },
+    tagline: { en: 'Read across, not down', es: 'Lee a lo ancho, no hacia abajo' },
+    argues: { en: 'Compare them yourself.', es: 'Compáralos tú mismo.' },
+    bestFor: { en: 'Technical readers who scan', es: 'Lectores técnicos que escanean' },
+    accent: '#B5122E',
+    accentDark: '#FF5C74',
+  },
+  {
+    slug: 'letter',
+    name: { en: 'Letter', es: 'Carta' },
+    tagline: { en: 'No sections, no cards', es: 'Sin secciones, sin tarjetas' },
+    argues: { en: 'Just read it.', es: 'Solo léela.' },
+    bestFor: { en: 'Founders who read properly', es: 'Fundadores que leen de verdad' },
+    accent: '#8A5A12',
+    accentDark: '#D9A441',
+  },
 ];

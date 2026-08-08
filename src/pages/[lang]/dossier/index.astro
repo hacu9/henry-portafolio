@@ -36,6 +36,7 @@ const base = import.meta.env.BASE_URL;
 const other = OTHER_LANG[lang];
 const altHref = path(base, other, 'dossier');
 const indexHref = path(base, lang);
+const cvHref = `${base.replace(/\/+$/, '')}/cv/`;
 
 const L = {
   file: { en: 'FILE', es: 'EXPEDIENTE' },
@@ -67,6 +68,7 @@ const L = {
     <a class="mark" href={indexHref}>{L.file[lang]} / HC-01</a>
     <span class="stamp">{L.open[lang]}</span>
     <div class="tools">
+      <a class="cv-link" href={cvHref}>CV</a>
       <a href={altHref} hreflang={other} lang={other}>{LANG_LABEL[other]}</a>
       <button data-theme-toggle type="button">
         <span class="visually-hidden">{t(ui.toggleTheme, lang)}</span>
@@ -711,6 +713,13 @@ const L = {
     padding: 0.3rem 0.6rem;
     justify-self: start;
   }
+
+  .cv-link {
+    color: var(--accent, currentColor);
+    font-weight: 700;
+    text-decoration: none;
+  }
+  .cv-link:hover { text-decoration: underline; }
 </style>
 
 <script>

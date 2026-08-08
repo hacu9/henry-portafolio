@@ -48,7 +48,7 @@ const L = {
 <Base
   lang={lang}
   title={`${profile.name} — ${t(profile.title, lang)}`}
-  description={t(profile.positioning, lang)}
+  description={t(profile.summary, lang)}
   slug="ledger"
   themeColor="#0C1412"
   grain={false}
@@ -70,6 +70,7 @@ const L = {
     <section class="head">
       <p class="k">{t(profile.title, lang)} · {t(profile.experience, lang)} · {t(profile.location, lang)}</p>
       <h1>{t(profile.positioning, lang)}</h1>
+        <p class="hero-lede">{t(profile.lede, lang)}</p>
       <div class="tot">
         <div><span class="k">{lang === 'es' ? 'Años' : 'Years'}</span><b><span data-count="8" data-suffix="+">0</span></b></div>
         <div><span class="k">{lang === 'es' ? 'Productos' : 'Products'}</span><b><span data-count="4">0</span></b></div>
@@ -531,5 +532,14 @@ const L = {
     border-radius: 12px;
     scroll-snap-align: start;
     background: var(--raise, transparent);
+  }
+
+  .hero-lede {
+    font-size: clamp(1rem, 1.6vw, 1.15rem);
+    line-height: 1.5;
+    color: var(--ink-2, currentColor);
+    max-width: 46ch;
+    margin-top: 0.9rem;
+    text-wrap: pretty;
   }
 </style>

@@ -38,7 +38,7 @@ const liveCount = projects.filter((p) => p.status === 'live').length;
 <Base
   lang={lang}
   title={title}
-  description={t(profile.positioning, lang)}
+  description={t(profile.summary, lang)}
   slug="signal"
   themeColor="#0C1017"
 >
@@ -76,6 +76,7 @@ const liveCount = projects.filter((p) => p.status === 'live').length;
           {t(profile.title, lang)} · {t(profile.experience, lang)} · {t(profile.location, lang)}
         </p>
         <h1 data-wipe>{t(profile.positioning, lang)}</h1>
+        <p class="hero-lede">{t(profile.lede, lang)}</p>
         <ul class="chips">
           {tl(profile.fitFor, lang).map((f) => <li>{f}</li>)}
         </ul>
@@ -968,6 +969,15 @@ const liveCount = projects.filter((p) => p.status === 'live').length;
     border-radius: 12px;
     scroll-snap-align: start;
     background: var(--raise, transparent);
+  }
+
+  .hero-lede {
+    font-size: clamp(1rem, 1.6vw, 1.15rem);
+    line-height: 1.5;
+    color: var(--ink-2, currentColor);
+    max-width: 46ch;
+    margin-top: 0.9rem;
+    text-wrap: pretty;
   }
 </style>
 

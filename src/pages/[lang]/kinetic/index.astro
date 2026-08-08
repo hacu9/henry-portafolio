@@ -41,7 +41,7 @@ const first = lang === 'es' ? morphWords[0][1] : morphWords[0][0];
 <Base
   lang={lang}
   title={`${profile.name} — ${t(profile.title, lang)}`}
-  description={t(profile.positioning, lang)}
+  description={t(profile.summary, lang)}
   slug="kinetic"
   themeColor="#111014"
 >
@@ -67,7 +67,7 @@ const first = lang === 'es' ? morphWords[0][1] : morphWords[0][0];
           <span class="visually-hidden">{t(profile.positioning, lang)}</span>
           <span id="morph" aria-hidden="true" data-words={JSON.stringify(morphWords)}>{first}</span>
         </h1>
-        <p class="hero-sub">{t(profile.positioning, lang)}</p>
+        <p class="hero-sub">{t(profile.lede, lang)}</p>
         <p class="micro loc">
           {t(profile.location, lang)} · {t(profile.workingStyle, lang)}
         </p>

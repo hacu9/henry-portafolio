@@ -44,7 +44,7 @@ const rooms = leadProjects.length * 2 + 2;
 <Base
   lang={lang}
   title={`${profile.name} — ${t(profile.title, lang)}`}
-  description={t(profile.positioning, lang)}
+  description={t(profile.summary, lang)}
   slug="atlas"
   themeColor="#0A1018"
   scrollDuration={1.15}
@@ -70,7 +70,7 @@ const rooms = leadProjects.length * 2 + 2;
         <article class="room open">
           <p class="kick">{t(profile.title, lang)} — {t(profile.experience, lang)}</p>
           <h1>{profile.name}</h1>
-          <p class="lede">{t(profile.positioning, lang)}</p>
+          <p class="lede">{t(profile.lede, lang)}</p>
           <p class="kick">{t(profile.location, lang)} · {t(profile.workingStyle, lang)}</p>
           <p class="go" aria-hidden="true">
             {lang === 'es' ? 'Desplázate — el trabajo avanza de lado' : 'Scroll — the work moves sideways'}

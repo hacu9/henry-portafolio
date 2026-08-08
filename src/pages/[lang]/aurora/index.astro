@@ -38,7 +38,7 @@ const indexHref = path(base, lang);
 <Base
   lang={lang}
   title={`${profile.name} — ${t(profile.title, lang)}`}
-  description={t(profile.positioning, lang)}
+  description={t(profile.summary, lang)}
   slug="aurora"
   themeColor="#0B0A16"
   grain={false}
@@ -67,6 +67,7 @@ const indexHref = path(base, lang);
     <section class="hero">
       <p class="pill">{t(profile.title, lang)} · {t(profile.experience, lang)}</p>
       <h1>{t(profile.positioning, lang)}</h1>
+        <p class="hero-lede">{t(profile.lede, lang)}</p>
       <ul class="tags">
         {tl(profile.fitFor, lang).map((f) => <li>{f}</li>)}
       </ul>
@@ -548,6 +549,15 @@ const indexHref = path(base, lang);
     border-radius: 12px;
     scroll-snap-align: start;
     background: var(--raise, transparent);
+  }
+
+  .hero-lede {
+    font-size: clamp(1rem, 1.6vw, 1.15rem);
+    line-height: 1.5;
+    color: var(--ink-2, currentColor);
+    max-width: 46ch;
+    margin-top: 0.9rem;
+    text-wrap: pretty;
   }
 </style>
 

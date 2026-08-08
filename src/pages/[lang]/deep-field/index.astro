@@ -27,7 +27,7 @@ const indexHref = path(base, lang);
 <Base
   lang={lang}
   title={`${profile.name} — ${t(profile.title, lang)}`}
-  description={t(profile.positioning, lang)}
+  description={t(profile.summary, lang)}
   slug="deep-field"
   themeColor="#08070F"
 >
@@ -58,7 +58,8 @@ const indexHref = path(base, lang);
           {t(profile.title, lang)} — {t(profile.experience, lang)}
         </p>
         <h1 data-wipe>{profile.name}</h1>
-        <p class="stage-lede">{t(profile.positioning, lang)}</p>
+        <p class="stage-claim">{t(profile.positioning, lang)}</p>
+        <p class="stage-lede">{t(profile.lede, lang)}</p>
         <p class="place">{t(profile.location, lang)} · {t(profile.workingStyle, lang)}</p>
       </div>
       <div class="scroll-hint" aria-hidden="true"><span></span></div>
@@ -836,6 +837,16 @@ const indexHref = path(base, lang);
     border-radius: 12px;
     scroll-snap-align: start;
     background: var(--raise, transparent);
+  }
+
+  .stage-claim {
+    font-family: var(--display);
+    font-size: clamp(1.3rem, 2.6vw, 1.9rem);
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    max-width: 26ch;
+    margin-top: 0.5rem;
+    text-wrap: balance;
   }
 </style>
 

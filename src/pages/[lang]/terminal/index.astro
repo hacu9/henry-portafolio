@@ -52,7 +52,7 @@ const boot =
 <Base
   lang={lang}
   title={`${profile.name} — ${t(profile.title, lang)}`}
-  description={t(profile.positioning, lang)}
+  description={t(profile.summary, lang)}
   slug="terminal"
   themeColor="#050706"
   grain={false}
@@ -77,6 +77,7 @@ const boot =
     <section class="boot">
       <pre class="stream" aria-hidden="true">{boot.join('\n')}</pre>
       <h1>{t(profile.positioning, lang)}</h1>
+        <p class="hero-lede">{t(profile.lede, lang)}</p>
       <p class="cursor-line" aria-hidden="true">
         <span class="prompt">henry@bogota:~$</span> <span class="caret"></span>
       </p>
@@ -473,6 +474,15 @@ const boot =
   .shots img {
     width: clamp(140px, 26vw, 210px); height: auto; flex: none;
     border-radius: 12px; scroll-snap-align: start;
+  }
+
+  .hero-lede {
+    font-size: clamp(1rem, 1.6vw, 1.15rem);
+    line-height: 1.5;
+    color: var(--ink-2, currentColor);
+    max-width: 46ch;
+    margin-top: 0.9rem;
+    text-wrap: pretty;
   }
 </style>
 

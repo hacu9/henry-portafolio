@@ -39,7 +39,7 @@ const indexHref = path(base, lang);
 <Base
   lang={lang}
   title={`${profile.name} — ${t(profile.title, lang)}`}
-  description={t(profile.positioning, lang)}
+  description={t(profile.summary, lang)}
   slug="darkroom"
   themeColor="#07070A"
   scrollDuration={1.2}
@@ -67,7 +67,7 @@ const indexHref = path(base, lang);
     <section class="open">
       <p class="kick">{t(profile.title, lang)} — {t(profile.experience, lang)}</p>
       <h1>{profile.name}</h1>
-      <p class="lede">{t(profile.positioning, lang)}</p>
+      <p class="lede">{t(profile.lede, lang)}</p>
       <p class="kick foot-note">{t(profile.location, lang)} · {t(profile.workingStyle, lang)}</p>
       <p class="hint" aria-hidden="true">
         {lang === 'es' ? 'Mueve el cursor para iluminar' : 'Move your cursor to light the page'}

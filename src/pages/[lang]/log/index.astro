@@ -100,7 +100,7 @@ const repos = [...new Set(entries.map((e) => e.repo))];
 <Base
   lang={lang}
   title={`${profile.name} — ${t(profile.title, lang)}`}
-  description={t(profile.positioning, lang)}
+  description={t(profile.summary, lang)}
   slug="log"
   themeColor="#0B0F0D"
 >
@@ -122,6 +122,7 @@ const repos = [...new Set(entries.map((e) => e.repo))];
     <!-- ==================================================== HEADER -->
     <section class="intro">
       <h1 data-wipe>{t(profile.positioning, lang)}</h1>
+        <p class="hero-lede">{t(profile.lede, lang)}</p>
       <div class="intro-cols">
         <div>
           <p class="k">{t(ui.howIWork, lang)}</p>
@@ -761,6 +762,15 @@ const repos = [...new Set(entries.map((e) => e.repo))];
 
   .shots { display: flex; gap: 0.6rem; overflow-x: auto; padding-block: 0.4rem; }
   .shots img { width: 132px; height: auto; flex: none; border-radius: 8px; }
+
+  .hero-lede {
+    font-size: clamp(1rem, 1.6vw, 1.15rem);
+    line-height: 1.5;
+    color: var(--ink-2, currentColor);
+    max-width: 46ch;
+    margin-top: 0.9rem;
+    text-wrap: pretty;
+  }
 </style>
 
 <script>

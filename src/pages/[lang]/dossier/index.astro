@@ -56,7 +56,7 @@ const L = {
 <Base
   lang={lang}
   title={`${profile.name} — ${t(profile.title, lang)}`}
-  description={t(profile.positioning, lang)}
+  description={t(profile.summary, lang)}
   slug="dossier"
   themeColor="#12100C"
 >
@@ -82,7 +82,7 @@ const L = {
         <p class="role">{t(profile.title, lang)} · {t(profile.experience, lang)}</p>
       </div>
       <div class="cover-grid">
-        <p class="lede">{t(profile.positioning, lang)}</p>
+        <p class="lede">{t(profile.lede, lang)}</p>
         <dl class="idcard">
           <div><dt>{t(ui.basedIn, lang)}</dt><dd>{t(profile.location, lang)}</dd></div>
           <div><dt>{t(ui.stack, lang)}</dt><dd>TS · Next · RN · PostgreSQL</dd></div>

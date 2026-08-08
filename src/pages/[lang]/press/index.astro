@@ -35,7 +35,7 @@ const indexHref = path(base, lang);
 <Base
   lang={lang}
   title={`${profile.name} — ${t(profile.title, lang)}`}
-  description={t(profile.positioning, lang)}
+  description={t(profile.summary, lang)}
   slug="press"
   themeColor="#F2F0EC"
   grain={false}
@@ -63,7 +63,8 @@ const indexHref = path(base, lang);
       </h1>
       <div class="mast-rule"></div>
       <div class="mast-grid">
-        <p class="lede">{t(profile.positioning, lang)}</p>
+        <div><p class="mast-claim">{t(profile.positioning, lang)}</p>
+        <p class="lede">{t(profile.lede, lang)}</p></div>
         <dl class="facts">
           <div><dt>{t(ui.yearsShipping, lang)}</dt><dd><span data-count="8" data-suffix="+">0</span></dd></div>
           <div><dt>{lang === 'es' ? 'En producción' : 'In production'}</dt><dd><span data-count="1">0</span></dd></div>
@@ -610,5 +611,16 @@ const indexHref = path(base, lang);
     border-radius: 12px;
     scroll-snap-align: start;
     background: var(--raise, transparent);
+  }
+
+  .mast-claim {
+    font-size: clamp(1.4rem, 3.2vw, 2.2rem);
+    line-height: 1.06;
+    letter-spacing: -0.035em;
+    font-weight: 800;
+    text-transform: uppercase;
+    max-width: 20ch;
+    margin-bottom: 0.7rem;
+    text-wrap: balance;
   }
 </style>

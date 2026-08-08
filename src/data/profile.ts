@@ -26,10 +26,32 @@ export const profile = {
   linkedin: 'cabello986',
   linkedinUrl: 'https://www.linkedin.com/in/cabello986',
 
-  /** One sentence. Everything else on the page is evidence for it. */
+  /**
+   * The headline. Short on purpose.
+   *
+   * The previous version ran 34 words and had to be demoted or re-measured in
+   * three different variants because it would not set as display type. It also
+   * argued range ("from X to Y"), and range reads as generalist.
+   *
+   * This one puts the checkable fact and the method in the same breath: the
+   * app is on Google Play and anyone can open it, and the second sentence is
+   * the part almost nobody else can claim.
+   */
   positioning: {
-    en: 'I ship and operate complete products solo — from Microsoft enterprise integrations to consumer mobile apps live on the Play Store, including the infrastructure, the payments and the paid acquisition behind them.',
-    es: 'Construyo y opero productos completos por mi cuenta — desde integraciones empresariales con Microsoft hasta apps móviles publicadas en Play Store, incluyendo la infraestructura, los pagos y la pauta que trae a los usuarios.',
+    en: 'One engineer shipped this app. A second model tried to break it first.',
+    es: 'Un solo ingeniero publicó esta app. Un segundo modelo intentó romperla antes.',
+  } as L,
+
+  /** Carries the evidence the headline no longer has room for. */
+  lede: {
+    en: 'Luxura is live on Google Play — I built it, moved its infrastructure onto my own VPS, wired the payments, and I run the ads. Everything I ship goes through an adversarial AI review before it goes through me.',
+    es: 'Luxura está publicada en Google Play — la construí, moví su infraestructura a mi propio VPS, conecté los pagos y manejo la pauta. Todo lo que entrego pasa por una revisión adversarial con IA antes de pasar por mí.',
+  } as L,
+
+  /** Used where a plain description is needed, such as meta tags. */
+  summary: {
+    en: 'Senior full-stack engineer, 8+ years. Ships and operates complete products — enterprise Microsoft integrations, AI agents, and mobile apps in production.',
+    es: 'Ingeniero full-stack senior, 8+ años. Construye y opera productos completos — integraciones empresariales con Microsoft, agentes de IA y apps móviles en producción.',
   } as L,
 
   /**

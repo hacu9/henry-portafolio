@@ -175,11 +175,96 @@ export const judgment: CopyVariant = {
   accentDark: '#FF8A6B',
 };
 
+
+/* ---------------------------------------------------------- third batch --
+ * Written after Henry rejected "I build it, ship it, and still run it."
+ *
+ * Angles already burned, so none of these repeat them: the 34-word range
+ * statement, the app-that-points-at-nothing, the ad-buying triad, and the
+ * build/ship/run triad. Each of these opens a door the others do not.
+ */
+
+export const batchThree: CopyVariant[] = [
+  {
+    id: 'judgment-layer',
+    strategy: 'Position as the judgment layer in an agentic workflow',
+    headline: 'I write the spec. Agents write the code. I decide what is true.',
+    subhead:
+      'That last part is the job now. Eight years of shipping, and a dating app on Google Play built this way, start to finish.',
+    sectionLead: 'Anyone can generate code. Deciding what is true is the work.',
+    risk: 'It can read as though he writes less code than he does, and a traditional reviewer may hear it as delegation rather than authorship.',
+    aimedAt: 'CTOs staffing greenfield AI and agentic work',
+    accent: '#6D3BD4',
+    accentDark: '#A886FF',
+  },
+  {
+    id: 'pager',
+    strategy: 'Accountability as the whole claim',
+    headline: 'If it breaks at 2am, it wakes me.',
+    subhead:
+      'Not a metaphor. The app is on Google Play, the VPS is mine, and there is nobody downstream to escalate to. Eight years of building things I then have to answer for.',
+    sectionLead: 'Ownership is a phone number, not a job title.',
+    risk: 'Skews operational. A reader hunting for an architect may file him under infrastructure.',
+    aimedAt: 'Founders and teams who have been burned by handoffs',
+    accent: '#A8341F',
+    accentDark: '#FF8A6B',
+  },
+  {
+    id: 'never-used',
+    strategy: 'His real differentiator, stated as a confession that turns',
+    headline: 'I had never used any of it before.',
+    subhead:
+      'Not the Microsoft stack, not LangGraph, not React Native, not paid acquisition. Eight years of walking into unfamiliar domains and coming out with something in production.',
+    sectionLead: 'The stack is not the skill.',
+    risk: 'For two seconds it reads as inexperience. Everything depends on the subhead landing immediately.',
+    aimedAt: 'Teams hiring for adaptability over a keyword match',
+    accent: '#B4700A',
+    accentDark: '#F0A423',
+  },
+  {
+    id: 'no-agree',
+    strategy: 'Lead with the rarest thing in the working method',
+    headline: 'Two AIs review my code. I never let them agree.',
+    subhead:
+      'Each one is briefed blind, so neither can rubber-stamp the other. It has caught a wrong platform fact, a bug hiding behind a zero, and two false lines on my own CV.',
+    sectionLead: 'A reviewer handed your reasoning gives you agreement, not review.',
+    risk: 'It is a claim about method rather than outcome. A reader who wants shipped product first has to wait for the subhead.',
+    aimedAt: 'Anyone hiring for judgement in an AI-assisted team',
+    accent: '#1F6F63',
+    accentDark: '#5FD3C0',
+  },
+  {
+    id: 'scoreboard',
+    strategy: 'The honest scoreboard, volunteered before anyone counts',
+    headline: 'Four products. One engineer. One of them is live.',
+    subhead:
+      'Luxura is on Google Play and I run everything under it. Mate, Femi and Storia are the next three, and I would rather you judge them as bets than take my word that they are finished.',
+    sectionLead: 'The stack is not the skill.',
+    risk: 'Hands a skimming reader the weakest number in the headline, and some will anchor on it.',
+    aimedAt: 'Readers who reward candour over polish',
+    accent: '#1E5FA8',
+    accentDark: '#6FB3F2',
+  },
+  {
+    id: 'no-downstream',
+    strategy: 'End-to-end ownership at its shortest',
+    headline: 'There is nobody downstream of me.',
+    subhead:
+      'The build, the infrastructure, the payments, the store release, the campaigns that bring the users in. Eight years, four products, and an app live on Google Play.',
+    sectionLead: 'Ownership is a phone number, not a job title.',
+    risk: 'Cryptic on its own. It needs the subhead to mean anything, and it hints at solo work to someone hiring for a team.',
+    aimedAt: 'Founders and small product teams',
+    accent: '#8A5A12',
+    accentDark: '#D9A441',
+  },
+];
+
 export const copyCandidates: CopyVariant[] = [
   ...copyVariants,
   reviewPick,
   aiNative,
   adversarial,
   judgment,
+  ...batchThree,
 ];
 export const allCopy: CopyVariant[] = [...copyCandidates, currentCopy];

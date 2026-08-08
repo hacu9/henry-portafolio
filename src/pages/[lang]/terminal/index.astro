@@ -99,7 +99,7 @@ const boot =
                 <span class="perm">drwxr-xr-x</span>
                 <span class="pname">{projectName(p, lang)}</span>
                 <span class={`st st-${p.status}`}>{t(STATUS_LABEL[p.status], lang)}</span>
-                <span class="ptag">{t(p.tagline, lang)}</span>
+                <span class="ptag">{t(p.tagline, lang)}{p.url && (<>{' · '}<a class="verify-link" href={p.url} target="_blank" rel="noopener">{p.urlLabel ? t(p.urlLabel, lang) : t(ui.verify, lang)} ↗</a></>)}</span>
               </summary>
               <div class="pbody" data-stagger>
                 <div>
@@ -137,7 +137,7 @@ const boot =
                 <span class="perm">-rw-r--r--</span>
                 <span class="pname">{projectName(p, lang)}</span>
                 <span class={`st st-${p.status}`}>{t(STATUS_LABEL[p.status], lang)}</span>
-                <span class="ptag">{t(p.tagline, lang)}</span>
+                <span class="ptag">{t(p.tagline, lang)}{p.url && (<>{' · '}<a class="verify-link" href={p.url} target="_blank" rel="noopener">{p.urlLabel ? t(p.urlLabel, lang) : t(ui.verify, lang)} ↗</a></>)}</span>
               </summary>
               <div class="pbody">
                 <p>{t(p.problem, lang)}</p>
@@ -183,7 +183,7 @@ const boot =
                 </span>
                 <span class="what">
                   <strong>{t(e.role, lang)}</strong> <span class="org">{e.org}</span>
-                  {e.detail && <span class="det">{t(e.detail, lang)}</span>}
+                  {e.detail && <span class="det">{t(e.detail, lang)}</span>}{e.highlights && (<ul class="role-hl">{tl(e.highlights, lang).map((h) => <li>{h}</li>)}</ul>)}
                 </span>
               </li>
             ))
@@ -439,6 +439,20 @@ const boot =
     color: var(--ink);
   }
   #palette-list .k { color: var(--dim); font-size: 0.6875rem; }
+
+  .verify-link {
+    color: var(--accent, currentColor);
+    text-underline-offset: 3px;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+  .verify-link:hover { filter: brightness(1.15); }
+
+  /* Distinct from .hl, which this variant already uses for the thesis line. */
+  .role-hl { display: grid; gap: 0.15rem; margin-top: 0.3rem; padding: 0; list-style: none; max-width: 44rem; }
+  .role-hl li { color: var(--ink-2); font-size: 0.75rem; line-height: 1.6; }
+  .role-hl li::before { content: '  ├─ '; color: var(--dim); }
+  .role-hl li:last-child::before { content: '  └─ '; }
 </style>
 
 <script>

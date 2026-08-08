@@ -36,6 +36,13 @@ export interface Project {
   lead: boolean;
   /** True when the name itself is what needs permission. */
   confidential?: boolean;
+  /**
+   * A public link anyone can open to check the claim. This is the only
+   * external, unfakeable evidence the site has, so where one exists it is
+   * surfaced next to the project name rather than buried at the bottom.
+   */
+  url?: string;
+  urlLabel?: L;
 }
 
 const rawProjects: Project[] = [
@@ -58,6 +65,8 @@ const rawProjects: Project[] = [
     },
     period: '2025 — 2026',
     lead: true,
+    url: 'https://play.google.com/store/apps/details?id=app.luxura.dating',
+    urlLabel: { en: 'See it on Google Play', es: 'Verla en Google Play' },
     problem: {
       en: 'Open dating apps fill with unserious volume, which drives women off the platform and takes the men with them. Luxura inverts the funnel: men pay to send an invitation, women join free. That asymmetry only works if the product controls its own economics end to end — payments, moderation, and the cost of acquiring each user.',
       es: 'Las apps de citas abiertas se llenan de volumen poco serio, eso hace que las mujeres se vayan y detrás se van los hombres. Luxura invierte el embudo: los hombres pagan por enviar una invitación, las mujeres entran gratis. Esa asimetría solo funciona si el producto controla su propia economía de punta a punta — pagos, moderación y el costo de adquirir cada usuario.',

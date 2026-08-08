@@ -151,3 +151,33 @@ real evidence of directing engineering practice. A separate productivity report
 places him within a team of roughly eighteen rather than leading it. The copy
 therefore claims architecture, technical direction and delivery, and explicitly
 declines headcount management. Do not strengthen it beyond that without more.
+
+## Portfolio completeness audit (2026-08-08)
+
+Checked against what current guidance says a developer portfolio needs. The
+site had the case studies and the stack, and was missing most of the rest.
+
+**Closed in this pass:**
+
+- **A link to the live product.** `app.luxura.dating` now appears beside the
+  project name in all twelve directions. This is the only external, unfakeable
+  evidence on the site — a reader can verify the central claim in one tap — and
+  it was absent entirely.
+- **Real work experience.** Roles carried a single line each. Level60 and the
+  independent work now list what was actually done, including the TeamworkDevice
+  migration research, the Entra ID/ADFS SSO work, the Azure SQL quota
+  remediation, and the branch-protection policy Henry set for his team.
+
+**Still missing — these need assets only Henry has:**
+
+| Gap | Why it matters |
+|---|---|
+| **A photo of him** | There is no image of Henry anywhere. Guidance is consistent that a face makes a portfolio read as a person rather than a document. |
+| **Project screenshots** | The site currently has zero images of any kind. For a mobile product with a Play Store listing, showing the app is close to mandatory. |
+| **A downloadable CV** | Recruiters ask for a file. Nothing to download exists. |
+| **An Open Graph image** | Every link he shares — LinkedIn, WhatsApp, email — previews blank right now. Cheapest high-visibility fix available. |
+| **Testimonials or recommendations** | No third-party voice appears anywhere. LinkedIn recommendations would transfer directly. |
+| **Gara Group detail** | Jul 2020 – Feb 2021 has a title and a city and nothing else. It is the thinnest entry on the page. |
+| **A "currently working on" line** | Signals active building rather than a record of the past. Mate and Storia would fill it. |
+
+The first four are worth more than another design direction.

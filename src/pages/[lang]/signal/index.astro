@@ -129,7 +129,7 @@ const liveCount = projects.filter((p) => p.status === 'live').length;
               <h3>{projectName(p, lang)}</h3>
               <span class={`status s-${p.status}`}>{t(STATUS_LABEL[p.status], lang)}</span>
             </div>
-            <p class="tagline">{t(p.tagline, lang)}</p>
+            <p class="tagline">{t(p.tagline, lang)}{p.url && (<>{' · '}<a class="verify-link" href={p.url} target="_blank" rel="noopener">{p.urlLabel ? t(p.urlLabel, lang) : t(ui.verify, lang)} ↗</a></>)}</p>
 
             <dl class="meta">
               <div>
@@ -195,7 +195,7 @@ const liveCount = projects.filter((p) => p.status === 'live').length;
                 <h3>{projectName(p, lang)}</h3>
                 <span class={`status s-${p.status}`}>{t(STATUS_LABEL[p.status], lang)}</span>
               </div>
-              <p class="tagline">{t(p.tagline, lang)}</p>
+              <p class="tagline">{t(p.tagline, lang)}{p.url && (<>{' · '}<a class="verify-link" href={p.url} target="_blank" rel="noopener">{p.urlLabel ? t(p.urlLabel, lang) : t(ui.verify, lang)} ↗</a></>)}</p>
               <p class="body">{t(p.problem, lang)}</p>
               <div class="decision compact">
                 <h4>{t(p.decisions[0].title, lang)}</h4>
@@ -253,7 +253,7 @@ const liveCount = projects.filter((p) => p.status === 'live').length;
               <span class="what">
                 <strong>{t(e.role, lang)}</strong>
                 <span class="org">{e.org}</span>
-                {e.detail && <span class="det">{t(e.detail, lang)}</span>}
+                {e.detail && <span class="det">{t(e.detail, lang)}</span>}{e.highlights && (<ul class="role-hl">{tl(e.highlights, lang).map((h) => <li>{h}</li>)}</ul>)}
               </span>
             </li>
           ))
@@ -900,6 +900,39 @@ const liveCount = projects.filter((p) => p.status === 'live').length;
   }
   .foot a {
     color: var(--signal);
+  }
+
+  .verify-link {
+    color: var(--accent, currentColor);
+    text-underline-offset: 3px;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+  .verify-link:hover { filter: brightness(1.15); }
+
+  .role-hl {
+    display: grid;
+    gap: 0.25rem;
+    margin-top: 0.4rem;
+    padding: 0;
+    list-style: none;
+    max-width: 44rem;
+  }
+  .role-hl li {
+    position: relative;
+    padding-left: 0.95rem;
+    font-size: 0.875rem;
+    color: var(--ink-2, currentColor);
+    line-height: 1.5;
+  }
+  .role-hl li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.62em;
+    width: 5px;
+    height: 1px;
+    background: var(--accent, currentColor);
   }
 </style>
 

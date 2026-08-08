@@ -40,6 +40,9 @@ interface Entry {
   head: string;
   detail: string;
   stack: string[];
+  /** Public listing, where one exists. Only the heading entry carries it. */
+  url?: string;
+  urlLabel?: string;
 }
 
 const entries: Entry[] = [];
@@ -54,6 +57,8 @@ for (const p of projects) {
     head: t(p.tagline, lang),
     detail: t(p.problem, lang),
     stack: p.stack,
+    url: p.url,
+    urlLabel: p.urlLabel ? t(p.urlLabel, lang) : undefined,
   });
 
   for (const b of tl(p.built, lang)) {
@@ -162,6 +167,13 @@ const repos = [...new Set(entries.map((e) => e.repo))];
               <span class="msg">
                 <span class="head">{e.head}</span>
                 {e.detail && <span class="detail">{e.detail}</span>}
+                {e.url && (
+                  <span class="st">
+                    <a class="verify-link" href={e.url} target="_blank" rel="noopener">
+                      {e.urlLabel ?? t(ui.verify, lang)} ↗
+                    </a>
+                  </span>
+                )}
                 {e.stack.length > 0 && <span class="st">{e.stack.join(' · ')}</span>}
               </span>
             </li>
@@ -202,7 +214,7 @@ const repos = [...new Set(entries.map((e) => e.repo))];
               <span class="what">
                 <strong>{t(e.role, lang)}</strong>
                 <span>{e.org}</span>
-                {e.detail && <span class="det">{t(e.detail, lang)}</span>}
+                {e.detail && <span class="det">{t(e.detail, lang)}</span>}{e.highlights && (<ul class="role-hl">{tl(e.highlights, lang).map((h) => <li>{h}</li>)}</ul>)}
               </span>
             </li>
           ))
@@ -676,6 +688,38 @@ const repos = [...new Set(entries.map((e) => e.repo))];
   }
   .foot a {
     color: var(--accent);
+  }
+
+  .role-hl {
+    display: grid;
+    gap: 0.25rem;
+    margin-top: 0.4rem;
+    padding: 0;
+    list-style: none;
+    max-width: 44rem;
+  }
+  .role-hl li {
+    position: relative;
+    padding-left: 0.95rem;
+    font-size: 0.875rem;
+    color: var(--ink-2, currentColor);
+    line-height: 1.5;
+  }
+  .role-hl li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.62em;
+    width: 5px;
+    height: 1px;
+    background: var(--accent, currentColor);
+  }
+
+  .verify-link {
+    color: var(--accent);
+    font-weight: 600;
+    text-underline-offset: 3px;
+    white-space: nowrap;
   }
 </style>
 

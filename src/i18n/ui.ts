@@ -27,6 +27,10 @@ export const ui = {
   role: { en: 'Role', es: 'Rol' } as L,
   period: { en: 'Period', es: 'Periodo' } as L,
   builtWith: { en: 'Built with', es: 'Construido con' } as L,
+  /** Shown beside a project that has a public listing anyone can open. */
+  verify: { en: 'Open it', es: 'Ábrela' } as L,
+  experience: { en: 'Experience', es: 'Experiencia' } as L,
+  currently: { en: 'Currently', es: 'Ahora mismo' } as L,
 
   // ---- sections
   leadWork: { en: 'Selected work', es: 'Trabajo destacado' } as L,

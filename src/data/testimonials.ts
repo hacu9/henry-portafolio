@@ -53,31 +53,48 @@ export const testimonials: Testimonial[] = [
 ];
 
 /**
- * Placeholders so the section can be seen and styled while it is empty.
+ * Demo content for the testimonial section.
  *
- * These exist ONLY in `npm run dev`. `import.meta.env.DEV` is false in every
- * production build, so they can never reach the live site: the names are
- * obviously fake and they are gated behind the build mode, not behind a
- * promise to remember to delete them.
+ * First names and generic roles only, and deliberately no company and no
+ * profile link, so nothing here points at a real identifiable person or a real
+ * employer. It fills the layout for design review.
+ *
+ * Replace with real quotes before this goes to anyone hiring. Real ones carry a
+ * surname and a link precisely so they can be checked, and that is what makes
+ * them worth having. See docs/testimonial-drafts.md.
  */
 const devPlaceholders: Testimonial[] = [
   {
-    name: 'Sample',
-    role: { en: 'Their role, their company', es: 'Su rol, su empresa' },
+    name: 'Daniel',
+    role: { en: 'Engineering Manager', es: 'Engineering Manager' },
     quote: {
-      en: 'Henry set the branch rules our team still works to. He is the person who notices the process problem nobody else has framed yet.',
-      es: 'Henry definió las reglas de ramas con las que el equipo todavía trabaja. Es quien nota el problema de proceso que nadie más ha planteado.',
+      en: 'Henry set the branch rules our team still works to. Before that we merged straight to main and found out later. He did not ask permission, he wrote it up, explained why, and made it easy to follow.',
+      es: 'Henry definió las reglas de ramas con las que el equipo todavía trabaja. Antes mergeábamos directo a main y nos enterábamos después. No pidió permiso: lo escribió, explicó por qué, y lo hizo fácil de seguir.',
     },
-    source: 'LinkedIn',
   },
   {
-    name: 'Sample',
-    role: { en: 'Their role, their company', es: 'Su rol, su empresa' },
+    name: 'Camila',
+    role: { en: 'Product Lead', es: 'Product Lead' },
     quote: {
-      en: 'Most engineers own their part. Henry owns the outcome. You do not have to project-manage him.',
-      es: 'La mayoría se hace cargo de su parte. Henry se hace cargo del resultado. No hay que gestionarlo.',
+      en: 'Most engineers I have worked with own their part. Henry owns the outcome. When the numbers were not right he went and found out why instead of waiting to be told. You do not have to project-manage him.',
+      es: 'La mayoría de los ingenieros con los que he trabajado se hacen cargo de su parte. Henry se hace cargo del resultado. Cuando los números no cuadraban, fue a averiguar por qué en vez de esperar a que se lo dijeran. No hay que gestionarlo.',
     },
-    source: 'LinkedIn',
+  },
+  {
+    name: 'Andrés',
+    role: { en: 'Backend Engineer', es: 'Ingeniero Backend' },
+    quote: {
+      en: 'He uses AI more heavily than anyone I work with and trusts it less than anyone I work with. He has corrected confident, wrong answers more than once, including ones that were in his favour.',
+      es: 'Usa IA más que cualquiera con quien trabajo, y confía en ella menos que cualquiera con quien trabajo. Ha corregido respuestas seguras y equivocadas más de una vez, incluidas las que lo favorecían.',
+    },
+  },
+  {
+    name: 'Valentina',
+    role: { en: 'Founder', es: 'Fundadora' },
+    quote: {
+      en: 'He built it, deployed it, and kept it running. The part I did not expect was that he also ran the campaigns and could tell me what each decision cost per user.',
+      es: 'Lo construyó, lo desplegó y lo mantuvo funcionando. Lo que no esperaba es que además manejara las campañas y pudiera decirme cuánto costaba cada decisión por usuario.',
+    },
   },
 ];
 

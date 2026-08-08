@@ -58,22 +58,39 @@ const first = lang === 'es' ? morphWords[0][1] : morphWords[0][0];
   <main id="main">
     <!-- ===================================================== HERO -->
     <section class="hero">
-      <p class="micro">{t(profile.title, lang)} — {t(profile.experience, lang)}</p>
-      <h1 class="morph-line">
-        <span class="visually-hidden">{t(profile.positioning, lang)}</span>
-        <span id="morph" aria-hidden="true" data-words={JSON.stringify(morphWords)}>{first}</span>
-      </h1>
-      <p class="hero-sub">{t(profile.positioning, lang)}</p>
-      <p class="micro loc">
-        {t(profile.location, lang)} · {t(profile.workingStyle, lang)}
-      </p>
+      <div class="hero-stick">
+        <p class="micro">{t(profile.title, lang)} — {t(profile.experience, lang)}</p>
+        <h1 class="morph-line">
+          <span class="visually-hidden">{t(profile.positioning, lang)}</span>
+          <span id="morph" aria-hidden="true" data-words={JSON.stringify(morphWords)}>{first}</span>
+        </h1>
+        <p class="hero-sub">{t(profile.positioning, lang)}</p>
+        <p class="micro loc">
+          {t(profile.location, lang)} · {t(profile.workingStyle, lang)}
+        </p>
+      </div>
     </section>
 
+    <!-- The stack as a running strip. Grid-breaking rhythm, per Uncommon. -->
+    <div class="marquee strip" aria-hidden="true">
+      <div>
+        {
+          Array.from({ length: 2 }).map(() => (
+            <>
+              {['Next.js', 'React Native', 'LangGraph', 'PostgreSQL', 'Capacitor', 'Azure', 'Docker', 'Hetzner', 'TypeScript', 'Expo'].map((s) => (
+                <span>{s}</span>
+              ))}
+            </>
+          ))
+        }
+      </div>
+    </div>
+
     <!-- ================================================= APPROACH -->
-    <section id="approach" class="type-band">
+    <section id="approach" class="type-band" data-camera>
       <p class="micro">{t(ui.howIWork, lang)}</p>
-      <h2 class="huge">{t(profile.thesis.lead, lang)}</h2>
-      <div class="cols">
+      <h2 class="huge" data-wipe>{t(profile.thesis.lead, lang)}</h2>
+      <div class="cols" data-stagger>
         {tl(profile.thesis.body, lang).map((p) => <p>{p}</p>)}
       </div>
       <p class="aside">
@@ -87,16 +104,16 @@ const first = lang === 'es' ? morphWords[0][1] : morphWords[0][0];
       <p class="micro pad">{t(ui.leadWork, lang)}</p>
       {
         leadProjects.map((p) => (
-          <article class="case">
+          <article class="case spot">
             <header class="case-top">
-              <h2 class="huge stretch">{projectName(p, lang)}</h2>
-              <p class="case-tag">
+              <h2 class="huge stretch" data-wipe>{projectName(p, lang)}</h2>
+              <p class="case-tag" data-rise>
                 {t(p.tagline, lang)}
                 <span class={`st st-${p.status}`}>{t(STATUS_LABEL[p.status], lang)}</span>
               </p>
             </header>
 
-            <div class="grid">
+            <div class="grid" data-stagger>
               <div class="cell">
                 <p class="micro">{t(ui.theProblem, lang)}</p>
                 <p>{t(p.problem, lang)}</p>
@@ -135,7 +152,7 @@ const first = lang === 'es' ? morphWords[0][1] : morphWords[0][0];
     <!-- =============================================== SUPPORTING -->
     <section class="type-band">
       <p class="micro">{t(ui.supportingWork, lang)}</p>
-      <div class="minis">
+      <div class="minis" data-stagger>
         {
           supportingProjects.map((p) => (
             <article class="mini">
@@ -193,9 +210,9 @@ const first = lang === 'es' ? morphWords[0][1] : morphWords[0][0];
     </section>
 
     <!-- ================================================== CONTACT -->
-    <section id="contact" class="close">
+    <section id="contact" class="close" data-camera>
       <p class="micro">{t(ui.getInTouch, lang)}</p>
-      <h2 class="huge stretch">{t(ui.contactLede, lang)}</h2>
+      <h2 class="huge stretch" data-wipe>{t(ui.contactLede, lang)}</h2>
       <p class="links">
         <a href={`mailto:${profile.email}`}>{profile.email}</a>
         <a href={profile.linkedinUrl} rel="me noopener">LinkedIn</a>
@@ -325,12 +342,31 @@ const first = lang === 'es' ? morphWords[0][1] : morphWords[0][0];
   }
 
   /* ------------------------------------------------------------ hero */
+  /* Tall enough that scrolling through it advances the word — each pair owns
+     a slice of the height. The copy sticks while the words change. */
   .hero {
     max-width: var(--shell);
     margin-inline: auto;
-    padding: clamp(3rem, 12vh, 7rem) var(--pad) clamp(2.5rem, 8vh, 5rem);
+    padding-inline: var(--pad);
+    min-height: 220svh;
+  }
+  .hero-stick {
+    position: sticky;
+    top: 0;
+    min-height: 100svh;
     display: grid;
+    align-content: center;
     gap: 1.4rem;
+    padding-block: clamp(3rem, 10vh, 6rem);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .hero {
+      min-height: 0;
+    }
+    .hero-stick {
+      position: static;
+      min-height: 0;
+    }
   }
   .morph-line {
     margin: 0;
@@ -362,6 +398,25 @@ const first = lang === 'es' ? morphWords[0][1] : morphWords[0][0];
   .loc {
     border-top: 1px solid var(--line);
     padding-top: 1rem;
+  }
+
+  .strip {
+    --marquee-gap: 2.5rem;
+    --marquee-speed: 46s;
+    border-block: 1px solid var(--line);
+    padding-block: 0.65rem;
+    font-family: var(--mono);
+    font-size: 0.6875rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--dim);
+  }
+  .strip span {
+    white-space: nowrap;
+  }
+
+  .case {
+    --spot-color: var(--accent);
   }
 
   /* ------------------------------------------------------ type band */
@@ -666,58 +721,108 @@ const first = lang === 'es' ? morphWords[0][1] : morphWords[0][0];
 </style>
 
 <script>
-  // The hero word alternates English and Spanish. Henry works in both every
-  // day, so the mechanic is biography rather than an effect — which is the
-  // whole argument for this direction.
+  // Mat Voyce's mechanic, properly: letters that stretch, snap and recombine
+  // ON SCROLL. The earlier version ran on a timer, which reads as a loading
+  // spinner rather than as a response to the reader.
+  //
+  // Two things are driven here:
+  //   1. Scroll position through the hero advances the word.
+  //   2. Scroll VELOCITY stretches the letters, so the type has mass.
   const host = document.getElementById('morph');
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   if (host) {
     const pairs: [string, string][] = JSON.parse(host.dataset.words || '[]');
     const pageLang = document.documentElement.lang === 'es' ? 1 : 0;
+    const hero = host.closest('.hero') as HTMLElement | null;
 
-    // Start on the page's own language, then alternate.
-    let index = 0;
-    let side = pageLang;
+    let letters: HTMLElement[] = [];
+    let currentKey = '';
 
     const render = (word: string) => {
+      if (word === currentKey) return;
+      currentKey = word;
       host.textContent = '';
       const frag = document.createDocumentFragment();
-      [...word].forEach((ch, i) => {
-        const s = document.createElement('span');
-        s.textContent = ch;
+      letters = [...word].map((ch, i) => {
+        const el = document.createElement('span');
+        el.textContent = ch;
         if (!reduce) {
-          s.style.opacity = '0';
-          s.style.transform = 'translateY(.42em) scaleY(.45)';
-          s.style.transition =
-            `opacity .28s ease ${i * 0.03}s, transform .46s cubic-bezier(.2,.9,.2,1) ${i * 0.03}s`;
+          el.style.opacity = '0';
+          el.style.transform = 'translateY(.4em) scaleY(.35)';
+          el.style.transition =
+            `opacity .26s ease ${i * 0.028}s, transform .42s cubic-bezier(.2,.9,.2,1) ${i * 0.028}s`;
         }
-        frag.appendChild(s);
+        frag.appendChild(el);
+        return el;
       });
       host.appendChild(frag);
       if (!reduce) {
         requestAnimationFrame(() =>
           requestAnimationFrame(() => {
-            host.querySelectorAll('span').forEach((s) => {
-              (s as HTMLElement).style.opacity = '1';
-              (s as HTMLElement).style.transform = 'none';
-            });
+            for (const el of letters) {
+              el.style.opacity = '1';
+              el.style.transform = 'none';
+            }
           }),
         );
       }
     };
 
-    let paused = false;
-    new IntersectionObserver((es) => es.forEach((e) => (paused = !e.isIntersecting))).observe(host);
+    render(pairs[pageLang === 1 ? 0 : 0][pageLang]);
 
-    const step = () => {
-      if (!paused && pairs.length) {
-        side = side === 0 ? 1 : 0;
-        if (side === pageLang) index = (index + 1) % pairs.length;
-        render(pairs[index][side]);
-      }
-      window.setTimeout(step, reduce ? 5200 : 1700);
-    };
-    window.setTimeout(step, reduce ? 5200 : 1700);
+    if (!reduce && pairs.length) {
+      let lastY = window.scrollY;
+      let velocity = 0;
+      let raf = 0;
+
+      const frame = () => {
+        // Decay toward rest so the stretch settles instead of sticking.
+        velocity *= 0.88;
+
+        // Scroll position picks the word. The hero is tall enough that each
+        // word owns a slice of it.
+        if (hero) {
+          const rect = hero.getBoundingClientRect();
+          const span = rect.height - window.innerHeight;
+          const progress = span > 0 ? Math.min(1, Math.max(0, -rect.top / span)) : 0;
+          const step = Math.min(pairs.length * 2 - 1, Math.floor(progress * pairs.length * 2));
+          const wordIndex = Math.floor(step / 2);
+          // Alternate language as you descend: EN, ES, EN, ES…
+          const side = step % 2 === 0 ? pageLang : pageLang === 0 ? 1 : 0;
+          render(pairs[wordIndex][side]);
+        }
+
+        // Velocity stretches the letters vertically and shears them slightly.
+        const v = Math.max(-1, Math.min(1, velocity / 60));
+        if (Math.abs(v) > 0.001) {
+          const sy = 1 + Math.abs(v) * 0.28;
+          const sx = 1 - Math.abs(v) * 0.06;
+          const skew = v * -4;
+          for (let i = 0; i < letters.length; i++) {
+            const el = letters[i];
+            if (el.style.transition && el.style.opacity !== '1') continue;
+            // Letters further along lag slightly, which is what makes it
+            // read as a wave rather than a block scaling.
+            const lag = 1 - (i / Math.max(1, letters.length)) * 0.35;
+            el.style.transform = `scale(${sx}, ${1 + (sy - 1) * lag}) skewX(${skew * lag}deg)`;
+          }
+        }
+
+        raf = requestAnimationFrame(frame);
+      };
+
+      window.addEventListener(
+        'scroll',
+        () => {
+          const y = window.scrollY;
+          velocity = y - lastY;
+          lastY = y;
+        },
+        { passive: true },
+      );
+
+      raf = requestAnimationFrame(frame);
+    }
   }
 </script>

@@ -1,6 +1,8 @@
 ---
 import type { Lang } from '../i18n/types';
 import { OTHER_LANG, path } from '../i18n/types';
+import Motion from '../components/Motion.astro';
+import '../styles/motion.css';
 
 interface Props {
   lang: Lang;
@@ -10,9 +12,21 @@ interface Props {
   slug?: string;
   /** Theme colour for the browser chrome. */
   themeColor?: string;
+  /** Film grain over the whole page. Off for the densest layouts. */
+  grain?: boolean;
+  /** Lenis duration. Heavier pages want a slightly longer glide. */
+  scrollDuration?: number;
 }
 
-const { lang, title, description, slug, themeColor = '#0C1017' } = Astro.props;
+const {
+  lang,
+  title,
+  description,
+  slug,
+  themeColor = '#0C1017',
+  grain = true,
+  scrollDuration = 1.05,
+} = Astro.props;
 
 const base = import.meta.env.BASE_URL;
 const altLang = OTHER_LANG[lang];
@@ -54,8 +68,10 @@ const alternate = new URL(path(base, altLang, slug ?? ''), Astro.site);
       })();
     </script>
   </head>
-  <body>
+  <body class={grain ? 'grain' : undefined}>
     <slot />
+
+    <Motion duration={scrollDuration} />
 
     <script is:inline>
       // Theme toggle. Every variant renders a [data-theme-toggle] button.

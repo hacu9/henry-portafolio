@@ -1,0 +1,146 @@
+---
+/**
+ * Shared motion runtime. Drop once per page, after the content.
+ *
+ * Three jobs:
+ *  1. Weighted smooth scroll (Lenis) — the By-Kin "one continuous surface"
+ *     feel. Lenis drives the real scroll position, so the native
+ *     scroll-driven animations in motion.css stay in sync with it.
+ *  2. Pointer tracking for `.spot`, written as --mx/--my percentages.
+ *  3. Count-up for [data-count], so a number arrives rather than sits there.
+ *
+ * Every piece checks prefers-reduced-motion and bails.
+ *
+ * NOTE: this script must NOT be `is:inline`. An inline script is not processed
+ * by Vite, so `import('lenis')` stays a bare specifier the browser cannot
+ * resolve and the smooth scroll silently never starts. Config therefore
+ * arrives through a data attribute rather than `define:vars`, which would
+ * force the script inline again.
+ */
+interface Props {
+  /** Lenis easing duration. Lower is snappier. */
+  duration?: number;
+}
+const { duration = 1.05 } = Astro.props;
+---
+
+<div id="motion-config" data-duration={String(duration)} hidden></div>
+
+<script>
+  import Lenis from 'lenis';
+
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const cfg = document.getElementById('motion-config');
+  const duration = Number(cfg?.dataset.duration ?? '1.05');
+
+  /* -------------------------------------------------- pointer spotlight -- */
+  const spots = document.querySelectorAll<HTMLElement>('.spot');
+  if (spots.length && window.matchMedia('(pointer: fine)').matches) {
+    for (const el of spots) {
+      el.addEventListener(
+        'pointermove',
+        (e) => {
+          const r = el.getBoundingClientRect();
+          el.style.setProperty('--mx', `${((e.clientX - r.left) / r.width) * 100}%`);
+          el.style.setProperty('--my', `${((e.clientY - r.top) / r.height) * 100}%`);
+        },
+        { passive: true },
+      );
+    }
+  }
+
+  /* ----------------------------------------------------------- count-up -- */
+  const nums = document.querySelectorAll<HTMLElement>('[data-count]');
+  if (nums.length) {
+    const run = (el: HTMLElement) => {
+      const target = parseFloat(el.dataset.count || '0');
+      const suffix = el.dataset.suffix || '';
+      if (reduce) {
+        el.textContent = String(target) + suffix;
+        return;
+      }
+      const started = performance.now();
+      const dur = 1100;
+      const tick = (now: number) => {
+        const p = Math.min(1, (now - started) / dur);
+        // easeOutExpo: fast arrival, soft landing.
+        const e = p === 1 ? 1 : 1 - Math.pow(2, -10 * p);
+        el.textContent = String(Math.round(target * e)) + suffix;
+        if (p < 1) requestAnimationFrame(tick);
+      };
+      requestAnimationFrame(tick);
+    };
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            run(entry.target as HTMLElement);
+            io.unobserve(entry.target);
+          }
+        }
+      },
+      { rootMargin: '0px 0px -15% 0px' },
+    );
+    for (const n of nums) io.observe(n);
+  }
+
+  /* ----------------------------- fallback where scroll timelines are absent */
+  // motion.css only hides content inside @supports, so there is nothing to
+  // undo in unsupporting browsers — but the reveal is worth having.
+  const hasTimeline = CSS.supports('animation-timeline: view()');
+  if (!hasTimeline && !reduce) {
+    const targets = document.querySelectorAll<HTMLElement>(
+      '[data-rise],[data-wipe],[data-camera],[data-stagger] > *',
+    );
+    for (const el of targets) {
+      el.style.opacity = '0';
+      el.style.transform = 'translate3d(0,1.2rem,0)';
+      el.style.transition = 'opacity .7s ease, transform .7s cubic-bezier(.2,.9,.2,1)';
+    }
+    const io2 = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            const el = entry.target as HTMLElement;
+            el.style.opacity = '1';
+            el.style.transform = 'none';
+            io2.unobserve(el);
+          }
+        }
+      },
+      { rootMargin: '0px 0px -10% 0px' },
+    );
+    for (const el of targets) io2.observe(el);
+  }
+
+  /* ---------------------------------------------- weighted smooth scroll -- */
+  if (!reduce) {
+    const lenis = new Lenis({
+      duration,
+      // Weighted deceleration. This curve is the difference between "smooth
+      // scrolling is on" and the surface feeling like it has mass.
+      easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      smoothWheel: true,
+      // Never hijack touch: it breaks the momentum people expect on a phone.
+      syncTouch: false,
+    });
+
+    const raf = (time: number) => {
+      lenis.raf(time);
+      requestAnimationFrame(raf);
+    };
+    requestAnimationFrame(raf);
+
+    // In-page anchors must go through Lenis or they fight it.
+    for (const a of document.querySelectorAll<HTMLAnchorElement>('a[href^="#"]')) {
+      a.addEventListener('click', (e) => {
+        const id = a.getAttribute('href');
+        if (!id || id === '#') return;
+        const target = document.querySelector(id);
+        if (!target) return;
+        e.preventDefault();
+        lenis.scrollTo(target as HTMLElement, { offset: -80 });
+      });
+    }
+  }
+</script>

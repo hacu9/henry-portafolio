@@ -1,0 +1,197 @@
+/**
+ * Shared motion layer.
+ *
+ * Built on native scroll-driven animations (`animation-timeline: view()`), so
+ * the reveals cost zero JavaScript and run on the compositor. Browsers without
+ * support simply show the content — the `@supports` guard means the hidden
+ * state is never applied unless the animation that undoes it can run.
+ *
+ * The reference points, from the 2026 award winners:
+ *   - By-Kin: weighted smooth scroll, so the page reads as one surface.
+ *   - Uncommon Studio: section transitions that behave like camera moves.
+ *   - Iventions: a spotlight that guides rather than a grid that lists.
+ * Their stated non-negotiable is 60fps on mid-range mobile with a
+ * reduced-motion fallback, which is why nothing here animates layout.
+ */
+
+/* ---------------------------------------------------------------- grain -- */
+/**
+ * A single fixed noise layer. Costs one small SVG and no repaint, and it is
+ * the cheapest way to stop large flat colour fields reading as flat.
+ */
+.grain::after {
+  content: '';
+  position: fixed;
+  inset: -50%;
+  z-index: 9999;
+  pointer-events: none;
+  opacity: var(--grain-opacity, 0.045);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
+  will-change: transform;
+  animation: grain-shift 8s steps(8) infinite;
+}
+@keyframes grain-shift {
+  0% { transform: translate(0, 0); }
+  12.5% { transform: translate(-2%, -3%); }
+  25% { transform: translate(-4%, 2%); }
+  37.5% { transform: translate(2%, -4%); }
+  50% { transform: translate(-1%, 3%); }
+  62.5% { transform: translate(3%, 1%); }
+  75% { transform: translate(-3%, -1%); }
+  87.5% { transform: translate(1%, 2%); }
+  100% { transform: translate(0, 0); }
+}
+
+/* ------------------------------------------------- scroll-driven reveals -- */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    /* Rise: the default entrance. */
+    [data-rise] {
+      animation: rise linear both;
+      animation-timeline: view();
+      animation-range: entry 5% cover 26%;
+    }
+
+    /* Wipe: a clip reveal for headlines. Nothing moves, so it never reflows. */
+    [data-wipe] {
+      animation: wipe linear both;
+      animation-timeline: view();
+      animation-range: entry 8% cover 30%;
+    }
+
+    /* Stagger children by index, set inline as --i. */
+    [data-stagger] > * {
+      animation: rise linear both;
+      animation-timeline: view();
+      animation-range: entry 2% cover calc(24% + (var(--i, 0) * 3%));
+    }
+
+    /* Uncommon Studio's "camera move": a section settles into place as it
+       reaches the viewport rather than simply appearing. */
+    [data-camera] {
+      animation: camera linear both;
+      animation-timeline: view();
+      animation-range: entry 0% cover 40%;
+    }
+
+    /* A rule that draws itself as the section arrives. */
+    [data-draw] {
+      animation: draw linear both;
+      animation-timeline: view();
+      animation-range: entry 20% cover 45%;
+    }
+  }
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 1.4rem, 0);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes wipe {
+  from {
+    opacity: 0;
+    clip-path: inset(0 0 100% 0);
+    transform: translate3d(0, 0.5rem, 0);
+  }
+  to {
+    opacity: 1;
+    clip-path: inset(0 0 -10% 0);
+    transform: none;
+  }
+}
+
+@keyframes camera {
+  from {
+    opacity: 0;
+    transform: perspective(1200px) translate3d(0, 3rem, -8rem);
+  }
+  to {
+    opacity: 1;
+    transform: perspective(1200px) translate3d(0, 0, 0);
+  }
+}
+
+@keyframes draw {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+/* -------------------------------------------------------------- spotlight -- */
+/**
+ * Iventions' guided-walkthrough idea, reduced to one cheap layer: a radial
+ * highlight that follows the pointer. --mx/--my are written by the shared
+ * pointer script, and default to the centre so it looks deliberate before the
+ * first move and on touch devices.
+ */
+.spot {
+  position: relative;
+  isolation: isolate;
+}
+.spot::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  background: radial-gradient(
+    22rem 22rem at var(--mx, 50%) var(--my, 50%),
+    color-mix(in srgb, var(--spot-color, currentColor) 12%, transparent),
+    transparent 70%
+  );
+}
+.spot:hover::before,
+.spot:focus-within::before {
+  opacity: 1;
+}
+
+/* --------------------------------------------------------------- marquee -- */
+.marquee {
+  display: flex;
+  overflow: hidden;
+  user-select: none;
+  gap: var(--marquee-gap, 2rem);
+  mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+}
+.marquee > * {
+  flex-shrink: 0;
+  display: flex;
+  gap: var(--marquee-gap, 2rem);
+  min-width: 100%;
+  animation: scroll-x var(--marquee-speed, 42s) linear infinite;
+}
+@keyframes scroll-x {
+  to {
+    transform: translateX(calc(-100% - var(--marquee-gap, 2rem)));
+  }
+}
+
+/* ------------------------------------------------------- reduced motion -- */
+@media (prefers-reduced-motion: reduce) {
+  .grain::after,
+  .marquee > * {
+    animation: none;
+  }
+  [data-rise],
+  [data-wipe],
+  [data-camera],
+  [data-stagger] > *,
+  [data-draw] {
+    animation: none;
+    opacity: 1;
+    transform: none;
+    clip-path: none;
+  }
+}

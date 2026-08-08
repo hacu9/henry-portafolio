@@ -4,7 +4,7 @@ import { LANGS, t, tl, OTHER_LANG, LANG_LABEL, path } from '../../../i18n/types'
 import type { Lang } from '../../../i18n/types';
 import { ui } from '../../../i18n/ui';
 import { profile } from '../../../data/profile';
-import { leadProjects, supportingProjects, STATUS_LABEL, projectName } from '../../../data/projects';
+import { projects, leadProjects, supportingProjects, STATUS_LABEL, projectName } from '../../../data/projects';
 import { stackGroups } from '../../../data/stack';
 import { timeline, presentLabel } from '../../../data/timeline';
 import { COARSE_TIMELINE_DATES } from '../../../data/config';
@@ -21,6 +21,15 @@ const altHref = path(base, other, 'signal');
 const indexHref = path(base, lang);
 
 const title = `${profile.name} — ${t(profile.title, lang)}`;
+
+/**
+ * The hero readout has to be defensible in an interview, so the numbers come
+ * from the project data rather than being typed in. `infra-ops` and the client
+ * engagements are work, not products of his own, so they are excluded.
+ */
+const OWN_PRODUCTS = ['luxura', 'mate', 'femi', 'storia'];
+const productCount = projects.filter((p) => OWN_PRODUCTS.includes(p.id)).length;
+const liveCount = projects.filter((p) => p.status === 'live').length;
 ---
 
 <Base
@@ -63,15 +72,28 @@ const title = `${profile.name} — ${t(profile.title, lang)}`;
         <p class="eyebrow">
           {t(profile.title, lang)} · {t(profile.experience, lang)} · {t(profile.location, lang)}
         </p>
-        <h1>{t(profile.positioning, lang)}</h1>
+        <h1 data-wipe>{t(profile.positioning, lang)}</h1>
         <ul class="chips">
           {tl(profile.fitFor, lang).map((f) => <li>{f}</li>)}
         </ul>
       </div>
       <div class="readout shell">
+        <div>
+          <span>{t(ui.yearsShipping, lang)}</span>
+          <b><span data-count="8" data-suffix="+">0</span></b>
+        </div>
+        {/* Counts derive from the data so they cannot drift from the content.
+            Products built end to end: Luxura, Mate, Femi, Storia. In
+            production: Luxura alone. */}
+        <div>
+          <span>{lang === 'es' ? 'Productos propios' : 'Products built'}</span>
+          <b><span data-count={productCount}>0</span></b>
+        </div>
+        <div>
+          <span>{lang === 'es' ? 'En producción' : 'In production'}</span>
+          <b><span data-count={liveCount}>0</span></b>
+        </div>
         <div><span>{t(ui.basedIn, lang)}</span><b>Bogotá · UTC−5</b></div>
-        <div><span>{t(ui.yearsShipping, lang)}</span><b>{t(profile.experience, lang)}</b></div>
-        <div><span>GitHub</span><b>{profile.github}</b></div>
       </div>
     </section>
 
@@ -79,9 +101,9 @@ const title = `${profile.name} — ${t(profile.title, lang)}`;
     <section id="approach" class="shell band">
       <div class="head">
         <p class="eyebrow">{t(ui.howIWork, lang)}</p>
-        <span class="fill"></span>
+        <span class="fill" data-draw></span>
       </div>
-      <div class="approach">
+      <div class="approach" data-camera>
         <div>
           <h2>{t(profile.thesis.lead, lang)}</h2>
           {tl(profile.thesis.body, lang).map((p) => <p class="body">{p}</p>)}
@@ -97,12 +119,12 @@ const title = `${profile.name} — ${t(profile.title, lang)}`;
     <section id="work" class="shell band">
       <div class="head">
         <p class="eyebrow">{t(ui.leadWork, lang)}</p>
-        <span class="fill"></span>
+        <span class="fill" data-draw></span>
       </div>
 
       {
         leadProjects.map((p) => (
-          <article class="case">
+          <article class="case spot">
             <div class="case-bar">
               <h3>{projectName(p, lang)}</h3>
               <span class={`status s-${p.status}`}>{t(STATUS_LABEL[p.status], lang)}</span>
@@ -120,7 +142,7 @@ const title = `${profile.name} — ${t(profile.title, lang)}`;
               </div>
             </dl>
 
-            <div class="beats">
+            <div class="beats" data-stagger>
               <div class="beat">
                 <p class="eyebrow">{t(ui.theProblem, lang)}</p>
                 <p class="body">{t(p.problem, lang)}</p>
@@ -163,12 +185,12 @@ const title = `${profile.name} — ${t(profile.title, lang)}`;
     <section class="shell band">
       <div class="head">
         <p class="eyebrow">{t(ui.supportingWork, lang)}</p>
-        <span class="fill"></span>
+        <span class="fill" data-draw></span>
       </div>
-      <div class="minis">
+      <div class="minis" data-stagger>
         {
           supportingProjects.map((p) => (
-            <article class="mini">
+            <article class="mini spot">
               <div class="mini-bar">
                 <h3>{projectName(p, lang)}</h3>
                 <span class={`status s-${p.status}`}>{t(STATUS_LABEL[p.status], lang)}</span>
@@ -194,9 +216,9 @@ const title = `${profile.name} — ${t(profile.title, lang)}`;
     <section id="stack" class="shell band">
       <div class="head">
         <p class="eyebrow">{t(ui.whatIUse, lang)}</p>
-        <span class="fill"></span>
+        <span class="fill" data-draw></span>
       </div>
-      <div class="stacks">
+      <div class="stacks" data-stagger>
         {
           stackGroups.map((g) => (
             <div class="sgroup">
@@ -217,7 +239,7 @@ const title = `${profile.name} — ${t(profile.title, lang)}`;
     <section id="record" class="shell band">
       <div class="head">
         <p class="eyebrow">{t(ui.timeline, lang)}</p>
-        <span class="fill"></span>
+        <span class="fill" data-draw></span>
       </div>
       <ol class="record">
         {
@@ -241,7 +263,7 @@ const title = `${profile.name} — ${t(profile.title, lang)}`;
 
     <!-- ================================================== CONTACT ===== -->
     <section id="contact" class="shell band">
-      <div class="cta">
+      <div class="cta spot" data-camera>
         <p class="eyebrow">{t(ui.getInTouch, lang)}</p>
         <h2>{t(ui.contactLede, lang)}</h2>
         <div class="links">
@@ -511,6 +533,12 @@ const title = `${profile.name} — ${t(profile.title, lang)}`;
     background: color-mix(in srgb, var(--raise) 80%, transparent);
     padding: 0.22rem 0.5rem;
   }
+  .case,
+  .mini,
+  .cta {
+    --spot-color: var(--signal);
+  }
+
   .readout {
     position: relative;
     display: flex;
@@ -531,8 +559,10 @@ const title = `${profile.name} — ${t(profile.title, lang)}`;
     color: var(--dim);
   }
   .readout b {
-    color: var(--ink);
-    font-weight: 600;
+    color: var(--signal);
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    font-size: 0.9375rem;
   }
 
   /* ------------------------------------------------------------ bands */

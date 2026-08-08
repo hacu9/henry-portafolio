@@ -54,7 +54,7 @@ const indexHref = path(base, lang);
         <p class="kicker">
           {t(profile.title, lang)} — {t(profile.experience, lang)}
         </p>
-        <h1>{profile.name}</h1>
+        <h1 data-wipe>{profile.name}</h1>
         <p class="stage-lede">{t(profile.positioning, lang)}</p>
         <p class="place">{t(profile.location, lang)} · {t(profile.workingStyle, lang)}</p>
       </div>
@@ -80,7 +80,7 @@ const indexHref = path(base, lang);
     <section id="work">
       {
         leadProjects.map((p, i) => (
-          <article class="inst" data-reveal>
+          <article class="inst spot" data-reveal>
             <div class="inst-head">
               <span class="idx" aria-hidden="true">
                 {String(i + 1).padStart(2, '0')}
@@ -92,7 +92,7 @@ const indexHref = path(base, lang);
               <span class={`status s-${p.status}`}>{t(STATUS_LABEL[p.status], lang)}</span>
             </div>
 
-            <div class="inst-body">
+            <div class="inst-body" data-stagger>
               <div class="beat">
                 <p class="kicker">{t(ui.theProblem, lang)}</p>
                 <p class="lede">{t(p.problem, lang)}</p>
@@ -141,7 +141,7 @@ const indexHref = path(base, lang);
     <section class="hold">
       <div class="rail"><p class="kicker">{t(ui.supportingWork, lang)}</p></div>
       <div class="col">
-        <div class="minis">
+        <div class="minis" data-stagger>
           {
             supportingProjects.map((p) => (
               <article class="mini" data-reveal>
@@ -207,7 +207,7 @@ const indexHref = path(base, lang);
     </section>
 
     <!-- =================================================== CONTACT -->
-    <section id="contact" class="close">
+    <section id="contact" class="close spot" data-camera>
       <p class="kicker">{t(ui.getInTouch, lang)}</p>
       <h2 class="display big">{t(ui.contactLede, lang)}</h2>
       <div class="links">
@@ -469,6 +469,11 @@ const indexHref = path(base, lang);
   }
 
   /* ---------------------------------------------------- installations */
+  .inst,
+  .close {
+    --spot-color: var(--accent);
+  }
+
   .inst {
     max-width: var(--shell);
     margin-inline: auto;

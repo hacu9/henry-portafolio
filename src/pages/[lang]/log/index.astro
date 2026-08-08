@@ -112,7 +112,7 @@ const repos = [...new Set(entries.map((e) => e.repo))];
   <main id="main">
     <!-- ==================================================== HEADER -->
     <section class="intro">
-      <h1>{t(profile.positioning, lang)}</h1>
+      <h1 data-wipe>{t(profile.positioning, lang)}</h1>
       <div class="intro-cols">
         <div>
           <p class="k">{t(ui.howIWork, lang)}</p>
@@ -172,9 +172,9 @@ const repos = [...new Set(entries.map((e) => e.repo))];
     </section>
 
     <!-- ===================================================== STACK -->
-    <section class="block">
+    <section class="block" data-camera>
       <p class="k">{t(ui.whatIUse, lang)}</p>
-      <div class="stack-grid">
+      <div class="stack-grid" data-stagger>
         {
           stackGroups.map((g) => (
             <div class="sg">
@@ -188,7 +188,7 @@ const repos = [...new Set(entries.map((e) => e.repo))];
     </section>
 
     <!-- ==================================================== RECORD -->
-    <section class="block">
+    <section class="block" data-camera>
       <p class="k">{t(ui.timeline, lang)}</p>
       <ol class="record">
         {

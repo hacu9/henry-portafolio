@@ -35,7 +35,8 @@ const altHref = path(base, other, 'atlas');
 const indexHref = path(base, lang);
 
 /** Rooms in the gallery: the opening, one per lead project, then the close. */
-const rooms = leadProjects.length + 2;
+// Opening + two rooms per project + the closing room.
+const rooms = leadProjects.length * 2 + 2;
 ---
 
 <Base
@@ -76,50 +77,76 @@ const rooms = leadProjects.length + 2;
         </article>
 
         {
+          /* Two rooms per project. Four beats plus a heading cannot fit one
+             screen on a laptop, and a gallery that clips its own content is
+             worse than one with more rooms. */
           leadProjects.map((p, i) => (
-            <article class="room proj">
-              <div class="room-head">
-                <span class="rn" aria-hidden="true">{String(i + 1).padStart(2, '0')} / {String(leadProjects.length).padStart(2, '0')}</span>
-                <h2>{projectName(p, lang)}</h2>
-                <p class="tag">
-                  {t(p.tagline, lang)}{p.url && (<>{' · '}<a class="verify-link" href={p.url} target="_blank" rel="noopener">{p.urlLabel ? t(p.urlLabel, lang) : t(ui.verify, lang)} ↗</a></>)}
-                  <span class={`st st-${p.status}`}>{t(STATUS_LABEL[p.status], lang)}</span>
-                </p>
-              {p.shots && (
-                <div class="shots">
-                  {p.shots.map((sh) => (
-                    <img src={asset(base, sh.src)} alt={t(sh.alt, lang)} loading="lazy" decoding="async" />
-                  ))}
-                </div>
-              )}
-              </div>
-              <div class="room-body">
-                <div>
-                  <p class="kick">{t(ui.theProblem, lang)}</p>
-                  <p>{t(p.problem, lang)}</p>
-                </div>
-                <div>
-                  <p class="kick">{t(ui.whatIBuilt, lang)}</p>
-                  <ul>{tl(p.built, lang).map((b) => <li>{b}</li>)}</ul>
-                </div>
-                <div>
-                  <p class="kick">
-                    {p.decisions.length > 1 ? t(ui.theDecisions, lang) : t(ui.theDecision, lang)}
+            <>
+              <article class="room proj">
+                <div class="room-head">
+                  <span class="rn" aria-hidden="true">
+                    {String(i + 1).padStart(2, '0')} / {String(leadProjects.length).padStart(2, '0')}
+                  </span>
+                  <h2>{projectName(p, lang)}</h2>
+                  <p class="tag">
+                    {t(p.tagline, lang)}
+                    {p.url && (
+                      <>
+                        {' · '}
+                        <a class="verify-link" href={p.url} target="_blank" rel="noopener">
+                          {p.urlLabel ? t(p.urlLabel, lang) : t(ui.verify, lang)} ↗
+                        </a>
+                      </>
+                    )}
+                    <span class={`st st-${p.status}`}>{t(STATUS_LABEL[p.status], lang)}</span>
                   </p>
-                  {p.decisions.map((d) => (
-                    <div class="call">
-                      <h3>{t(d.title, lang)}</h3>
-                      <p>{t(d.body, lang)}</p>
-                    </div>
-                  ))}
                 </div>
-                <div>
-                  <p class="kick">{t(ui.theOutcome, lang)}</p>
-                  <p class="out">{t(p.outcome, lang)}</p>
-                  <p class="deps">{p.stack.join('  ·  ')}</p>
+                <div class="room-body">
+                  <div>
+                    <p class="kick">{t(ui.theProblem, lang)}</p>
+                    <p>{t(p.problem, lang)}</p>
+                  </div>
+                  <div>
+                    <p class="kick">{t(ui.whatIBuilt, lang)}</p>
+                    <ul>{tl(p.built, lang).map((b) => <li>{b}</li>)}</ul>
+                  </div>
                 </div>
-              </div>
-            </article>
+              </article>
+
+              <article class="room proj">
+                <div class="room-head">
+                  <span class="rn" aria-hidden="true">
+                    {String(i + 1).padStart(2, '0')} — {t(ui.theDecision, lang)}
+                  </span>
+                  <h2 class="room-sub">{projectName(p, lang)}</h2>
+                </div>
+                <div class="room-body">
+                  <div>
+                    <p class="kick">
+                      {p.decisions.length > 1 ? t(ui.theDecisions, lang) : t(ui.theDecision, lang)}
+                    </p>
+                    {p.decisions.map((d) => (
+                      <div class="call">
+                        <h3>{t(d.title, lang)}</h3>
+                        <p>{t(d.body, lang)}</p>
+                      </div>
+                    ))}
+                  </div>
+                  <div>
+                    <p class="kick">{t(ui.theOutcome, lang)}</p>
+                    <p class="out">{t(p.outcome, lang)}</p>
+                    {p.shots && (
+                      <div class="shots">
+                        {p.shots.map((sh) => (
+                          <img src={asset(base, sh.src)} alt={t(sh.alt, lang)} loading="lazy" decoding="async" />
+                        ))}
+                      </div>
+                    )}
+                    <p class="deps">{p.stack.join('  ·  ')}</p>
+                  </div>
+                </div>
+              </article>
+            </>
           ))
         }
 
@@ -306,11 +333,14 @@ const rooms = leadProjects.length + 2;
     height: 100%;
     align-items: center;
     will-change: transform;
+    /* Half a viewport of lead-in and lead-out, so the first and last rooms
+       sit centred rather than jammed against the edge. */
+    padding-inline: max(0px, calc((100vw - min(72rem, 92vw)) / 2));
   }
   .room {
-    flex: 0 0 min(58rem, 88vw);
+    flex: 0 0 min(72rem, 92vw);
     height: 100%;
-    padding: 5rem clamp(1.5rem, 4vw, 4rem) 3rem;
+    padding: 4.5rem clamp(1.5rem, 3vw, 3rem) 2rem;
     display: grid;
     align-content: center;
     gap: 1rem;
@@ -360,13 +390,14 @@ const rooms = leadProjects.length + 2;
 
   .room-body {
     display: grid;
-    gap: 1.1rem 2.2rem;
-    overflow-y: auto;
-    padding-top: 0.9rem;
+    gap: 0.9rem 2rem;
+    padding-top: 0.8rem;
+    /* No overflow-y here on purpose. */
+    min-height: 0;
   }
   @media (min-width: 800px) { .room-body { grid-template-columns: 1fr 1fr; } }
   .room-body > div { display: grid; gap: 0.4rem; align-content: start; }
-  .room-body p, .room-body ul { color: var(--ink-2); font-size: 0.9rem; max-width: var(--read); }
+  .room-body p, .room-body ul { color: var(--ink-2); font-size: 0.85rem; line-height: 1.5; max-width: var(--read); }
   .room-body ul { display: grid; gap: 0.22rem; list-style: none; padding: 0; }
   .room-body li::before { content: '— '; color: var(--accent); }
   .call { display: grid; gap: 0.25rem; }
@@ -376,11 +407,14 @@ const rooms = leadProjects.length + 2;
   .deps { font-family: var(--mono); font-size: 0.625rem; color: var(--dim) !important; border-top: 1px solid var(--line); padding-top: 0.5rem; margin-top: 0.4rem; }
 
   .end h2 { font-size: clamp(1.7rem, 4vw, 2.8rem); }
+  .room-sub { opacity: 0.42; font-size: clamp(1.3rem, 2.6vw, 1.9rem) !important; }
+  .room .shots { margin-top: 0.5rem; }
+  .room .shots img { width: clamp(96px, 12vw, 128px); border-radius: 10px; }
   .end-cols { display: grid; gap: 0.8rem; color: var(--ink-2); font-size: 0.92rem; }
   .counter { border-top: 1px solid var(--line); padding-top: 0.8rem; color: var(--dim); font-size: 0.875rem; max-width: 40rem; }
 
   /* Below 900px, or with reduced motion, the gallery becomes a normal stack. */
-  @media (max-width: 899px), (prefers-reduced-motion: reduce) {
+  @media (max-width: 899px), (max-height: 640px), (prefers-reduced-motion: reduce) {
     .gallery { height: auto; }
     .viewport { position: static; height: auto; overflow: visible; }
     .track { display: grid; transform: none !important; }
@@ -520,45 +554,72 @@ const rooms = leadProjects.length + 2;
 </style>
 
 <script>
-  // Vertical scroll through the gallery translates the track horizontally.
-  // The reader keeps their normal scrolling; only the rendering is sideways.
+  // Vertical scroll drives the track sideways.
+  //
+  // This runs in a continuous rAF loop while the gallery is on screen, NOT on
+  // the scroll event. Lenis interpolates the scroll position every frame, so a
+  // scroll-event listener applies the transform one frame late and the track
+  // visibly swims behind the wheel. Reading the rect each frame keeps the
+  // horizontal motion locked to whatever Lenis has actually set.
   const gallery = document.querySelector<HTMLElement>('.gallery');
   const track = document.getElementById('track');
   const pbar = document.getElementById('pbar');
 
-  const wide = window.matchMedia('(min-width: 900px)');
+  // Must mirror the media query in the stylesheet exactly, or the script
+  // translates a track that CSS has already laid out vertically.
+  const wide = window.matchMedia('(min-width: 900px) and (min-height: 641px)');
   const motionOk = window.matchMedia('(prefers-reduced-motion: no-preference)');
 
-  let raf = 0;
+  if (gallery && track) {
+    let inView = true;
+    new IntersectionObserver(
+      (entries) => entries.forEach((e) => (inView = e.isIntersecting)),
+      { rootMargin: '100px' },
+    ).observe(gallery);
 
-  const update = () => {
-    if (!gallery || !track) return;
+    let lastX = -1;
 
-    if (wide.matches && motionOk.matches) {
-      const rect = gallery.getBoundingClientRect();
-      const span = gallery.offsetHeight - window.innerHeight;
-      const progress = span > 0 ? Math.min(1, Math.max(0, -rect.top / span)) : 0;
-      // Travel exactly the overflow width, so the last room lands flush.
-      const distance = Math.max(0, track.scrollWidth - window.innerWidth);
-      track.style.transform = `translate3d(${-progress * distance}px,0,0)`;
-      if (pbar) pbar.style.width = `${progress * 100}%`;
-    } else {
-      track.style.transform = '';
-      if (pbar) {
-        const doc = document.documentElement;
-        const p = doc.scrollTop / Math.max(1, doc.scrollHeight - doc.clientHeight);
-        pbar.style.width = `${p * 100}%`;
+    const frame = () => {
+      const horizontal = wide.matches && motionOk.matches;
+
+      if (horizontal && inView) {
+        const rect = gallery.getBoundingClientRect();
+        const span = gallery.offsetHeight - window.innerHeight;
+        const progress = span > 0 ? Math.min(1, Math.max(0, -rect.top / span)) : 0;
+        const distance = Math.max(0, track.scrollWidth - window.innerWidth);
+        const x = -progress * distance;
+
+        // Only touch the DOM when the value actually changes.
+        if (Math.abs(x - lastX) > 0.05) {
+          track.style.transform = `translate3d(${x}px,0,0)`;
+          lastX = x;
+        }
+        if (pbar) pbar.style.width = `${progress * 100}%`;
+      } else if (!horizontal && lastX !== 0) {
+        track.style.transform = '';
+        lastX = 0;
       }
-    }
-    raf = 0;
-  };
 
-  const schedule = () => {
-    if (!raf) raf = requestAnimationFrame(update);
-  };
+      requestAnimationFrame(frame);
+    };
+    requestAnimationFrame(frame);
 
-  window.addEventListener('scroll', schedule, { passive: true });
-  window.addEventListener('resize', schedule);
-  wide.addEventListener('change', schedule);
-  update();
+    // Below the gallery, or in the stacked layout, the bar tracks page scroll.
+    const pageProgress = () => {
+      if (wide.matches && motionOk.matches && inView) return;
+      const doc = document.documentElement;
+      const p = doc.scrollTop / Math.max(1, doc.scrollHeight - doc.clientHeight);
+      if (pbar) pbar.style.width = `${p * 100}%`;
+    };
+    window.addEventListener('scroll', pageProgress, { passive: true });
+
+    // A resize changes both the travel distance and the layout mode.
+    window.addEventListener('resize', () => {
+      lastX = -1;
+    });
+    wide.addEventListener('change', () => {
+      lastX = -1;
+      track.style.transform = '';
+    });
+  }
 </script>

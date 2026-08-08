@@ -41,15 +41,14 @@ export const ui = {
 
   // ---- contact
   getInTouch: { en: 'Get in touch', es: 'Hablemos' } as L,
-  /*
-   * The old line listed three roles with no priority and no AI, at the exact
-   * point where a reader decides whether to write. Bogotá is UTC-5, which
-   * overlaps US Eastern all year, and that is a practical fact US hiring
-   * managers check.
+  /**
+   * Invites contact without announcing that he is looking. The previous line
+   * listed three roles and read as a want ad, which puts the reader in the
+   * position of doing him a favour rather than starting a conversation.
    */
   contactLede: {
-    en: 'I am looking for tech lead work on AI and agentic products. Senior full-stack and senior mobile also fit. Remote, on US Eastern hours, in English or Spanish.',
-    es: 'Busco trabajo de tech lead en productos de IA y sistemas agénticos. También encajo en full-stack senior y mobile senior. Remoto, en horario del Este de EE. UU., en inglés o español.',
+    en: 'Tell me what you are building.',
+    es: 'Cuéntame qué estás construyendo.',
   } as L,
   emailMe: { en: 'Email', es: 'Correo' } as L,
 

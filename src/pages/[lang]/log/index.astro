@@ -1,6 +1,7 @@
 ---
 import Base from '../../../layouts/Base.astro';
-import { LANGS, t, tl, OTHER_LANG, LANG_LABEL, path } from '../../../i18n/types';
+import ContactForm from '../../../components/ContactForm.astro';
+import { LANGS, t, tl, OTHER_LANG, LANG_LABEL, path , asset} from '../../../i18n/types';
 import type { Lang } from '../../../i18n/types';
 import { ui } from '../../../i18n/ui';
 import { profile } from '../../../data/profile';
@@ -43,6 +44,7 @@ interface Entry {
   /** Public listing, where one exists. Only the heading entry carries it. */
   url?: string;
   urlLabel?: string;
+  shots?: { src: string; alt: string }[];
 }
 
 const entries: Entry[] = [];
@@ -59,6 +61,7 @@ for (const p of projects) {
     stack: p.stack,
     url: p.url,
     urlLabel: p.urlLabel ? t(p.urlLabel, lang) : undefined,
+    shots: p.shots?.map((sh) => ({ src: sh.src, alt: t(sh.alt, lang) })),
   });
 
   for (const b of tl(p.built, lang)) {
@@ -174,6 +177,13 @@ const repos = [...new Set(entries.map((e) => e.repo))];
                     </a>
                   </span>
                 )}
+                {e.shots && (
+                  <span class="shots">
+                    {e.shots.map((sh) => (
+                      <img src={asset(base, sh.src)} alt={sh.alt} loading="lazy" decoding="async" />
+                    ))}
+                  </span>
+                )}
                 {e.stack.length > 0 && <span class="st">{e.stack.join(' · ')}</span>}
               </span>
             </li>
@@ -224,13 +234,15 @@ const repos = [...new Set(entries.map((e) => e.repo))];
 
     <!-- =================================================== CONTACT -->
     <section id="contact" class="block close">
-      <p class="k">{t(ui.getInTouch, lang)}</p>
-      <h2>{t(ui.contactLede, lang)}</h2>
+      <div class="contact-id"><img class="portrait" src={asset(base, profile.photo)} alt={t(profile.photoAlt, lang)} width="72" height="72" loading="lazy" />
+        <p class="k">{t(ui.getInTouch, lang)}</p></div>
+      {t(ui.contactLede, lang) && <h2>{t(ui.contactLede, lang)}</h2>}
       <p class="links">
         <a href={`mailto:${profile.email}`}>{profile.email}</a>
         <a href={profile.linkedinUrl} rel="me noopener">LinkedIn</a>
         <a href={profile.githubUrl} rel="me noopener">GitHub</a>
       </p>
+      <ContactForm lang={lang} />
     </section>
   </main>
 
@@ -721,6 +733,38 @@ const repos = [...new Set(entries.map((e) => e.repo))];
     text-underline-offset: 3px;
     white-space: nowrap;
   }
+
+  .contact-id { display: flex; align-items: center; gap: 0.9rem; }
+
+  /* Portrait beside the contact heading — a face where someone decides to write. */
+  .portrait {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--accent, currentColor);
+    flex: none;
+  }
+  /* Product screenshots. Phone-shaped, so they scroll rather than squash. */
+  .shots {
+    display: flex;
+    gap: 0.8rem;
+    overflow-x: auto;
+    padding-bottom: 0.4rem;
+    margin-block: 0.3rem;
+    scroll-snap-type: x mandatory;
+  }
+  .shots img {
+    width: clamp(140px, 26vw, 210px);
+    height: auto;
+    flex: none;
+    border-radius: 12px;
+    scroll-snap-align: start;
+    background: var(--raise, transparent);
+  }
+
+  .shots { display: flex; gap: 0.6rem; overflow-x: auto; padding-block: 0.4rem; }
+  .shots img { width: 132px; height: auto; flex: none; border-radius: 8px; }
 </style>
 
 <script>

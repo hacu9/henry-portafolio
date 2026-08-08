@@ -12,7 +12,8 @@
  * lights a card the same way hover does.
  */
 import Base from '../../../layouts/Base.astro';
-import { LANGS, t, tl, OTHER_LANG, LANG_LABEL, path } from '../../../i18n/types';
+import ContactForm from '../../../components/ContactForm.astro';
+import { LANGS, t, tl, OTHER_LANG, LANG_LABEL, path , asset} from '../../../i18n/types';
 import type { Lang } from '../../../i18n/types';
 import { ui } from '../../../i18n/ui';
 import { profile } from '../../../data/profile';
@@ -96,6 +97,13 @@ const indexHref = path(base, lang);
               <span class={`st st-${p.status}`}>{t(STATUS_LABEL[p.status], lang)}</span>
             </div>
             <p class="tag">{t(p.tagline, lang)}{p.url && (<>{' · '}<a class="verify-link" href={p.url} target="_blank" rel="noopener">{p.urlLabel ? t(p.urlLabel, lang) : t(ui.verify, lang)} ↗</a></>)}</p>
+              {p.shots && (
+                <div class="shots">
+                  {p.shots.map((sh) => (
+                    <img src={asset(base, sh.src)} alt={t(sh.alt, lang)} loading="lazy" decoding="async" />
+                  ))}
+                </div>
+              )}
 
             <div class="beats">
               <div>
@@ -187,13 +195,15 @@ const indexHref = path(base, lang);
     </section>
 
     <section id="contact" class="band close">
-      <p class="kick">{t(ui.getInTouch, lang)}</p>
-      <h2 class="big">{t(ui.contactLede, lang)}</h2>
+      <div class="contact-id"><img class="portrait" src={asset(base, profile.photo)} alt={t(profile.photoAlt, lang)} width="72" height="72" loading="lazy" />
+        <p class="kick">{t(ui.getInTouch, lang)}</p></div>
+      {t(ui.contactLede, lang) && <h2 class="big">{t(ui.contactLede, lang)}</h2>}
       <p class="links">
         <a href={`mailto:${profile.email}`}>{profile.email}</a>
         <a href={profile.linkedinUrl} rel="me noopener">LinkedIn</a>
         <a href={profile.githubUrl} rel="me noopener">GitHub</a>
       </p>
+      <ContactForm lang={lang} />
     </section>
   </main>
 
@@ -699,6 +709,35 @@ const indexHref = path(base, lang);
     width: 5px;
     height: 1px;
     background: var(--accent, currentColor);
+  }
+
+  .contact-id { display: flex; align-items: center; gap: 0.9rem; }
+
+  /* Portrait beside the contact heading — a face where someone decides to write. */
+  .portrait {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--accent, currentColor);
+    flex: none;
+  }
+  /* Product screenshots. Phone-shaped, so they scroll rather than squash. */
+  .shots {
+    display: flex;
+    gap: 0.8rem;
+    overflow-x: auto;
+    padding-bottom: 0.4rem;
+    margin-block: 0.3rem;
+    scroll-snap-type: x mandatory;
+  }
+  .shots img {
+    width: clamp(140px, 26vw, 210px);
+    height: auto;
+    flex: none;
+    border-radius: 12px;
+    scroll-snap-align: start;
+    background: var(--raise, transparent);
   }
 </style>
 

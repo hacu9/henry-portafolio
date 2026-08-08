@@ -37,3 +37,14 @@ export function path(base: string, ...parts: string[]): string {
     .join('/');
   return tail ? `${head}/${tail}/` : `${head}/`;
 }
+
+/**
+ * Join BASE_URL with a FILE path.
+ *
+ * `path()` appends a trailing slash because page URLs are directories under
+ * `build.format: 'directory'`. Assets must not get one — "/images/henry.jpg/"
+ * is a 404 on GitHub Pages even though some dev servers forgive it.
+ */
+export function asset(base: string, file: string): string {
+  return `${base.replace(/\/+$/, '')}/${file.replace(/^\/+/, '')}`;
+}

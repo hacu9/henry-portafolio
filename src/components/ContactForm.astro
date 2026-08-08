@@ -1,0 +1,234 @@
+---
+/**
+ * Contact form for a static host — same approach as victor-portafolio.
+ *
+ * GitHub Pages cannot process a form, so submissions go to Web3Forms, which
+ * accepts a POST from the browser and forwards it to a real inbox. Two things
+ * make this safe to ship before any account exists:
+ *
+ *   1. `action="mailto:"` is the no-JS fallback. With scripting off, the
+ *      browser composes the mail itself and the form still works.
+ *   2. With JS on but no access key configured, the submit handler returns
+ *      without calling preventDefault, so that same mailto path fires.
+ *
+ * The Web3Forms access key is a public value by design — it identifies the
+ * destination inbox, not the sender — which is why it can live in client HTML.
+ * It must still be HENRY's own key: Victor's key would deliver Henry's
+ * enquiries to Victor's inbox.
+ */
+import { t } from '../i18n/types';
+import type { Lang } from '../i18n/types';
+import { profile } from '../data/profile';
+import { WEB3FORMS_ACCESS_KEY } from '../data/config';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+
+const L = {
+  name: { en: 'Name', es: 'Nombre' },
+  email: { en: 'Email', es: 'Correo' },
+  message: { en: 'What are you building?', es: '¿Qué estás construyendo?' },
+  send: { en: 'Send', es: 'Enviar' },
+  sending: { en: 'Sending…', es: 'Enviando…' },
+  ok: {
+    en: 'Sent. I reply from Bogotá hours.',
+    es: 'Enviado. Respondo en horario de Bogotá.',
+  },
+  err: {
+    en: 'That did not send. Write to me directly:',
+    es: 'No se envió. Escríbeme directamente:',
+  },
+  hint: { en: 'A sentence or two is plenty.', es: 'Con una o dos frases basta.' },
+} as const;
+---
+
+<form
+  class="cform"
+  method="post"
+  enctype="text/plain"
+  action={`mailto:${profile.email}`}
+  data-contact-form
+  data-access-key={WEB3FORMS_ACCESS_KEY}
+  data-mailto={profile.email}
+  data-sending={t(L.sending, lang)}
+  data-ok={t(L.ok, lang)}
+  data-err={t(L.err, lang)}
+  data-send={t(L.send, lang)}
+>
+  <div class="cform-row">
+    <label>
+      <span>{t(L.name, lang)}</span>
+      <input type="text" name="name" autocomplete="name" required />
+    </label>
+    <label>
+      <span>{t(L.email, lang)}</span>
+      <input type="email" name="email" autocomplete="email" required />
+    </label>
+  </div>
+  <label>
+    <span>{t(L.message, lang)}</span>
+    <textarea name="message" rows="3" required placeholder={t(L.hint, lang)}></textarea>
+  </label>
+
+  {/* Web3Forms plumbing. access_key is injected by the script. */}
+  <input type="hidden" name="subject" value="New message from the portfolio" />
+  <input type="hidden" name="from_name" value="Henry Cabello — portfolio" />
+  {/* Web3Forms' own honeypot. Real people never see or tick it. */}
+  <input class="cform-hp" type="checkbox" name="botcheck" tabindex="-1" autocomplete="off" aria-hidden="true" />
+
+  <div class="cform-foot">
+    <button type="submit">{t(L.send, lang)}</button>
+    <p class="cform-status" role="status" aria-live="polite"></p>
+  </div>
+</form>
+
+<style>
+  .cform {
+    display: grid;
+    gap: 0.7rem;
+    max-width: 34rem;
+    margin-top: 1.1rem;
+  }
+  .cform-row {
+    display: grid;
+    gap: 0.7rem;
+  }
+  @media (min-width: 540px) {
+    .cform-row {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  .cform label {
+    display: grid;
+    gap: 0.25rem;
+  }
+  .cform label span {
+    font-family: var(--mono, ui-monospace, monospace);
+    font-size: 0.625rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--dim, currentColor);
+  }
+  .cform input[type='text'],
+  .cform input[type='email'],
+  .cform textarea {
+    width: 100%;
+    padding: 0.55rem 0.7rem;
+    background: var(--raise, transparent);
+    color: var(--ink, currentColor);
+    border: 1px solid var(--line, currentColor);
+    border-radius: 4px;
+    font-size: 0.9375rem;
+    font-family: inherit;
+  }
+  .cform textarea {
+    resize: vertical;
+    min-height: 4.5rem;
+  }
+  .cform input:focus-visible,
+  .cform textarea:focus-visible {
+    outline: 2px solid var(--accent, currentColor);
+    outline-offset: 1px;
+    border-color: transparent;
+  }
+  /* Off-screen rather than display:none — some bots skip hidden inputs. */
+  .cform-hp {
+    position: absolute !important;
+    left: -9999px !important;
+    width: 1px !important;
+    height: 1px !important;
+  }
+  .cform-foot {
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+    flex-wrap: wrap;
+  }
+  .cform button {
+    background: var(--accent, currentColor);
+    color: var(--ground, #fff);
+    border: 0;
+    padding: 0.55rem 1.2rem;
+    border-radius: 999px;
+    font-weight: 650;
+    font-size: 0.9375rem;
+    font-family: inherit;
+  }
+  .cform button:hover {
+    filter: brightness(1.08);
+  }
+  .cform button[aria-busy='true'] {
+    opacity: 0.6;
+  }
+  .cform-status {
+    font-size: 0.875rem;
+    color: var(--ink-2, currentColor);
+    margin: 0;
+  }
+  .cform-status[data-state='error'] {
+    color: var(--warn, var(--accent, currentColor));
+  }
+  .cform-status a {
+    color: var(--accent, currentColor);
+  }
+</style>
+
+<script>
+  for (const form of document.querySelectorAll<HTMLFormElement>('[data-contact-form]')) {
+    const button = form.querySelector<HTMLButtonElement>('button[type="submit"]');
+    const status = form.querySelector<HTMLParagraphElement>('.cform-status');
+
+    form.addEventListener('submit', async (e) => {
+      const key = form.dataset.accessKey?.trim();
+      // No key configured yet — let the native mailto action fire.
+      if (!key) return;
+
+      e.preventDefault();
+
+      const payload: Record<string, unknown> = Object.fromEntries(new FormData(form));
+      payload.access_key = key;
+
+      const label = button?.textContent ?? '';
+      button?.setAttribute('aria-busy', 'true');
+      if (button) button.textContent = form.dataset.sending || 'Sending…';
+      if (status) {
+        status.textContent = '';
+        delete status.dataset.state;
+      }
+
+      try {
+        const res = await fetch('https://api.web3forms.com/submit', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+          body: JSON.stringify(payload),
+        });
+        const data = await res.json();
+        if (data.success) {
+          form.reset();
+          if (status) {
+            status.dataset.state = 'ok';
+            status.textContent = form.dataset.ok || 'Sent.';
+          }
+        } else {
+          throw new Error(data.message || 'failed');
+        }
+      } catch {
+        // Never dead-end: fall back to the address itself.
+        if (status) {
+          status.dataset.state = 'error';
+          status.textContent = (form.dataset.err || 'Could not send.') + ' ';
+          const mail = form.dataset.mailto || '';
+          const a = document.createElement('a');
+          a.href = `mailto:${mail}`;
+          a.textContent = mail;
+          status.appendChild(a);
+        }
+      } finally {
+        button?.removeAttribute('aria-busy');
+        if (button) button.textContent = label;
+      }
+    });
+  }
+</script>

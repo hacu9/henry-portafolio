@@ -21,3 +21,23 @@ export const REVEAL_CLIENT_NAMES = false;
  * timeline to years only, which hides it without stating anything false.
  */
 export const COARSE_TIMELINE_DATES = false;
+
+/**
+ * Web3Forms access key for the contact form — the same service
+ * victor-portafolio uses.
+ *
+ * GitHub Pages cannot process a form, so the browser POSTs straight to
+ * Web3Forms, which forwards the message to a real inbox. The key is a public
+ * value by design: it names the destination inbox, not the sender, which is
+ * why it is safe in client HTML.
+ *
+ * While this is empty the form still works — it falls back to the mailto
+ * action and opens the visitor's mail client. Nothing is broken, it just does
+ * not land in an inbox automatically.
+ *
+ * To switch it on: go to https://web3forms.com, enter cabello986@gmail.com,
+ * confirm the email, and paste the access key here. Nothing else changes.
+ *
+ * Do NOT paste Victor's key. It is in his repo and it routes to his inbox.
+ */
+export const WEB3FORMS_ACCESS_KEY = '';

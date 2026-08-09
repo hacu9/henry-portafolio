@@ -35,9 +35,17 @@ export const profile = {
    *   2. "One engineer shipped this app...", "this app" pointed at nothing
    *      before the reader had met Luxura, and it shifted person mid-thought.
    *   3. "I build the product, run the infrastructure, and buy the users."
-   *      Sharp, but too narrow: a third of it was ad buying, none of it was
-   *      AI, and the highest-value target here is an AI tech lead who does
-   *      not care who buys the media.
+   *      Too narrow: a third was ad buying, none was AI.
+   *   4. "I build it, ship it, and still run it." Generic.
+   *   5. "Nothing here is a demo." Strong, and it attacked the genre rather
+   *      than describing him, but it is a stance rather than a voice. Kept as
+   *      the alternate.
+   *
+   * The current line is Henry's own, lifted from the copy he identified as
+   * sounding like him. It works because it is imperative, technical, and
+   * invites interrogation instead of asking to be believed. The supporting
+   * line then names three specific failures, which is the move: a reader who
+   * wants any of those three has a reason to write.
    *
    * This one states the through-line that is true of every project on the
    * page: enterprise, mobile and agentic alike, and lands on the word that
@@ -49,14 +57,14 @@ export const profile = {
    *   'The stack is not the skill.'   // currently the approach heading
    */
   positioning: {
-    en: 'Nothing here is a demo.',
-    es: 'Aquí no hay demos.',
+    en: 'Ask me what broke.',
+    es: 'Pregúntame qué se rompió.',
   } as L,
 
   /** Carries the evidence the headline no longer has room for. */
   lede: {
-    en: 'Luxura, a dating app, is live on Google Play: I built it, I operate its infrastructure, and I run the ad campaigns that bring it users. Next is Mate, where every user gets their own AI agent.',
-    es: 'Luxura, una app de citas, está en Google Play: la construí yo, opero su infraestructura y dirijo la pauta que le trae usuarios. Lo que viene es Mate, donde cada usuario tiene su propio agente de IA.',
+    en: 'Luxura is live on Google Play: I built it, I run its infrastructure, and I buy its users. The parts worth talking about are the OTP failure, running production on one box, and what happens when you let two models argue about your code.',
+    es: 'Luxura está publicada en Google Play: la construí, opero su infraestructura y compro sus usuarios. Lo que vale la pena conversar es la falla de OTP, operar producción en una sola máquina, y qué pasa cuando dejas que dos modelos discutan tu código.',
   } as L,
 
   /** Used where a plain description is needed, such as meta tags. */

@@ -1,0 +1,399 @@
+---
+/**
+ * DOCS: read me like reference material.
+ *
+ * Reading model is documentation. A sidebar of contents, anchored headings,
+ * a signature block per product, and a properties table instead of prose
+ * paragraphs. Engineers read docs by jumping to the thing they need, not by
+ * starting at the top, so the whole page is built for landing mid-way.
+ *
+ * The joke underneath is serious: a portfolio is reference material about a
+ * person, and everyone writes it as a brochure instead. Written this way it
+ * answers "what does this thing do and what are its constraints" directly.
+ *
+ * Distinct from Terminal, which uses shell commands as headings and hides
+ * content inside details elements. Here nothing is collapsed and navigation is
+ * a table of contents, which is how documentation is actually used.
+ */
+import Base from '../../../layouts/Base.astro';
+import Testimonials from '../../../components/Testimonials.astro';
+import ContactSwitch from '../../../components/ContactSwitch.astro';
+import TechRow from '../../../components/TechRow.astro';
+import { LANGS, t, tl, OTHER_LANG, LANG_LABEL, path } from '../../../i18n/types';
+import type { Lang } from '../../../i18n/types';
+import { ui } from '../../../i18n/ui';
+import { profile } from '../../../data/profile';
+import { leadProjects, supportingProjects, STATUS_LABEL, projectName } from '../../../data/projects';
+import { stackGroups } from '../../../data/stack';
+import { timeline, presentLabel } from '../../../data/timeline';
+import '../../../styles/reset.css';
+
+export function getStaticPaths() {
+  return LANGS.map((lang) => ({ params: { lang } }));
+}
+
+const lang = Astro.params.lang as Lang;
+const base = import.meta.env.BASE_URL;
+const other = OTHER_LANG[lang];
+const altHref = path(base, other, 'docs');
+const indexHref = path(base, lang);
+const cvHref = `${base.replace(/\/+$/, '')}/cv/`;
+
+const method = stackGroups.find((g) => g.id === 'method')!;
+
+const L = {
+  overview: { en: 'Overview', es: 'Resumen' },
+  method: { en: 'Method', es: 'Método' },
+  products: { en: 'Products', es: 'Productos' },
+  also: { en: 'Also shipped', es: 'También entregado' },
+  stack: { en: 'Reference: stack', es: 'Referencia: stack' },
+  history: { en: 'History', es: 'Historial' },
+  contact: { en: 'Contact', es: 'Contacto' },
+  props: { en: 'Properties', es: 'Propiedades' },
+  status: { en: 'status', es: 'estado' },
+  role: { en: 'role', es: 'rol' },
+  period: { en: 'period', es: 'periodo' },
+  link: { en: 'link', es: 'enlace' },
+  returns: { en: 'Returns', es: 'Devuelve' },
+  raises: { en: 'Hard call', es: 'Decisión difícil' },
+} as const;
+---
+
+<Base
+  lang={lang}
+  title={`${profile.name}, ${t(profile.title, lang)}`}
+  description={t(profile.summary, lang)}
+  slug="docs"
+  themeColor="#0A0F17"
+  grain={false}
+>
+  <a class="skip" href="#overview">{t(ui.skipToContent, lang)}</a>
+
+  <header class="bar">
+    <a class="mark" href={indexHref}>{profile.name}</a>
+    <span class="ver">v8.0 · {t(profile.location, lang)}</span>
+    <div class="tools">
+      <a class="cv-link" href={cvHref}>CV</a>
+      <a href={altHref} hreflang={other} lang={other}>{LANG_LABEL[other]}</a>
+      <button data-theme-toggle type="button">
+        <span class="visually-hidden">{t(ui.toggleTheme, lang)}</span>
+        <span aria-hidden="true">◐</span>
+      </button>
+    </div>
+  </header>
+
+  <div class="shell">
+    <nav class="toc" aria-label={L.props[lang]}>
+      <a href="#overview">{t(L.overview, lang)}</a>
+      <a href="#method">{t(L.method, lang)}</a>
+      <span class="toc-h">{t(L.products, lang)}</span>
+      {leadProjects.map((p) => <a class="toc-sub" href={`#${p.id}`}>{projectName(p, lang)}</a>)}
+      <a href="#also">{t(L.also, lang)}</a>
+      <a href="#stack">{t(L.stack, lang)}</a>
+      <a href="#history">{t(L.history, lang)}</a>
+      <a href="#contact">{t(L.contact, lang)}</a>
+    </nav>
+
+    <main class="doc">
+      <section id="overview">
+        <h1>{t(profile.positioning, lang)}</h1>
+        <p class="lede">{t(profile.lede, lang)}</p>
+        <table class="props">
+          <tbody>
+            <tr><th>{t(L.role, lang)}</th><td>{t(profile.title, lang)}</td></tr>
+            <tr><th>{t(ui.yearsShipping, lang).toLowerCase()}</th><td>{t(profile.experience, lang)}</td></tr>
+            <tr><th>location</th><td>{t(profile.location, lang)} · {t(profile.workingStyle, lang)}</td></tr>
+            <tr><th>languages</th><td>{tl(profile.languages, lang).join(' · ')}</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section id="method">
+        <h2>{t(L.method, lang)}</h2>
+        <p class="sig">{t(profile.thesis.lead, lang)}</p>
+        {tl(profile.thesis.body, lang).map((p) => <p>{p}</p>)}
+        <div class="note">
+          <p class="note-k">{t(method.label, lang)}</p>
+          <p>{t(method.note!, lang)}</p>
+          <ul>
+            {tl(profile.verification, lang).map((v) => <li>{v}</li>)}
+          </ul>
+        </div>
+      </section>
+
+      <h2 class="grp">{t(L.products, lang)}</h2>
+      {
+        leadProjects.map((p) => (
+          <section class="entry" id={p.id}>
+            <h3>{projectName(p, lang)}</h3>
+            <p class="sig">{t(p.tagline, lang)}</p>
+
+            <table class="props">
+              <tbody>
+                <tr><th>{t(L.status, lang)}</th><td><code>{t(STATUS_LABEL[p.status], lang)}</code></td></tr>
+                <tr><th>{t(L.role, lang)}</th><td>{t(p.role, lang)}</td></tr>
+                <tr><th>{t(L.period, lang)}</th><td>{p.period}</td></tr>
+                {p.url && (
+                  <tr>
+                    <th>{t(L.link, lang)}</th>
+                    <td>
+                      <a href={p.url} target="_blank" rel="noopener">{p.url}</a>
+                    </td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+
+            <p>{t(p.problem, lang)}</p>
+
+            <p class="lbl">{t(ui.whatIBuilt, lang)}</p>
+            <ul>{tl(p.built, lang).map((b) => <li>{b}</li>)}</ul>
+
+            {p.decisions.map((d) => (
+              <div class="callout">
+                <p class="callout-k">{t(L.raises, lang)}</p>
+                <p class="callout-t">{t(d.title, lang)}</p>
+                <p>{t(d.body, lang)}</p>
+              </div>
+            ))}
+
+            <p class="lbl">{t(L.returns, lang)}</p>
+            <p>{t(p.outcome, lang)}</p>
+
+            <TechRow items={p.stack} size="sm" />
+          </section>
+        ))
+      }
+
+      <section id="also">
+        <h2>{t(L.also, lang)}</h2>
+        <dl class="deflist">
+          {
+            supportingProjects.map((p) => (
+              <>
+                <dt>{projectName(p, lang)}</dt>
+                <dd>
+                  {t(p.tagline, lang)}. {t(p.problem, lang)}
+                </dd>
+              </>
+            ))
+          }
+        </dl>
+      </section>
+
+      <section id="stack">
+        <h2>{t(L.stack, lang)}</h2>
+        {
+          stackGroups.map((g) => (
+            <div class="grp-block">
+              <p class="lbl">{t(g.label, lang)}</p>
+              <TechRow items={g.items} size="sm" />
+              {g.note && <p class="dim">{t(g.note, lang)}</p>}
+            </div>
+          ))
+        }
+      </section>
+
+      <section id="history">
+        <h2>{t(L.history, lang)}</h2>
+        <table class="props wide">
+          <tbody>
+            {
+              timeline.map((e) => (
+                <tr>
+                  <th>{e.from} to {e.to === 'Present' ? t(presentLabel, lang) : e.to}</th>
+                  <td>
+                    <strong>{t(e.role, lang)}</strong>, {e.org}
+                    {e.detail && <span class="dim block">{t(e.detail, lang)}</span>}
+                    {e.highlights && (
+                      <ul class="tight">
+                        {tl(e.highlights, lang).map((h) => (
+                          <li>{h}</li>
+                        ))}
+                      </ul>
+                    )}
+                  </td>
+                </tr>
+              ))
+            }
+          </tbody>
+        </table>
+      </section>
+
+      <Testimonials lang={lang} />
+
+      <section id="contact">
+        <h2>{t(L.contact, lang)}</h2>
+        <ContactSwitch lang={lang} />
+      </section>
+
+      <footer class="foot">
+        <span>{profile.name}</span>
+        <a href={indexHref}>{t(ui.backToIndex, lang)}</a>
+      </footer>
+    </main>
+  </div>
+</Base>
+
+<style>
+  :root {
+    --ground: #f4f6f9; --raise: #ffffff; --ink: #0a0f17; --ink-2: #3b4655;
+    --dim: #6f7c8d; --line: #d3dae3; --accent: #1e5fa8; --focus: #1e5fa8;
+    --sans: system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    --mono: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace;
+    --pad: clamp(1rem, 3vw, 2rem);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --ground: #0a0f17; --raise: #101722; --ink: #e3eaf3; --ink-2: #a7b4c4;
+      --dim: #6f7c8d; --line: #1c2530; --accent: #6fb3f2; }
+  }
+  :global(:root[data-theme='dark']) {
+    --ground: #0a0f17; --raise: #101722; --ink: #e3eaf3; --ink-2: #a7b4c4;
+    --dim: #6f7c8d; --line: #1c2530; --accent: #6fb3f2;
+  }
+  :global(:root[data-theme='light']) {
+    --ground: #f4f6f9; --raise: #ffffff; --ink: #0a0f17; --ink-2: #3b4655;
+    --dim: #6f7c8d; --line: #d3dae3; --accent: #1e5fa8;
+  }
+
+  :global(body) { background: var(--ground); color: var(--ink-2); font-family: var(--sans); font-size: 0.9375rem; line-height: 1.68; }
+
+  .bar {
+    position: sticky; top: 0; z-index: 40; display: flex; align-items: center; gap: 1rem;
+    padding: 0.55rem var(--pad); background: var(--raise); border-bottom: 1px solid var(--line);
+    font-family: var(--mono); font-size: 0.625rem; letter-spacing: 0.12em; text-transform: uppercase;
+  }
+  .bar a { text-decoration: none; }
+  .mark { font-weight: 700; color: var(--ink); }
+  .ver { color: var(--dim); }
+  @media (max-width: 720px) { .ver { display: none; } }
+  .tools { margin-inline-start: auto; display: flex; gap: 0.8rem; align-items: center; color: var(--dim); }
+  .tools a:hover, .tools button:hover { color: var(--accent); }
+  .cv-link { color: var(--accent); font-weight: 700; }
+
+  /* Sidebar plus content, the shape every docs site uses, because it is the
+     shape that supports landing mid-document. */
+  .shell { display: grid; max-width: 82rem; margin-inline: auto; }
+  @media (min-width: 900px) { .shell { grid-template-columns: 15rem 1fr; } }
+
+  .toc {
+    display: flex; flex-wrap: wrap; gap: 0.1rem 1rem;
+    padding: 1rem var(--pad); border-bottom: 1px solid var(--line);
+    font-size: 0.8125rem;
+  }
+  @media (min-width: 900px) {
+    .toc {
+      position: sticky; top: 2.1rem; align-self: start; flex-direction: column;
+      height: calc(100svh - 2.1rem); overflow-y: auto;
+      border-bottom: 0; border-right: 1px solid var(--line);
+    }
+  }
+  .toc a { color: var(--dim); text-decoration: none; padding: 0.15rem 0; }
+  .toc a:hover { color: var(--accent); }
+  .toc a.on { color: var(--ink); font-weight: 650; }
+  .toc-h {
+    font-family: var(--mono); font-size: 0.5625rem; letter-spacing: 0.16em;
+    text-transform: uppercase; color: var(--dim); margin-top: 0.6rem;
+  }
+  .toc-sub { padding-left: 0.7rem !important; }
+
+  .doc { padding: clamp(1.5rem, 4vw, 3rem) var(--pad) 0; min-width: 0; max-width: 52rem; }
+  .doc section { padding-bottom: 2.4rem; scroll-margin-top: 4rem; }
+  .doc h1 {
+    font-size: clamp(1.5rem, 3.2vw, 2.2rem); line-height: 1.15; color: var(--ink);
+    letter-spacing: -0.03em; font-weight: 700; margin: 0 0 0.6rem;
+  }
+  .doc h2 {
+    font-size: 1.15rem; color: var(--ink); font-weight: 700; margin: 0 0 0.8rem;
+    padding-bottom: 0.4rem; border-bottom: 1px solid var(--line);
+  }
+  .doc h3 {
+    font-family: var(--mono); font-size: 1.05rem; color: var(--ink); font-weight: 700;
+    margin: 0 0 0.3rem;
+  }
+  .grp {
+    font-family: var(--mono) !important; font-size: 0.625rem !important;
+    letter-spacing: 0.16em; text-transform: uppercase; color: var(--dim) !important;
+    border: 0 !important; margin-top: 1rem !important;
+  }
+  .lede { color: var(--ink); font-size: 1.02rem; margin-bottom: 1rem; max-width: 42rem; }
+  .sig { font-family: var(--mono); font-size: 0.75rem; color: var(--dim); margin-bottom: 0.9rem; }
+  .doc p { max-width: 42rem; margin-bottom: 0.8rem; }
+  .doc a { color: var(--accent); }
+  .lbl {
+    font-family: var(--mono); font-size: 0.5625rem; letter-spacing: 0.16em;
+    text-transform: uppercase; color: var(--dim); margin: 1rem 0 0.35rem !important;
+  }
+  .doc ul { margin: 0 0 0.9rem; padding-left: 1.1rem; max-width: 42rem; }
+  .doc li { margin-bottom: 0.2rem; }
+  .tight { margin-top: 0.3rem !important; }
+  .dim { color: var(--dim); font-size: 0.875rem; }
+  .block { display: block; }
+
+  .props { border-collapse: collapse; width: 100%; margin-bottom: 1rem; font-size: 0.875rem; }
+  .props th, .props td {
+    text-align: left; vertical-align: top; padding: 0.4rem 0.8rem 0.4rem 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .props th {
+    font-family: var(--mono); font-size: 0.6875rem; color: var(--dim);
+    font-weight: 400; width: 9rem; white-space: nowrap;
+  }
+  .props.wide th { width: 11rem; }
+  .props code {
+    font-family: var(--mono); font-size: 0.75rem; background: var(--raise);
+    border: 1px solid var(--line); padding: 0.05rem 0.35rem; border-radius: 3px;
+  }
+
+  .entry { border-top: 1px solid var(--line); padding-top: 1.4rem; }
+  .grp-block { margin-bottom: 1.2rem; }
+
+  /* The callout is where docs put the thing you must not miss. Here that is
+     the decision, which is the whole point of each entry. */
+  .callout {
+    border-left: 3px solid var(--accent); background: var(--raise);
+    padding: 0.8rem 1rem; margin: 0.9rem 0;
+  }
+  .callout-k {
+    font-family: var(--mono); font-size: 0.5625rem; letter-spacing: 0.16em;
+    text-transform: uppercase; color: var(--accent); margin-bottom: 0.2rem !important;
+  }
+  .callout-t { color: var(--ink); font-weight: 650; margin-bottom: 0.35rem !important; }
+
+  .note { border: 1px solid var(--line); background: var(--raise); padding: 0.9rem 1.1rem; margin-top: 1rem; }
+  .note-k { font-family: var(--mono); font-size: 0.5625rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.3rem !important; }
+
+  .deflist { margin: 0; }
+  .deflist dt { font-family: var(--mono); color: var(--ink); font-weight: 650; margin-top: 0.8rem; }
+  .deflist dd { margin: 0.1rem 0 0; max-width: 42rem; }
+
+  .foot {
+    display: flex; justify-content: space-between; gap: 1rem; flex-wrap: wrap;
+    border-top: 1px solid var(--line); padding: 1.3rem 0 3rem;
+    font-family: var(--mono); font-size: 0.625rem; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--dim);
+  }
+  .foot a { color: var(--accent); }
+</style>
+
+<script>
+  // Highlight the section currently on screen, which is what makes a docs
+  // sidebar useful rather than decorative.
+  const links = [...document.querySelectorAll<HTMLAnchorElement>('.toc a')];
+  const byId = new Map(links.map((a) => [a.getAttribute('href')?.slice(1), a]));
+  const targets = [...document.querySelectorAll<HTMLElement>('.doc section[id]')];
+
+  if (targets.length) {
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) {
+          if (!e.isIntersecting) continue;
+          for (const a of links) a.classList.remove('on');
+          byId.get(e.target.id)?.classList.add('on');
+        }
+      },
+      { rootMargin: '-10% 0px -80% 0px' },
+    );
+    for (const s of targets) io.observe(s);
+  }
+</script>

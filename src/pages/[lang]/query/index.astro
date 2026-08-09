@@ -1,0 +1,326 @@
+---
+/**
+ * QUERY: empty until you ask.
+ *
+ * Reading model is search. The page opens with one input and nothing else, so
+ * the reader states what they came for instead of scrolling past everything
+ * they did not.
+ *
+ * This is not the Log with a different skin. The Log shows every entry and lets
+ * you narrow it; here nothing is on screen until a query matches, and the
+ * suggestions exist so a reader who does not know what to ask still has a way
+ * in. Empty by default is the whole idea: it inverts who does the choosing.
+ *
+ * Everything is indexed at build time into one flat array, so the search is
+ * instant, works offline, and needs no service. Typing filters the DOM.
+ */
+import Base from '../../../layouts/Base.astro';
+import ContactSwitch from '../../../components/ContactSwitch.astro';
+import { LANGS, t, tl, OTHER_LANG, LANG_LABEL, path } from '../../../i18n/types';
+import type { Lang } from '../../../i18n/types';
+import { ui } from '../../../i18n/ui';
+import { profile } from '../../../data/profile';
+import { projects, STATUS_LABEL, projectName } from '../../../data/projects';
+import { stackGroups } from '../../../data/stack';
+import { timeline, presentLabel } from '../../../data/timeline';
+import '../../../styles/reset.css';
+
+export function getStaticPaths() {
+  return LANGS.map((lang) => ({ params: { lang } }));
+}
+
+const lang = Astro.params.lang as Lang;
+const base = import.meta.env.BASE_URL;
+const other = OTHER_LANG[lang];
+const altHref = path(base, other, 'query');
+const indexHref = path(base, lang);
+const cvHref = `${base.replace(/\/+$/, '')}/cv/`;
+
+interface Row {
+  kind: string;
+  title: string;
+  body: string;
+  meta?: string;
+  url?: string;
+}
+
+const rows: Row[] = [];
+
+for (const p of projects) {
+  const name = projectName(p, lang);
+  rows.push({
+    kind: lang === 'es' ? 'producto' : 'product',
+    title: name,
+    body: `${t(p.tagline, lang)}. ${t(p.problem, lang)}`,
+    meta: `${t(STATUS_LABEL[p.status], lang)} · ${p.period} · ${p.stack.join(' ')}`,
+    url: p.url,
+  });
+  for (const d of p.decisions) {
+    rows.push({
+      kind: lang === 'es' ? 'decisión' : 'decision',
+      title: t(d.title, lang),
+      body: t(d.body, lang),
+      meta: name,
+    });
+  }
+  for (const b of tl(p.built, lang)) {
+    rows.push({ kind: lang === 'es' ? 'construido' : 'built', title: b, body: '', meta: name });
+  }
+}
+for (const g of stackGroups) {
+  rows.push({
+    kind: lang === 'es' ? 'stack' : 'stack',
+    title: t(g.label, lang),
+    body: g.note ? t(g.note, lang) : g.items.join(' · '),
+    meta: g.items.join(' '),
+  });
+}
+for (const e of timeline) {
+  rows.push({
+    kind: lang === 'es' ? 'rol' : 'role',
+    title: t(e.role, lang),
+    body: e.detail ? t(e.detail, lang) : '',
+    meta: `${e.org} · ${e.from} to ${e.to === 'Present' ? t(presentLabel, lang) : e.to}`,
+  });
+}
+for (const v of tl(profile.verification, lang)) {
+  rows.push({ kind: lang === 'es' ? 'verificación' : 'verification', title: v, body: '', meta: 'AI' });
+}
+
+const suggestions =
+  lang === 'es'
+    ? ['OTP', 'Hetzner', 'LangGraph', 'Microsoft', 'IA', 'pauta', 'Play Store']
+    : ['OTP', 'Hetzner', 'LangGraph', 'Microsoft', 'AI', 'ads', 'Play Store'];
+---
+
+<Base
+  lang={lang}
+  title={`${profile.name}, ${t(profile.title, lang)}`}
+  description={t(profile.summary, lang)}
+  slug="query"
+  themeColor="#050706"
+  grain={false}
+>
+  <a class="skip" href="#q">{t(ui.skipToContent, lang)}</a>
+
+  <header class="bar">
+    <a class="mark" href={indexHref}>{profile.name}</a>
+    <div class="tools">
+      <a class="cv-link" href={cvHref}>CV</a>
+      <a href={altHref} hreflang={other} lang={other}>{LANG_LABEL[other]}</a>
+      <button data-theme-toggle type="button">
+        <span class="visually-hidden">{t(ui.toggleTheme, lang)}</span>
+        <span aria-hidden="true">◐</span>
+      </button>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <div class="ask">
+      <h1>{t(profile.positioning, lang)}</h1>
+      <p class="lede">{t(profile.lede, lang)}</p>
+
+      <label class="field">
+        <span class="visually-hidden">{lang === 'es' ? 'Buscar' : 'Search'}</span>
+        <input
+          id="q"
+          type="search"
+          autocomplete="off"
+          data-q
+          placeholder={lang === 'es' ? 'Pregunta algo. Prueba con OTP…' : 'Ask something. Try OTP…'}
+        />
+      </label>
+
+      <p class="try">
+        <span class="k">{lang === 'es' ? 'Prueba' : 'Try'}</span>
+        {suggestions.map((sg) => <button class="chip" type="button" data-suggest={sg}>{sg}</button>)}
+      </p>
+    </div>
+
+    <p class="count" data-count hidden></p>
+
+    <ol class="results" data-results>
+      {
+        rows.map((r) => (
+          <li
+            class="row"
+            hidden
+            data-hay={`${r.kind} ${r.title} ${r.body} ${r.meta ?? ''}`.toLowerCase()}
+          >
+            <span class="kind">{r.kind}</span>
+            <span class="body">
+              <span class="title">{r.title}</span>
+              {r.body && <span class="text">{r.body}</span>}
+              {r.meta && <span class="meta">{r.meta}</span>}
+              {r.url && (
+                <a class="verify-link" href={r.url} target="_blank" rel="noopener">
+                  {t(ui.verify, lang)} ↗
+                </a>
+              )}
+            </span>
+          </li>
+        ))
+      }
+    </ol>
+
+    <p class="empty" data-empty hidden>
+      {lang === 'es' ? 'Nada con eso. Prueba otra palabra.' : 'Nothing for that. Try another word.'}
+    </p>
+
+    <section id="contact" class="closing">
+      <p class="k">{t(ui.getInTouch, lang)}</p>
+      <ContactSwitch lang={lang} />
+    </section>
+  </main>
+
+  <footer class="foot">
+    <span>{profile.name}</span>
+    <a href={indexHref}>{t(ui.backToIndex, lang)}</a>
+  </footer>
+</Base>
+
+<style>
+  :root {
+    --ground: #f2f5f3; --raise: #ffffff; --ink: #050706; --ink-2: #38443c;
+    --dim: #6e8074; --line: #ccd8d1; --accent: #0f7b4a; --focus: #0f7b4a;
+    --mono: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace;
+    --sans: system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    --shell: 60rem; --pad: clamp(1rem, 3vw, 2.25rem);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --ground: #050706; --raise: #0c110e; --ink: #dfeae3; --ink-2: #a2b5aa;
+      --dim: #6e8074; --line: #17211b; --accent: #3ddc84; }
+  }
+  :global(:root[data-theme='dark']) {
+    --ground: #050706; --raise: #0c110e; --ink: #dfeae3; --ink-2: #a2b5aa;
+    --dim: #6e8074; --line: #17211b; --accent: #3ddc84;
+  }
+  :global(:root[data-theme='light']) {
+    --ground: #f2f5f3; --raise: #ffffff; --ink: #050706; --ink-2: #38443c;
+    --dim: #6e8074; --line: #ccd8d1; --accent: #0f7b4a;
+  }
+
+  :global(body) { background: var(--ground); color: var(--ink); font-family: var(--sans); line-height: 1.6; }
+
+  .bar {
+    position: sticky; top: 0; z-index: 30; display: flex; align-items: center; gap: 1rem;
+    padding: 0.55rem var(--pad); background: color-mix(in srgb, var(--ground) 92%, transparent);
+    backdrop-filter: blur(8px); border-bottom: 1px solid var(--line);
+    font-family: var(--mono); font-size: 0.625rem; letter-spacing: 0.14em; text-transform: uppercase;
+  }
+  .bar a { text-decoration: none; }
+  .mark { font-weight: 700; }
+  .tools { margin-inline-start: auto; display: flex; gap: 0.8rem; align-items: center; color: var(--dim); }
+  .tools a:hover, .tools button:hover { color: var(--accent); }
+  .cv-link { color: var(--accent); font-weight: 700; }
+
+  .wrap { max-width: var(--shell); margin-inline: auto; padding-inline: var(--pad); }
+  .ask { padding-block: clamp(3rem, 12vh, 6rem) 1.5rem; display: grid; gap: 1rem; }
+  .ask h1 {
+    font-size: clamp(2rem, 6vw, 3.4rem); line-height: 1; letter-spacing: -0.04em;
+    font-weight: 800; margin: 0; text-wrap: balance;
+  }
+  .lede { color: var(--ink-2); max-width: 44rem; }
+
+  /* The input is the page. It gets the weight everything else would have had. */
+  .field { display: block; margin-top: 0.6rem; }
+  .field input {
+    width: 100%; background: var(--raise); color: var(--ink);
+    border: 1px solid var(--line); border-radius: 6px;
+    padding: 0.9rem 1.1rem; font-family: var(--mono); font-size: 1.05rem;
+  }
+  .field input:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; border-color: transparent; }
+
+  .try { display: flex; flex-wrap: wrap; gap: 0.35rem; align-items: center; }
+  .k { font-family: var(--mono); font-size: 0.625rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--dim); margin-right: 0.3rem; }
+  .chip {
+    font-family: var(--mono); font-size: 0.6875rem; color: var(--dim);
+    border: 1px solid var(--line); background: transparent;
+    padding: 0.18rem 0.55rem; border-radius: 999px;
+  }
+  .chip:hover { color: var(--accent); border-color: var(--accent); }
+
+  .count { font-family: var(--mono); font-size: 0.625rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--dim); padding-block: 0.8rem; }
+  .empty { font-family: var(--mono); font-size: 0.8125rem; color: var(--dim); padding-block: 1.5rem; }
+
+  .results { display: grid; list-style: none; margin: 0; padding: 0; }
+  .row {
+    display: grid; gap: 0.2rem 1rem; padding: 0.7rem 0;
+    border-top: 1px solid var(--line);
+  }
+  @media (min-width: 700px) { .row { grid-template-columns: 7rem 1fr; } }
+  .row[hidden] { display: none; }
+  .kind {
+    font-family: var(--mono); font-size: 0.5625rem; letter-spacing: 0.16em;
+    text-transform: uppercase; color: var(--accent); padding-top: 0.35rem;
+  }
+  .body { display: grid; gap: 0.25rem; min-width: 0; }
+  .title { font-weight: 650; }
+  .text { color: var(--ink-2); font-size: 0.9rem; max-width: 42rem; }
+  .meta { font-family: var(--mono); font-size: 0.625rem; color: var(--dim); }
+  .verify-link { font-family: var(--mono); font-size: 0.75rem; color: var(--accent); font-weight: 700; justify-self: start; }
+  :global(mark) { background: color-mix(in srgb, var(--accent) 28%, transparent); color: inherit; }
+
+  .closing { padding-block: clamp(2.5rem, 6vw, 4rem); border-top: 1px solid var(--line); margin-top: 2.5rem; display: grid; gap: 1rem; }
+
+  .foot {
+    max-width: var(--shell); margin-inline: auto; padding: 1.3rem var(--pad) 3rem;
+    display: flex; justify-content: space-between; gap: 1rem; flex-wrap: wrap;
+    border-top: 1px solid var(--line);
+    font-family: var(--mono); font-size: 0.625rem; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--dim);
+  }
+  .foot a { color: var(--accent); }
+</style>
+
+<script>
+  // Everything is already in the DOM and hidden. Typing reveals matches, so the
+  // search needs no index, no network and no service, and it works offline.
+  const input = document.querySelector<HTMLInputElement>('[data-q]');
+  const rows = [...document.querySelectorAll<HTMLElement>('.results .row')];
+  const count = document.querySelector<HTMLElement>('[data-count]');
+  const empty = document.querySelector<HTMLElement>('[data-empty]');
+
+  if (input) {
+    const run = (raw: string) => {
+      const q = raw.trim().toLowerCase();
+      if (!q) {
+        for (const r of rows) r.hidden = true;
+        if (count) count.hidden = true;
+        if (empty) empty.hidden = true;
+        return;
+      }
+      // Every word must appear somewhere in the row.
+      const terms = q.split(/\s+/);
+      let hits = 0;
+      for (const r of rows) {
+        const hay = r.dataset.hay || '';
+        const ok = terms.every((tm) => hay.includes(tm));
+        r.hidden = !ok;
+        if (ok) hits += 1;
+      }
+      if (count) {
+        count.hidden = false;
+        count.textContent = `${hits} ${hits === 1 ? 'result' : 'results'}`;
+      }
+      if (empty) empty.hidden = hits > 0;
+    };
+
+    input.addEventListener('input', () => run(input.value));
+
+    for (const chip of document.querySelectorAll<HTMLButtonElement>('[data-suggest]')) {
+      chip.addEventListener('click', () => {
+        input.value = chip.dataset.suggest || '';
+        run(input.value);
+        input.focus();
+      });
+    }
+
+    // A shared link can carry the question: /query/?q=otp
+    const initial = new URLSearchParams(location.search).get('q');
+    if (initial) {
+      input.value = initial;
+      run(initial);
+    }
+  }
+</script>

@@ -1,0 +1,315 @@
+---
+/**
+ * SLIDES: one idea per screen, in the order I choose.
+ *
+ * Reading model is a presentation. Arrow keys, swipe, or the dots move between
+ * full-screen slides; there is no scrolling and no way to skim ahead.
+ *
+ * This exists because of a specific finding from the research into how people
+ * actually send portfolios in 2026. Joe Cooper, quoted in Creative Lives in
+ * Progress: "These days we send far more decks than websites because you can
+ * control the narrative and the order in which the viewer sees the work." Every
+ * other variant hands the reader the whole page at once. This one does not.
+ *
+ * The cost is real and worth stating: a reader who wants to jump straight to
+ * the stack has to travel. That is the trade a deck makes, and it only pays if
+ * the sequence is better than the reader's own.
+ */
+import Base from '../../../layouts/Base.astro';
+import TechRow from '../../../components/TechRow.astro';
+import { LANGS, t, tl, OTHER_LANG, LANG_LABEL, path, asset } from '../../../i18n/types';
+import type { Lang } from '../../../i18n/types';
+import { ui } from '../../../i18n/ui';
+import { profile } from '../../../data/profile';
+import { leadProjects, STATUS_LABEL, projectName } from '../../../data/projects';
+import { stackGroups } from '../../../data/stack';
+import '../../../styles/reset.css';
+
+export function getStaticPaths() {
+  return LANGS.map((lang) => ({ params: { lang } }));
+}
+
+const lang = Astro.params.lang as Lang;
+const base = import.meta.env.BASE_URL;
+const other = OTHER_LANG[lang];
+const altHref = path(base, other, 'slides');
+const indexHref = path(base, lang);
+const cvHref = `${base.replace(/\/+$/, '')}/cv/`;
+
+const method = stackGroups.find((g) => g.id === 'method')!;
+const luxura = leadProjects.find((p) => p.id === 'luxura')!;
+---
+
+<Base
+  lang={lang}
+  title={`${profile.name}, ${t(profile.title, lang)}`}
+  description={t(profile.summary, lang)}
+  slug="slides"
+  themeColor="#0B0A16"
+  grain={false}
+>
+  <div class="deck" data-deck>
+    <header class="bar">
+      <a class="mark" href={indexHref}>{profile.name}</a>
+      <div class="tools">
+        <a class="cv-link" href={cvHref}>CV</a>
+        <a href={altHref} hreflang={other} lang={other}>{LANG_LABEL[other]}</a>
+        <button data-theme-toggle type="button">
+          <span class="visually-hidden">{t(ui.toggleTheme, lang)}</span>
+          <span aria-hidden="true">◐</span>
+        </button>
+      </div>
+    </header>
+
+    <div class="stage">
+      <!-- 1: the claim -->
+      <section class="slide is-on" data-slide>
+        <p class="kick">{t(profile.title, lang)} · {t(profile.experience, lang)}</p>
+        <h1>{t(profile.positioning, lang)}</h1>
+        <p class="sub">{t(profile.lede, lang)}</p>
+      </section>
+
+      <!-- 2: the proof, and the only external link in the deck -->
+      <section class="slide" data-slide>
+        <p class="kick">{t(STATUS_LABEL[luxura.status], lang)}</p>
+        <h2>{projectName(luxura, lang)}</h2>
+        <p class="sub">{t(luxura.tagline, lang)}</p>
+        {luxura.shots && (
+          <div class="shots">
+            {luxura.shots.map((sh) => (
+              <img src={asset(base, sh.src)} alt={t(sh.alt, lang)} loading="lazy" />
+            ))}
+          </div>
+        )}
+        <p>
+          <a class="link" href={luxura.url} target="_blank" rel="noopener">
+            {luxura.urlLabel ? t(luxura.urlLabel, lang) : t(ui.verify, lang)} ↗
+          </a>
+        </p>
+      </section>
+
+      <!-- 3 to 5: one hard call per slide, which is the whole argument -->
+      {
+        leadProjects.map((p) => (
+          <section class="slide" data-slide>
+            <p class="kick">{projectName(p, lang)} · {t(ui.theDecision, lang)}</p>
+            <h2 class="call">{t(p.decisions[0].title, lang)}</h2>
+            <p class="body">{t(p.decisions[0].body, lang)}</p>
+          </section>
+        ))
+      }
+
+      <!-- 6: method -->
+      <section class="slide" data-slide>
+        <p class="kick">{t(method.label, lang)}</p>
+        <h2>{t(profile.thesis.lead, lang)}</h2>
+        <p class="body">{t(method.note!, lang)}</p>
+      </section>
+
+      <!-- 7: the catches, the least copyable slide in the deck -->
+      <section class="slide" data-slide>
+        <p class="kick">{lang === 'es' ? 'Cuando el modelo se equivocó' : 'When the model was wrong'}</p>
+        <ul class="checks">
+          {tl(profile.verification, lang).map((v) => <li>{v}</li>)}
+        </ul>
+      </section>
+
+      <!-- 8: stack -->
+      <section class="slide" data-slide>
+        <p class="kick">{t(ui.whatIUse, lang)}</p>
+        <div class="stacks">
+          {
+            stackGroups.slice(0, 5).map((g) => (
+              <div>
+                <p class="grp">{t(g.label, lang)}</p>
+                <TechRow items={g.items} size="sm" />
+              </div>
+            ))
+          }
+        </div>
+      </section>
+
+      <!-- 9: the ask -->
+      <section class="slide" data-slide>
+        <p class="kick">{t(ui.getInTouch, lang)}</p>
+        <h2>{lang === 'es' ? 'Treinta minutos.' : 'Thirty minutes.'}</h2>
+        <p class="links">
+          <a class="cta" href={profile.calendly} target="_blank" rel="noopener">
+            {lang === 'es' ? 'Agendar' : 'Book a slot'}
+          </a>
+          <a class="link" href={`mailto:${profile.email}`}>{profile.email}</a>
+          <a class="link" href={profile.githubUrl} rel="me noopener">GitHub</a>
+          <a class="link" href={profile.linkedinUrl} rel="me noopener">LinkedIn</a>
+        </p>
+      </section>
+    </div>
+
+    <nav class="dots" aria-label={lang === 'es' ? 'Diapositivas' : 'Slides'} data-dots></nav>
+
+    <div class="arrows">
+      <button data-prev type="button" aria-label={lang === 'es' ? 'Anterior' : 'Previous'}>←</button>
+      <span class="pos" data-pos>1</span>
+      <button data-next type="button" aria-label={lang === 'es' ? 'Siguiente' : 'Next'}>→</button>
+    </div>
+  </div>
+</Base>
+
+<style>
+  :root {
+    --ground: #f6f5fc; --raise: #ffffff; --ink: #14122a; --ink-2: #4a4670;
+    --dim: #7b76a0; --line: #d8d5e8; --accent: #6d3bd4; --focus: #6d3bd4;
+    --sans: system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    --mono: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace;
+    --pad: clamp(1.25rem, 5vw, 4rem);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --ground: #0b0a16; --raise: #171531; --ink: #ecebf7; --ink-2: #b0acd4;
+      --dim: #7b76a0; --line: #221f3d; --accent: #a886ff; }
+  }
+  :global(:root[data-theme='dark']) {
+    --ground: #0b0a16; --raise: #171531; --ink: #ecebf7; --ink-2: #b0acd4;
+    --dim: #7b76a0; --line: #221f3d; --accent: #a886ff;
+  }
+  :global(:root[data-theme='light']) {
+    --ground: #f6f5fc; --raise: #ffffff; --ink: #14122a; --ink-2: #4a4670;
+    --dim: #7b76a0; --line: #d8d5e8; --accent: #6d3bd4;
+  }
+
+  :global(html), :global(body) { height: 100%; overflow: hidden; }
+  :global(body) { background: var(--ground); color: var(--ink-2); font-family: var(--sans); line-height: 1.6; }
+
+  .deck { height: 100svh; display: grid; grid-template-rows: auto 1fr auto; }
+
+  .bar {
+    display: flex; align-items: center; gap: 1rem; padding: 0.6rem var(--pad);
+    font-family: var(--mono); font-size: 0.625rem; letter-spacing: 0.14em; text-transform: uppercase;
+  }
+  .bar a { text-decoration: none; }
+  .mark { font-weight: 700; color: var(--ink); }
+  .tools { margin-inline-start: auto; display: flex; gap: 0.8rem; align-items: center; color: var(--dim); }
+  .tools a:hover, .tools button:hover { color: var(--accent); }
+  .cv-link { color: var(--accent); font-weight: 700; }
+
+  /* Every slide occupies the same cell. Only opacity changes, so nothing
+     reflows and the transition is a compositor job. */
+  .stage { display: grid; overflow: hidden; }
+  .slide {
+    grid-area: 1 / 1;
+    display: grid; align-content: center; gap: 1rem;
+    padding: 0 var(--pad);
+    max-width: 60rem; margin-inline: auto; width: 100%;
+    opacity: 0; visibility: hidden;
+    transform: translateY(0.8rem);
+    transition: opacity 0.4s ease, transform 0.5s cubic-bezier(0.2, 0.9, 0.2, 1), visibility 0.4s;
+  }
+  .slide.is-on { opacity: 1; visibility: visible; transform: none; }
+
+  .kick { font-family: var(--mono); font-size: 0.625rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent); }
+  h1 {
+    font-size: clamp(2.4rem, 9vw, 6rem); line-height: 0.96; letter-spacing: -0.045em;
+    font-weight: 800; color: var(--ink); margin: 0; text-wrap: balance;
+  }
+  h2 {
+    font-size: clamp(1.8rem, 5.5vw, 3.4rem); line-height: 1.04; letter-spacing: -0.035em;
+    font-weight: 750; color: var(--ink); margin: 0; text-wrap: balance;
+  }
+  h2.call { font-size: clamp(1.5rem, 4vw, 2.6rem); max-width: 20ch; }
+  .sub { font-size: clamp(1rem, 1.8vw, 1.25rem); max-width: 46ch; text-wrap: pretty; }
+  .body { font-size: clamp(0.95rem, 1.5vw, 1.1rem); max-width: 54ch; }
+
+  .shots { display: flex; gap: 0.9rem; }
+  .shots img { width: clamp(90px, 13vw, 150px); height: auto; border-radius: 12px; }
+
+  .checks { display: grid; gap: 0.9rem; margin: 0; padding: 0; list-style: none; max-width: 52rem; }
+  .checks li { padding-left: 1.4rem; position: relative; font-size: clamp(0.9rem, 1.4vw, 1.05rem); }
+  .checks li::before { content: '✕'; position: absolute; left: 0; color: var(--accent); font-weight: 700; }
+
+  .stacks { display: grid; gap: 0.9rem; }
+  @media (min-width: 800px) { .stacks { grid-template-columns: 1fr 1fr; gap: 1rem 2rem; } }
+  .grp { font-family: var(--mono); font-size: 0.5625rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--dim); margin-bottom: 0.3rem; }
+
+  .links { display: flex; flex-wrap: wrap; gap: 1rem 1.4rem; align-items: center; margin-top: 0.6rem; font-family: var(--mono); font-size: 0.875rem; }
+  .link { color: var(--accent); text-underline-offset: 4px; }
+  .cta {
+    background: var(--ink); color: var(--ground); text-decoration: none;
+    padding: 0.6rem 1.3rem; border-radius: 999px; font-weight: 700;
+  }
+  .cta:hover { filter: brightness(1.15); }
+
+  .dots { display: flex; justify-content: center; gap: 0.4rem; padding-bottom: 0.4rem; }
+  .dots button {
+    width: 7px; height: 7px; border-radius: 50%; padding: 0;
+    background: var(--line); border: 0;
+  }
+  .dots button[aria-current='true'] { background: var(--accent); transform: scale(1.35); }
+
+  .arrows {
+    display: flex; align-items: center; justify-content: center; gap: 1.2rem;
+    padding: 0 var(--pad) 1.2rem;
+    font-family: var(--mono); font-size: 0.75rem; color: var(--dim);
+  }
+  .arrows button {
+    border: 1px solid var(--line); width: 2rem; height: 2rem; border-radius: 50%;
+    color: var(--ink-2); line-height: 1;
+  }
+  .arrows button:hover { border-color: var(--accent); color: var(--accent); }
+  .pos { font-variant-numeric: tabular-nums; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .slide { transition: none; }
+  }
+</style>
+
+<script>
+  const deck = document.querySelector<HTMLElement>('[data-deck]');
+  if (deck) {
+    const slides = [...deck.querySelectorAll<HTMLElement>('[data-slide]')];
+    const dots = deck.querySelector<HTMLElement>('[data-dots]');
+    const pos = deck.querySelector<HTMLElement>('[data-pos]');
+    let at = 0;
+
+    // Dots are built from the slides, so adding a slide never desyncs them.
+    slides.forEach((_, i) => {
+      const b = document.createElement('button');
+      b.type = 'button';
+      b.setAttribute('aria-label', `${i + 1}`);
+      b.addEventListener('click', () => go(i));
+      dots?.appendChild(b);
+    });
+
+    const go = (n: number) => {
+      at = Math.max(0, Math.min(slides.length - 1, n));
+      slides.forEach((s, i) => s.classList.toggle('is-on', i === at));
+      dots?.querySelectorAll('button').forEach((b, i) =>
+        b.setAttribute('aria-current', String(i === at)),
+      );
+      if (pos) pos.textContent = `${at + 1} / ${slides.length}`;
+      // A shared link can open on a specific slide.
+      history.replaceState(null, '', `#${at + 1}`);
+    };
+
+    deck.querySelector('[data-next]')?.addEventListener('click', () => go(at + 1));
+    deck.querySelector('[data-prev]')?.addEventListener('click', () => go(at - 1));
+
+    window.addEventListener('keydown', (e) => {
+      // Never steal the arrow keys while someone is typing in the contact form.
+      const el = document.activeElement;
+      if (el instanceof HTMLInputElement || el instanceof HTMLTextAreaElement) return;
+      if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') { e.preventDefault(); go(at + 1); }
+      if (e.key === 'ArrowLeft' || e.key === 'PageUp') { e.preventDefault(); go(at - 1); }
+      if (e.key === 'Home') go(0);
+      if (e.key === 'End') go(slides.length - 1);
+    });
+
+    // Swipe, since this is the variant most likely to be opened on a phone.
+    let x0 = 0;
+    deck.addEventListener('touchstart', (e) => (x0 = e.touches[0].clientX), { passive: true });
+    deck.addEventListener('touchend', (e) => {
+      const dx = e.changedTouches[0].clientX - x0;
+      if (Math.abs(dx) > 60) go(at + (dx < 0 ? 1 : -1));
+    }, { passive: true });
+
+    const start = Number(location.hash.slice(1));
+    go(Number.isFinite(start) && start > 0 ? start - 1 : 0);
+  }
+</script>

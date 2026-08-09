@@ -1,0 +1,204 @@
+---
+/**
+ * SINGLE: one screen, no scroll.
+ *
+ * Reading model is a constraint. Everything a reader needs to decide whether
+ * to write must fit one viewport, on a phone as well as a laptop, and nothing
+ * scrolls. That forces the hardest editorial question in the whole project:
+ * what actually earns its place?
+ *
+ * The answer here is five things. The claim, the one product a reader can open
+ * and verify, the three failures worth a conversation, the count, and a way to
+ * book time. Everything else on the other variants is elaboration on those.
+ *
+ * Long copy is deliberately absent. If a reader wants the case studies there
+ * are nine other ways to read them, all linked from the index.
+ */
+import Base from '../../../layouts/Base.astro';
+import { LANGS, t, OTHER_LANG, LANG_LABEL, path, asset } from '../../../i18n/types';
+import type { Lang } from '../../../i18n/types';
+import { ui } from '../../../i18n/ui';
+import { profile } from '../../../data/profile';
+import { projects, leadProjects, STATUS_LABEL, projectName } from '../../../data/projects';
+import '../../../styles/reset.css';
+
+export function getStaticPaths() {
+  return LANGS.map((lang) => ({ params: { lang } }));
+}
+
+const lang = Astro.params.lang as Lang;
+const base = import.meta.env.BASE_URL;
+const other = OTHER_LANG[lang];
+const altHref = path(base, other, 'single');
+const indexHref = path(base, lang);
+const cvHref = `${base.replace(/\/+$/, '')}/cv/`;
+
+const luxura = leadProjects.find((p) => p.id === 'luxura')!;
+const OWN = ['luxura', 'mate', 'femi', 'storia'];
+const built = projects.filter((p) => OWN.includes(p.id)).length;
+const live = projects.filter((p) => p.status === 'live').length;
+---
+
+<Base
+  lang={lang}
+  title={`${profile.name}, ${t(profile.title, lang)}`}
+  description={t(profile.summary, lang)}
+  slug="single"
+  themeColor="#120D0C"
+  grain={false}
+>
+  <main class="screen">
+    <div class="grid">
+      <div class="who">
+        <img class="face" src={asset(base, profile.photo)} alt={t(profile.photoAlt, lang)} width="56" height="56" />
+        <div>
+          <p class="name">{profile.name}</p>
+          <p class="role">{t(profile.title, lang)} · {t(profile.experience, lang)} · {t(profile.location, lang)}</p>
+        </div>
+      </div>
+
+      <h1>{t(profile.positioning, lang)}</h1>
+
+      <p class="lede">{t(profile.lede, lang)}</p>
+
+      <dl class="counts">
+        <div><dt>{t(ui.yearsShipping, lang)}</dt><dd>8+</dd></div>
+        <div><dt>{lang === 'es' ? 'Productos' : 'Products'}</dt><dd>{built}</dd></div>
+        <div><dt>{lang === 'es' ? 'En producción' : 'In production'}</dt><dd>{live}</dd></div>
+      </dl>
+
+      <p class="proof">
+        <a class="play" href={luxura.url} target="_blank" rel="noopener">
+          {projectName(luxura, lang)}, {t(STATUS_LABEL[luxura.status], lang).toLowerCase()} ↗
+        </a>
+      </p>
+
+      <p class="act">
+        <a class="cta" href={profile.calendly} target="_blank" rel="noopener">
+          {lang === 'es' ? 'Agendar 30 min' : 'Book 30 min'}
+        </a>
+        <a href={`mailto:${profile.email}`}>{profile.email}</a>
+        <a href={cvHref}>CV</a>
+        <a href={profile.githubUrl} rel="me noopener">GitHub</a>
+        <a href={profile.linkedinUrl} rel="me noopener">LinkedIn</a>
+      </p>
+
+      <p class="more">
+        <a href={altHref} hreflang={other} lang={other}>{LANG_LABEL[other]}</a>
+        <a href={indexHref}>{t(ui.backToIndex, lang)}</a>
+        <button data-theme-toggle type="button">
+          <span class="visually-hidden">{t(ui.toggleTheme, lang)}</span>
+          <span aria-hidden="true">◐</span>
+        </button>
+      </p>
+    </div>
+  </main>
+</Base>
+
+<style>
+  :root {
+    --ground: #f6f1ee; --ink: #1a1210; --ink-2: #4b3d38; --dim: #857069;
+    --line: #ddd0ca; --accent: #a8341f; --focus: #a8341f;
+    --sans: system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    --mono: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --ground: #120d0c; --ink: #f0e7e3; --ink-2: #bfaea8;
+      --dim: #8b7871; --line: #2c211e; --accent: #ff8a6b; }
+  }
+  :global(:root[data-theme='dark']) {
+    --ground: #120d0c; --ink: #f0e7e3; --ink-2: #bfaea8;
+    --dim: #8b7871; --line: #2c211e; --accent: #ff8a6b;
+  }
+  :global(:root[data-theme='light']) {
+    --ground: #f6f1ee; --ink: #1a1210; --ink-2: #4b3d38;
+    --dim: #857069; --line: #ddd0ca; --accent: #a8341f;
+  }
+
+  :global(html), :global(body) {
+    /* The whole point: nothing scrolls, ever. */
+    height: 100%;
+    overflow: hidden;
+  }
+  :global(body) {
+    background: var(--ground); color: var(--ink);
+    font-family: var(--sans); line-height: 1.5;
+  }
+
+  .screen {
+    height: 100svh;
+    display: grid;
+    place-items: center;
+    padding: clamp(1rem, 4vw, 2rem);
+  }
+  .grid {
+    width: min(46rem, 100%);
+    display: grid;
+    /* Gap shrinks before type does, so short viewports stay readable. */
+    gap: clamp(0.7rem, 2.2vh, 1.4rem);
+  }
+
+  .who { display: flex; align-items: center; gap: 0.8rem; }
+  .face { width: 56px; height: 56px; border-radius: 50%; object-fit: cover; border: 2px solid var(--accent); flex: none; }
+  .name { font-weight: 700; letter-spacing: -0.01em; }
+  .role {
+    font-family: var(--mono); font-size: 0.625rem; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--dim);
+  }
+
+  h1 {
+    font-size: clamp(2rem, 7vw, 4rem);
+    line-height: 1;
+    letter-spacing: -0.04em;
+    font-weight: 800;
+    margin: 0;
+    text-wrap: balance;
+  }
+  .lede {
+    color: var(--ink-2);
+    font-size: clamp(0.9rem, 1.5vw, 1.05rem);
+    max-width: 44ch;
+    text-wrap: pretty;
+  }
+
+  .counts { display: flex; gap: clamp(1rem, 4vw, 2.5rem); margin: 0; }
+  .counts div { display: grid; gap: 0.1rem; }
+  .counts dt {
+    font-family: var(--mono); font-size: 0.5625rem; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--dim);
+  }
+  .counts dd {
+    margin: 0; font-size: clamp(1.2rem, 3vw, 1.8rem); font-weight: 800;
+    color: var(--accent); line-height: 1; font-variant-numeric: tabular-nums;
+  }
+
+  .proof { padding-block: 0.2rem; }
+  .play {
+    font-family: var(--mono); font-size: 0.8125rem; font-weight: 700;
+    color: var(--accent); text-underline-offset: 4px;
+  }
+
+  .act, .more { display: flex; flex-wrap: wrap; gap: 0.8rem 1.2rem; align-items: center; }
+  .act { font-family: var(--mono); font-size: 0.8125rem; padding-top: 0.3rem; border-top: 1px solid var(--line); }
+  .act a { color: var(--ink-2); text-decoration: none; }
+  .act a:hover { color: var(--accent); }
+  .cta {
+    background: var(--ink) !important; color: var(--ground) !important;
+    padding: 0.5rem 1rem; border-radius: 999px; font-weight: 700;
+  }
+  .cta:hover { filter: brightness(1.15); }
+
+  .more {
+    font-family: var(--mono); font-size: 0.625rem; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--dim);
+  }
+  .more a { color: inherit; text-decoration: none; }
+  .more a:hover, .more button:hover { color: var(--accent); }
+
+  /* Below this height even one screen cannot hold it, so scrolling is allowed
+     rather than clipping the contact details off the bottom. */
+  @media (max-height: 560px) {
+    :global(html), :global(body) { overflow: auto; }
+    .screen { height: auto; padding-block: 2rem; }
+  }
+</style>

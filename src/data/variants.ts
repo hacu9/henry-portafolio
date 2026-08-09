@@ -147,4 +147,46 @@ export const variants: Variant[] = [
     accent: '#8A5A12',
     accentDark: '#D9A441',
   },
+
+  /* -------------------------------------------------------- fifth round --
+   * Reading models not yet used by any variant: ask-before-you-see,
+   * author-controlled sequence, reference documentation, and a single screen
+   * with no scroll at all.
+   */
+  {
+    slug: 'query',
+    name: { en: 'Query', es: 'Consulta' },
+    tagline: { en: 'Empty until you ask', es: 'Vacío hasta que preguntas' },
+    argues: { en: 'Search me.', es: 'Búscame.' },
+    bestFor: { en: 'Readers who arrive with a specific question', es: 'Quien llega con una pregunta concreta' },
+    accent: '#0F7B4A',
+    accentDark: '#3DDC84',
+  },
+  {
+    slug: 'slides',
+    name: { en: 'Slides', es: 'Diapositivas' },
+    tagline: { en: 'One idea per screen', es: 'Una idea por pantalla' },
+    argues: { en: 'I control the order you see this in.', es: 'Yo controlo el orden en que ves esto.' },
+    bestFor: { en: 'Sending as a link before a call', es: 'Enviar como enlace antes de una llamada' },
+    accent: '#6D3BD4',
+    accentDark: '#A886FF',
+  },
+  {
+    slug: 'docs',
+    name: { en: 'Docs', es: 'Docs' },
+    tagline: { en: 'Read me like an API', es: 'Léeme como una API' },
+    argues: { en: 'Everything is documented.', es: 'Todo está documentado.' },
+    bestFor: { en: 'Engineers who read reference material', es: 'Ingenieros que leen documentación' },
+    accent: '#1E5FA8',
+    accentDark: '#6FB3F2',
+  },
+  {
+    slug: 'single',
+    name: { en: 'Single', es: 'Única' },
+    tagline: { en: 'One screen, no scroll', es: 'Una pantalla, sin scroll' },
+    argues: { en: 'Thirty seconds is all it takes.', es: 'Con treinta segundos basta.' },
+    bestFor: { en: 'A tired CTO on a phone', es: 'Un CTO cansado en el teléfono' },
+    accent: '#A8341F',
+    accentDark: '#FF8A6B',
+  },
 ];

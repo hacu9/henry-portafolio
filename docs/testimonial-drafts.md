@@ -78,4 +78,4 @@ technical direction, which is the thing the site is thinnest on.
 
 Paste the approved text into `src/data/testimonials.ts` with their real name,
 their role at the time, and a link to their profile. The section appears
-automatically in all variants and on the CV.
+automatically on the site and on the CV.

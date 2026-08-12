@@ -221,6 +221,10 @@ const rawProjects: Project[] = [
     name: 'Femi',
     tagline: { en: "Women's safety platform", es: 'Plataforma de seguridad para mujeres' },
     status: 'building',
+    statusNote: {
+      en: 'Substantially built, not released',
+      es: 'En gran parte construida, sin lanzar',
+    },
 
     role: { en: 'Mobile and real-time systems', es: 'Móvil y sistemas en tiempo real' },
     period: '2025-2026',

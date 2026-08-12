@@ -11,14 +11,12 @@ export default defineConfig({
   // No SSR anywhere: GitHub Pages serves static files only.
   output: 'static',
   build: {
-    // Emit /signal/index.html rather than /signal.html so Pages resolves
-    // the directory URLs the variants link to.
+    // Emit /en/index.html rather than /en.html so Pages resolves the
+    // directory URLs the site links to.
     format: 'directory',
   },
   vite: {
     build: {
-      // The variants each ship one small island; keep them as separate chunks
-      // so a visitor to /kinetic never downloads the WebGL bundle.
       cssCodeSplit: true,
     },
   },

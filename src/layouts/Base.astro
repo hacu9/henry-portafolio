@@ -8,7 +8,7 @@ interface Props {
   lang: Lang;
   title: string;
   description: string;
-  /** Variant slug, or undefined on the chooser. Used for the alternate link. */
+  /** Slug under /<lang>/ for a subpage; empty on the home page. Drives canonical + hreflang. */
   slug?: string;
   /** Theme colour for the browser chrome. */
   themeColor?: string;

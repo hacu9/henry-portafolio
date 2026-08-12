@@ -1,6 +1,6 @@
 # Getting real testimonials, fast
 
-The section is built and wired into all six variants. It is empty because
+The section is built into the site and the CV. It is empty because
 nothing in it should be invented. This is the shortest honest path to filling
 it, and it is roughly ten minutes of work.
 
@@ -60,8 +60,8 @@ Open `src/data/testimonials.ts` and add an entry per person:
 },
 ```
 
-The section appears automatically once the array has anything in it, in all six
-variants and on the CV. While it is empty, visitors see nothing at all.
+The section appears automatically once the array has anything in it, on the
+site and on the CV. While it is empty, visitors see nothing at all.
 
 ## Why there are no invented ones
 
@@ -70,6 +70,10 @@ about a third party, and it fails the first time anyone clicks the profile
 link. The rest of the page is built to survive being checked; testimonials have
 to meet the same bar.
 
-Running `npm run dev` shows two obvious PLACEHOLDER entries so the section can
-be seen and styled. They are gated behind `import.meta.env.DEV` and cannot
-reach a production build.
+Running `npm run dev` shows four sample entries (first names, no company, no
+links) so the section can be seen and styled. They also reach a production
+build while `SHOW_SAMPLE_TESTIMONIALS` in `src/data/config.ts` is true - and it
+currently is, by Henry's decision on 2026-08-12. The samples render with no
+marker, so until real quotes replace them, the public site carries quotes
+nobody said. Flip the flag to false to take them off the public build; dev
+keeps showing them either way.

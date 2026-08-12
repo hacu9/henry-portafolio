@@ -1,7 +1,8 @@
 # henry-portafolio
 
-Personal portfolio, Henry Cabello. Four complete design directions over one
-shared bilingual content layer. Pick one, delete three.
+Personal portfolio, Henry Cabello. A bilingual single-page site styled as a
+terminal: boot sequence, sections as shell commands, ⌘K palette. One shared
+content layer drives the page and the printable CV.
 
 ## Run it
 
@@ -11,35 +12,32 @@ npm run dev
 ```
 
 Then open <http://localhost:4321/>. It forwards to `/en/` or `/es/` by browser
-language; the chooser lists all four directions.
+language.
 
 ```bash
 npm run build     # static output to dist/
 npm run preview   # serve dist/ exactly as Pages will
 ```
 
-## The four directions
+## The design
 
-| | Argues | Best for |
-|---|---|---|
-| **Signal**, the instrument panel | Trust me with production | Tech leads, CTOs, contract work |
-| **Deep Field**, the spectacle | I make beautiful things | Studios, creative engineering |
-| **Kinetic**, type is the whole show | I have taste, in two languages | Design-led teams, agencies, founders |
-| **The Log**, the working record | I finish things properly | Senior engineers who read closely |
-
-Compare them at `/en/` or `/es/`.
+Fourteen complete directions were built over the same content and this one,
+the terminal, won. It argues "I live in this environment": phosphor on black,
+a boot stream over the hero, the work listed like a directory. The other
+thirteen and the chooser page are in `archive/`, out of the build but still
+in git.
 
 ## Where the content lives
 
-All of it is in `src/data/`. No variant hardcodes copy, so editing a case study
-once updates all four. Every string is bilingual, see
+All of it is in `src/data/`. The page and the CV hardcode no copy, so editing
+a case study once updates everything. Every string is bilingual, see
 [docs/architecture.md](docs/architecture.md).
 
 ## Before publishing
 
 Read [docs/content-constraints.md](docs/content-constraints.md). It records
-what this site may not claim, which client names are still gated, and four open
-questions for Henry. Two flags in `src/data/config.ts` control the gated parts.
+what this site may not claim, which client names are still gated, and the open
+questions for Henry. The flags in `src/data/config.ts` control the gated parts.
 
 ## Deploying
 

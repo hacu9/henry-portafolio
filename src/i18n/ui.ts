@@ -11,7 +11,6 @@ export const ui = {
   skipToContent: { en: 'Skip to content', es: 'Ir al contenido' } as L,
   switchLang: { en: 'Ver en español', es: 'View in English' } as L,
   toggleTheme: { en: 'Toggle theme', es: 'Cambiar tema' } as L,
-  backToIndex: { en: 'All four directions', es: 'Las cuatro versiones' } as L,
 
   // ---- hero
   availableFor: { en: 'Open to', es: 'Disponible para' } as L,
@@ -52,25 +51,7 @@ export const ui = {
   } as L,
   emailMe: { en: 'Email', es: 'Correo' } as L,
 
-  // ---- variant chooser (root page)
-  chooserEyebrow: { en: 'Four directions · same content', es: 'Cuatro versiones · el mismo contenido' } as L,
-  chooserTitle: {
-    en: 'One portfolio, built four ways.',
-    es: 'Un portafolio, construido de cuatro formas.',
-  } as L,
-  chooserLede: {
-    en: 'Each version below is a complete, finished site running on identical content. They differ in what they argue about the person who built them. Open them, then keep one.',
-    es: 'Cada versión es un sitio completo y terminado, con contenido idéntico. Lo que cambia es lo que cada una afirma sobre quien la construyó. Ábrelas y quédate con una.',
-  } as L,
-  openVersion: { en: 'Open', es: 'Abrir' } as L,
-  argues: { en: 'Argues', es: 'Afirma' } as L,
-  bestFor: { en: 'Best for', es: 'Ideal para' } as L,
-
   // ---- misc
-  reducedMotionNote: {
-    en: 'Animation respects your reduced-motion setting.',
-    es: 'La animación respeta tu preferencia de movimiento reducido.',
-  } as L,
   builtNote: {
     en: 'Built with Astro. Static output, hosted on GitHub Pages.',
     es: 'Hecho con Astro. Salida estática, alojado en GitHub Pages.',

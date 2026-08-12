@@ -1,10 +1,32 @@
 ---
+/**
+ * The site. It boots.
+ *
+ * The environment Henry actually works in, made literal: a boot sequence, a
+ * ⌘K command palette, phosphor on black. The claim it makes is "I live here",
+ * which is only credible because it is true.
+ *
+ * The trap with this design is building a toy that hides the content behind
+ * a puzzle. So: everything is plain HTML underneath, the boot sequence is a
+ * short decoration over content that is already present, and the palette is an
+ * accelerator rather than the only way to navigate.
+ *
+ * This page won the variant bake-off. The thirteen losing directions and the
+ * chooser live in archive/, out of the build but still in git.
+ */
 import Base from '../../layouts/Base.astro';
-import { LANGS, t, OTHER_LANG, LANG_LABEL, path } from '../../i18n/types';
+import Testimonials from '../../components/Testimonials.astro';
+import TechWall from '../../components/TechWall.astro';
+import TechRow from '../../components/TechRow.astro';
+import ContactSwitch from '../../components/ContactSwitch.astro';
+import { LANGS, t, tl, OTHER_LANG, LANG_LABEL, path , asset} from '../../i18n/types';
 import type { Lang } from '../../i18n/types';
 import { ui } from '../../i18n/ui';
 import { profile } from '../../data/profile';
-import { variants } from '../../data/variants';
+import { leadProjects, supportingProjects, STATUS_LABEL, projectName } from '../../data/projects';
+import { stackGroups } from '../../data/stack';
+import { timeline, presentLabel } from '../../data/timeline';
+import { COARSE_TIMELINE_DATES } from '../../data/config';
 import '../../styles/reset.css';
 
 export function getStaticPaths() {
@@ -15,260 +37,570 @@ const lang = Astro.params.lang as Lang;
 const base = import.meta.env.BASE_URL;
 const other = OTHER_LANG[lang];
 const altHref = path(base, other);
-const link = (slug: string) => path(base, lang, slug);
+const indexHref = path(base, lang);
+const cvHref = `${base.replace(/\/+$/, '')}/cv/`;
+
+const boot =
+  lang === 'es'
+    ? [
+        'henry@bogota:~$ whoami',
+        'Ingeniero Full-Stack Senior · 8+ años',
+        'henry@bogota:~$ cat posicionamiento.txt',
+      ]
+    : [
+        'henry@bogota:~$ whoami',
+        'Senior Full-Stack Engineer · 8+ years',
+        'henry@bogota:~$ cat positioning.txt',
+      ];
 ---
 
 <Base
   lang={lang}
-  title={`${profile.name}, ${t(ui.chooserTitle, lang)}`}
-  description={t(ui.chooserLede, lang)}
-  themeColor="#0C1017"
+  title={`${profile.name}, ${t(profile.title, lang)}`}
+  description={t(profile.summary, lang)}
+  themeColor="#050706"
+  grain={false}
 >
   <a class="skip" href="#main">{t(ui.skipToContent, lang)}</a>
 
-  <div class="page">
-    <header class="top">
-      <span class="mark">{profile.name}</span>
-      <div class="tools">
-        <a class="lang" href={altHref} hreflang={other} lang={other}>{LANG_LABEL[other]}</a>
-        <button class="tog" data-theme-toggle type="button">
-          <span class="visually-hidden">{t(ui.toggleTheme, lang)}</span>
-          <span aria-hidden="true">◐</span>
-        </button>
+  <header class="bar">
+    <a class="mark" href={indexHref}>~/henry-cabello</a>
+    <div class="tools">
+      <button class="palette-open" type="button" data-open-palette>
+        <kbd>⌘</kbd><kbd>K</kbd>
+      </button>
+      <a class="cv-link" href={cvHref}>CV</a>
+      <a href={altHref} hreflang={other} lang={other}>{LANG_LABEL[other]}</a>
+      <button data-theme-toggle type="button">
+        <span class="visually-hidden">{t(ui.toggleTheme, lang)}</span>
+        <span aria-hidden="true">◐</span>
+      </button>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="boot">
+      <pre class="stream" aria-hidden="true">{boot.join('\n')}</pre>
+      <h1>{t(profile.positioning, lang)}</h1>
+        <p class="hero-lede">{t(profile.lede, lang)}</p>
+      <p class="cursor-line" aria-hidden="true">
+        <span class="prompt">henry@bogota:~$</span> <span class="caret"></span>
+      </p>
+      <p class="meta">{t(profile.location, lang)} · {t(profile.workingStyle, lang)} · UTC−5</p>
+    </section>
+
+    <section id="approach" class="blk">
+      <h2 class="cmd">$ cat approach.md</h2>
+      <div class="out" data-camera>
+        <p class="hl">{t(profile.thesis.lead, lang)}</p>
+        {tl(profile.thesis.body, lang).map((p) => <p>{p}</p>)}
       </div>
-    </header>
+    </section>
 
-    <main id="main">
-      <p class="eyebrow">{t(ui.chooserEyebrow, lang)}</p>
-      <h1>{t(ui.chooserTitle, lang)}</h1>
-      <p class="lede">{t(ui.chooserLede, lang)}</p>
-
-      <ul class="cards">
+    <section id="work" class="blk">
+      <h2 class="cmd">$ ls -la ./work</h2>
+      <div class="out">
         {
-          variants.map((v) => (
-            <li style={`--a:${v.accent};--ad:${v.accentDark}`}>
-              <a href={link(v.slug)}>
-                <span class="swatch" aria-hidden="true" />
-                <span class="name">{t(v.name, lang)}</span>
-                <span class="tag">{t(v.tagline, lang)}</span>
-                <span class="rows">
-                  <span>
-                    <b>{t(ui.argues, lang)}</b>
-                    {t(v.argues, lang)}
-                  </span>
-                  <span>
-                    <b>{t(ui.bestFor, lang)}</b>
-                    {t(v.bestFor, lang)}
-                  </span>
-                </span>
-                <span class="go">{t(ui.openVersion, lang)} →</span>
-              </a>
-            </li>
+          leadProjects.map((p) => (
+            <details class="proj" open>
+              <summary>
+                <span class="perm">drwxr-xr-x</span>
+                <span class="pname">{projectName(p, lang)}</span>
+                <span class={`st st-${p.status}`}>{t(STATUS_LABEL[p.status], lang)}</span>
+                {p.statusNote && <span class="stnote">{t(p.statusNote, lang)}</span>}
+                <span class="ptag">{t(p.tagline, lang)}{p.url && (<>{' · '}<a class="verify-link" href={p.url} target="_blank" rel="noopener">{p.urlLabel ? t(p.urlLabel, lang) : t(ui.verify, lang)} ↗</a></>)}</span>
+              {p.shots && (
+                <div class="shots">
+                  {p.shots.map((sh) => (
+                    <img src={asset(base, sh.src)} alt={t(sh.alt, lang)} loading="lazy" decoding="async" />
+                  ))}
+                </div>
+              )}
+              </summary>
+              <div class="pbody" data-stagger>
+                <div>
+                  <p class="lbl"># {t(ui.theProblem, lang)}</p>
+                  <p>{t(p.problem, lang)}</p>
+                </div>
+                <div>
+                  <p class="lbl"># {t(ui.whatIBuilt, lang)}</p>
+                  <ul>{tl(p.built, lang).map((b) => <li>{b}</li>)}</ul>
+                </div>
+                <div>
+                  <p class="lbl">
+                    # {p.decisions.length > 1 ? t(ui.theDecisions, lang) : t(ui.theDecision, lang)}
+                  </p>
+                  {p.decisions.map((d) => (
+                    <div class="call">
+                      <p class="ctitle">&gt; {t(d.title, lang)}</p>
+                      <p>{t(d.body, lang)}</p>
+                    </div>
+                  ))}
+                </div>
+                <div>
+                  <p class="lbl"># {t(ui.theOutcome, lang)}</p>
+                  <p class="ok">{t(p.outcome, lang)}</p>
+                </div>
+                <TechRow items={p.stack} size="sm" />
+              </div>
+            </details>
           ))
         }
-      </ul>
+        {
+          supportingProjects.map((p) => (
+            <details class="proj">
+              <summary>
+                <span class="perm">-rw-r--r--</span>
+                <span class="pname">{projectName(p, lang)}</span>
+                <span class={`st st-${p.status}`}>{t(STATUS_LABEL[p.status], lang)}</span>
+                {p.statusNote && <span class="stnote">{t(p.statusNote, lang)}</span>}
+                <span class="ptag">{t(p.tagline, lang)}{p.url && (<>{' · '}<a class="verify-link" href={p.url} target="_blank" rel="noopener">{p.urlLabel ? t(p.urlLabel, lang) : t(ui.verify, lang)} ↗</a></>)}</span>
+              </summary>
+              <div class="pbody">
+                <p>{t(p.problem, lang)}</p>
+                <div class="call">
+                  <p class="ctitle">&gt; {t(p.decisions[0].title, lang)}</p>
+                  <p>{t(p.decisions[0].body, lang)}</p>
+                </div>
+                <TechRow items={p.stack} size="sm" />
+              </div>
+            </details>
+          ))
+        }
+      </div>
+    </section>
 
-      <p class="note">{t(ui.builtNote, lang)} {t(ui.reducedMotionNote, lang)}</p>
-    </main>
-  </div>
+    <section class="blk">
+      <h2 class="cmd">$ cat stack.json</h2>
+      <TechWall slots={8} />
+      <div class="out" data-stagger>
+        {
+          stackGroups.map((g) => (
+            <div class="sg">
+              <p class="lbl">"{t(g.label, lang)}": [</p>
+              <p class="arr">{g.items.map((i) => `"${i}"`).join(', ')}</p>
+              <p class="lbl">],</p>
+              {g.note && <p class="note">// {t(g.note, lang)}</p>}
+            </div>
+          ))
+        }
+      </div>
+    </section>
+
+    <section class="blk">
+      <h2 class="cmd">$ git log --oneline --date=short</h2>
+      <div class="out">
+        <ol class="record">
+          {
+            timeline.map((e) => (
+              <li>
+                <span class="when">
+                  {COARSE_TIMELINE_DATES
+                    ? e.yearsOnly
+                    : `${e.from} to ${e.to === 'Present' ? t(presentLabel, lang) : e.to}`}
+                </span>
+                <span class="what">
+                  <strong>{t(e.role, lang)}</strong> <span class="org">{e.org}</span>
+                  {e.detail && <span class="det">{t(e.detail, lang)}</span>}{e.highlights && (<ul class="role-hl">{tl(e.highlights, lang).map((h) => <li>{h}</li>)}</ul>)}
+                </span>
+              </li>
+            ))
+          }
+        </ol>
+      </div>
+    </section>
+
+    <Testimonials lang={lang} />
+
+
+    <section id="contact" class="blk">
+      <h2 class="cmd">$ contact --open</h2>
+      <div class="contact-id"><img class="portrait" src={asset(base, profile.photo)} alt={t(profile.photoAlt, lang)} width="72" height="72" loading="lazy" /></div>
+      <div class="out">
+        {t(ui.contactLede, lang) && <p class="ok">{t(ui.contactLede, lang)}</p>}
+      <ContactSwitch lang={lang} />
+      </div>
+    </section>
+  </main>
+
+  <footer class="foot">
+    <span>exit 0 · {profile.name}</span>
+    <span>{t(ui.builtNote, lang)}</span>
+  </footer>
+
+  <!-- Command palette. An accelerator, never the only route. -->
+  <dialog id="palette" aria-label="Command palette">
+    <input
+      id="palette-input"
+      type="text"
+      autocomplete="off"
+      placeholder={lang === 'es' ? 'Escribe para filtrar…' : 'Type to filter…'}
+    />
+    <ul id="palette-list"></ul>
+  </dialog>
 </Base>
 
 <style>
   :root {
-    --ground: #e9ebef;
-    --raise: #f5f6f8;
-    --ink: #10151d;
-    --ink-2: #3a4453;
-    --dim: #6b7787;
-    --line: #c9cfd8;
-    --focus: #10151d;
-    --sans: system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-    --mono: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace;
+    --ground: #050706;
+    --raise: #0b0f0d;
+    --ink: #cfe3d6;
+    --ink-2: #8fae9c;
+    --dim: #5b7566;
+    --line: #16211b;
+    --accent: #3ddc84;
+    --warn: #e0b341;
+    --focus: #3ddc84;
+    --mono: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, 'Liberation Mono', monospace;
+    --shell: 74rem;
+    --read: 40rem;
+    --pad: clamp(1rem, 3vw, 2.25rem);
   }
-  @media (prefers-color-scheme: dark) {
-    :root {
-      --ground: #0c1017;
-      --raise: #131924;
-      --ink: #d8dee7;
-      --ink-2: #a3aebe;
-      --dim: #6b7787;
-      --line: #232c3a;
-      --focus: #d8dee7;
-    }
-  }
-  :global(:root[data-theme='dark']) {
-    --ground: #0c1017;
-    --raise: #131924;
-    --ink: #d8dee7;
-    --ink-2: #a3aebe;
-    --dim: #6b7787;
-    --line: #232c3a;
-    --focus: #d8dee7;
-  }
+  /* "Light" here is a paper terminal, not a betrayal of the idea. */
   :global(:root[data-theme='light']) {
-    --ground: #e9ebef;
-    --raise: #f5f6f8;
-    --ink: #10151d;
-    --ink-2: #3a4453;
-    --dim: #6b7787;
-    --line: #c9cfd8;
-    --focus: #10151d;
+    --ground: #f4f6f4;
+    --raise: #ffffff;
+    --ink: #10221a;
+    --ink-2: #35513f;
+    --dim: #6d8877;
+    --line: #d3ddd6;
+    --accent: #0f7b4a;
+    --warn: #8a6410;
   }
 
   :global(body) {
     background: var(--ground);
     color: var(--ink);
-    font-family: var(--sans);
-    line-height: 1.6;
+    font-family: var(--mono);
+    font-size: 0.8125rem;
+    line-height: 1.68;
   }
 
-  .page {
-    max-width: 62rem;
-    margin-inline: auto;
-    padding: 1rem clamp(1.15rem, 4vw, 2.5rem) 4rem;
-  }
-  .top {
+  .bar {
+    position: sticky;
+    top: 0;
+    z-index: 30;
     display: flex;
-    justify-content: space-between;
     align-items: center;
     gap: 1rem;
-    padding-block: 0.8rem 3rem;
-  }
-  .mark,
-  .lang,
-  .tog {
-    font-family: var(--mono);
+    padding: 0.5rem var(--pad);
+    background: color-mix(in srgb, var(--ground) 92%, transparent);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--line);
     font-size: 0.6875rem;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
   }
-  .mark {
-    font-weight: 600;
-  }
-  .tools {
-    display: flex;
-    gap: 0.6rem;
-  }
-  .lang,
-  .tog {
-    color: var(--dim);
-    text-decoration: none;
+  .bar a { text-decoration: none; }
+  .mark { color: var(--accent); }
+  .tools { margin-inline-start: auto; display: flex; gap: 0.8rem; align-items: center; color: var(--dim); }
+  .tools a:hover, .tools button:hover { color: var(--accent); }
+  .palette-open { display: flex; gap: 0.2rem; }
+  kbd {
     border: 1px solid var(--line);
-    padding: 0.2rem 0.5rem;
-  }
-  .lang:hover,
-  .tog:hover {
-    color: var(--ink);
-  }
-
-  .eyebrow {
-    font-family: var(--mono);
-    font-size: 0.6875rem;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
+    border-bottom-width: 2px;
+    padding: 0.05rem 0.3rem;
+    font-size: 0.625rem;
     color: var(--dim);
-  }
-  h1 {
-    font-size: clamp(1.9rem, 5vw, 3rem);
-    line-height: 1.1;
-    letter-spacing: -0.025em;
-    font-weight: 600;
-    text-wrap: balance;
-    margin-top: 0.6rem;
-  }
-  .lede {
-    color: var(--ink-2);
-    max-width: 44rem;
-    margin-top: 1rem;
-    font-size: 1.02rem;
+    background: var(--raise);
   }
 
-  .cards {
+  .boot {
+    max-width: var(--shell);
+    margin-inline: auto;
+    padding: clamp(2.5rem, 8vh, 5rem) var(--pad) clamp(2rem, 5vh, 3rem);
     display: grid;
     gap: 1rem;
-    margin-top: 2.5rem;
   }
-  /* Each card carries its own --a / --ad inline; pick the one that matches
-     the active theme here, where both are actually in scope. */
-  .cards li {
-    --accent: var(--a);
-  }
-  @media (prefers-color-scheme: dark) {
-    .cards li {
-      --accent: var(--ad);
-    }
-  }
-  :global(:root[data-theme='dark']) .cards li {
-    --accent: var(--ad);
-  }
-  :global(:root[data-theme='light']) .cards li {
-    --accent: var(--a);
-  }
-  @media (min-width: 760px) {
-    .cards {
-      grid-template-columns: 1fr 1fr;
-    }
-  }
-  .cards a {
-    display: grid;
-    gap: 0.55rem;
-    text-decoration: none;
-    border: 1px solid var(--line);
-    background: var(--raise);
-    padding: 1.2rem 1.3rem;
-    height: 100%;
-    align-content: start;
-    transition: border-color 0.18s ease, transform 0.18s ease;
-  }
-  .cards a:hover {
-    border-color: var(--accent);
-    transform: translateY(-2px);
-  }
-  .swatch {
-    height: 4px;
-    width: 3rem;
-    background: var(--accent);
-  }
-  .name {
-    font-size: 1.35rem;
-    font-weight: 650;
-    letter-spacing: -0.015em;
-  }
-  .tag {
-    font-family: var(--mono);
-    font-size: 0.75rem;
+  .stream {
+    margin: 0;
     color: var(--dim);
+    font-size: 0.75rem;
+    white-space: pre-wrap;
+    min-height: 4.4em;
   }
-  .rows {
-    display: grid;
-    gap: 0.35rem;
-    margin-top: 0.5rem;
-    padding-top: 0.7rem;
+  .boot h1 {
+    font-size: clamp(1.3rem, 2.9vw, 2.05rem);
+    line-height: 1.32;
+    font-weight: 500;
+    color: var(--ink);
+    max-width: 46ch;
+    letter-spacing: -0.01em;
+    margin: 0;
+    text-wrap: pretty;
+  }
+  .prompt { color: var(--accent); }
+  .caret {
+    display: inline-block;
+    width: 0.6em;
+    height: 1.05em;
+    background: var(--accent);
+    vertical-align: text-bottom;
+    animation: blink 1.1s steps(2) infinite;
+  }
+  @keyframes blink { 50% { opacity: 0; } }
+  @media (prefers-reduced-motion: reduce) { .caret { animation: none; } }
+  .meta { color: var(--dim); font-size: 0.6875rem; }
+
+  .blk {
+    max-width: var(--shell);
+    margin-inline: auto;
+    padding: clamp(1.5rem, 4vw, 2.6rem) var(--pad);
     border-top: 1px solid var(--line);
-    font-size: 0.875rem;
-    color: var(--ink-2);
+    display: grid;
+    gap: 0.9rem;
   }
-  .rows b {
-    display: block;
-    font-family: var(--mono);
-    font-size: 0.625rem;
+  .cmd { font-size: 0.8125rem; font-weight: 500; color: var(--accent); margin: 0; }
+  .out { display: grid; gap: 0.8rem; }
+  .out > p, .out p { color: var(--ink-2); max-width: var(--read); }
+  .hl { color: var(--ink) !important; font-size: 1rem; }
+  .warn { color: var(--warn) !important; max-width: 46rem !important; }
+  .ok { color: var(--accent) !important; max-width: 46rem !important; }
+
+  .proj { border-left: 2px solid var(--line); padding-left: 0.9rem; }
+  .proj[open] { border-left-color: var(--accent); }
+  .proj summary {
+    cursor: pointer;
+    display: flex;
+    gap: 0.75rem;
+    align-items: baseline;
+    flex-wrap: wrap;
+    list-style: none;
+    padding: 0.2rem 0;
+  }
+  .proj summary::-webkit-details-marker { display: none; }
+  .proj summary::before { content: '▸'; color: var(--dim); }
+  .proj[open] summary::before { content: '▾'; color: var(--accent); }
+  .perm { color: var(--dim); font-size: 0.6875rem; }
+  .pname { color: var(--ink); font-weight: 600; }
+  .ptag { color: var(--dim); font-size: 0.6875rem; }
+  .st {
+    font-size: 0.5625rem;
     letter-spacing: 0.12em;
     text-transform: uppercase;
-    color: var(--dim);
-    font-weight: 500;
+    border: 1px solid currentColor;
+    padding: 0.02rem 0.32rem;
   }
-  .go {
-    font-family: var(--mono);
-    font-size: 0.75rem;
-    color: var(--accent);
-    margin-top: 0.4rem;
-  }
+  .st-live { color: var(--accent); }
+  .st-building { color: var(--warn); }
+  .st-ongoing, .st-delivered { color: var(--dim); }
+  .stnote { color: var(--dim); font-size: 0.6875rem; }
 
-  .note {
-    margin-top: 2.5rem;
-    font-family: var(--mono);
+  .pbody { display: grid; gap: 0.9rem; padding: 0.7rem 0 1rem; }
+  .lbl { color: var(--dim) !important; font-size: 0.75rem; }
+  .pbody ul { display: grid; gap: 0.22rem; list-style: none; padding: 0; color: var(--ink-2); max-width: var(--read); }
+  .pbody li::before { content: '  ├─ '; color: var(--dim); }
+  .pbody li:last-child::before { content: '  └─ '; }
+  .call { display: grid; gap: 0.25rem; margin-block: 0.35rem; }
+  .ctitle { color: var(--ink) !important; }
+  .deps { color: var(--dim) !important; font-size: 0.6875rem; border-top: 1px dashed var(--line); padding-top: 0.5rem; }
+
+  .sg { display: grid; gap: 0.1rem; }
+  .arr { color: var(--ink-2) !important; padding-left: 1.2rem; max-width: none !important; line-height: 1.8; }
+  .note { color: var(--dim) !important; }
+
+  .record { display: grid; list-style: none; padding: 0; margin: 0; gap: 0.35rem; }
+  .record li { display: grid; gap: 0 1.2rem; }
+  @media (min-width: 700px) { .record li { grid-template-columns: 12rem 1fr; } }
+  .when { color: var(--dim); font-size: 0.6875rem; font-variant-numeric: tabular-nums; }
+  .what strong { color: var(--ink); font-weight: 600; }
+  .org { color: var(--ink-2); }
+  .det { display: block; color: var(--dim); font-size: 0.75rem; }
+
+  .links { display: flex; flex-wrap: wrap; gap: 1.2rem; }
+  .links a { color: var(--accent); text-underline-offset: 4px; }
+
+  .foot {
+    max-width: var(--shell);
+    margin-inline: auto;
+    padding: 1.2rem var(--pad) 3rem;
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+    border-top: 1px solid var(--line);
     font-size: 0.6875rem;
     color: var(--dim);
-    letter-spacing: 0.04em;
   }
+  .foot a { color: var(--accent); }
+
+  /* ------------------------------------------------------------- palette */
+  #palette {
+    border: 1px solid var(--accent);
+    background: var(--raise);
+    color: var(--ink);
+    padding: 0;
+    width: min(34rem, 92vw);
+    margin-top: 12vh;
+    font-family: var(--mono);
+  }
+  #palette::backdrop { background: rgb(0 0 0 / 0.62); backdrop-filter: blur(2px); }
+  #palette-input {
+    width: 100%;
+    border: 0;
+    border-bottom: 1px solid var(--line);
+    background: transparent;
+    padding: 0.8rem 1rem;
+    font-size: 0.875rem;
+    outline: none;
+  }
+  #palette-list { list-style: none; margin: 0; padding: 0.3rem; max-height: 46vh; overflow-y: auto; }
+  #palette-list li a {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.45rem 0.7rem;
+    text-decoration: none;
+    font-size: 0.8125rem;
+    color: var(--ink-2);
+  }
+  #palette-list li a:hover,
+  #palette-list li[aria-selected='true'] a {
+    background: color-mix(in srgb, var(--accent) 16%, transparent);
+    color: var(--ink);
+  }
+  #palette-list .k { color: var(--dim); font-size: 0.6875rem; }
+
+  .verify-link {
+    color: var(--accent, currentColor);
+    text-underline-offset: 3px;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+  .verify-link:hover { filter: brightness(1.15); }
+
+  /* Distinct from .hl, which this variant already uses for the thesis line. */
+  .role-hl { display: grid; gap: 0.15rem; margin-top: 0.3rem; padding: 0; list-style: none; max-width: 44rem; }
+  .role-hl li { color: var(--ink-2); font-size: 0.75rem; line-height: 1.6; }
+  .role-hl li::before { content: '  ├─ '; color: var(--dim); }
+  .role-hl li:last-child::before { content: '  └─ '; }
+
+  .contact-id { display: flex; align-items: center; gap: 0.9rem; }
+  .portrait {
+    width: 72px; height: 72px; border-radius: 50%; object-fit: cover;
+    border: 2px solid var(--accent, currentColor); flex: none;
+  }
+  .shots {
+    display: flex; gap: 0.8rem; overflow-x: auto; padding-bottom: 0.4rem;
+    margin-block: 0.4rem; scroll-snap-type: x mandatory;
+  }
+  .shots img {
+    width: clamp(140px, 26vw, 210px); height: auto; flex: none;
+    border-radius: 12px; scroll-snap-align: start;
+  }
+
+  .hero-lede {
+    font-size: clamp(1rem, 1.6vw, 1.15rem);
+    line-height: 1.5;
+    color: var(--ink-2, currentColor);
+    max-width: 46ch;
+    margin-top: 0.9rem;
+    text-wrap: pretty;
+  }
+
+  .cv-link {
+    color: var(--accent, currentColor);
+    font-weight: 700;
+    text-decoration: none;
+  }
+  .cv-link:hover { text-decoration: underline; }
 </style>
+
+<script>
+  /* --------------------------------------------------------- boot stream */
+  // Types the prompt lines out once. Purely a decoration over content that is
+  // already in the DOM, nothing is gated behind it.
+  const stream = document.querySelector<HTMLPreElement>('.stream');
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if (stream && !reduce) {
+    const full = stream.textContent || '';
+    stream.textContent = '';
+    let i = 0;
+    const tick = () => {
+      // Newlines pause a beat longer, which is what makes it read as a shell
+      // rather than a typewriter effect.
+      const ch = full[i];
+      stream.textContent = full.slice(0, ++i);
+      if (i < full.length) window.setTimeout(tick, ch === '\n' ? 130 : 18);
+    };
+    window.setTimeout(tick, 220);
+  }
+
+  /* ------------------------------------------------------------ palette */
+  const dialog = document.getElementById('palette') as HTMLDialogElement | null;
+  const input = document.getElementById('palette-input') as HTMLInputElement | null;
+  const list = document.getElementById('palette-list') as HTMLUListElement | null;
+
+  if (dialog && input && list) {
+    // Built from the page itself, so it can never list a section that is gone.
+    const items = [...document.querySelectorAll<HTMLElement>('section[id], .proj')].map((el) => {
+      if (el.classList.contains('proj')) {
+        const name = el.querySelector('.pname')?.textContent?.trim() || '';
+        const tag = el.querySelector('.ptag')?.textContent?.trim() || '';
+        if (!el.id) el.id = `proj-${name.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`;
+        return { label: name, hint: tag, href: `#${el.id}`, el };
+      }
+      const label = el.querySelector('.cmd')?.textContent?.replace(/^\$\s*/, '') || el.id;
+      return { label, hint: el.id, href: `#${el.id}`, el };
+    });
+
+    let active = 0;
+
+    const render = (q: string) => {
+      const needle = q.trim().toLowerCase();
+      const hits = items.filter(
+        (it) => !needle || `${it.label} ${it.hint}`.toLowerCase().includes(needle),
+      );
+      active = 0;
+      list.innerHTML = '';
+      hits.forEach((it, idx) => {
+        const li = document.createElement('li');
+        li.setAttribute('aria-selected', String(idx === 0));
+        const a = document.createElement('a');
+        a.href = it.href;
+        a.innerHTML = `<span>${it.label}</span><span class="k">${it.hint}</span>`;
+        a.addEventListener('click', () => {
+          // <details> must be open or the anchor lands on a collapsed block.
+          const d = it.el.closest('details');
+          if (d) d.open = true;
+          dialog.close();
+        });
+        li.appendChild(a);
+        list.appendChild(li);
+      });
+    };
+
+    const open = () => {
+      render('');
+      input.value = '';
+      dialog.showModal();
+      input.focus();
+    };
+
+    document.querySelector('[data-open-palette]')?.addEventListener('click', open);
+
+    window.addEventListener('keydown', (e) => {
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
+        e.preventDefault();
+        if (dialog.open) dialog.close();
+        else open();
+      }
+    });
+
+    input.addEventListener('input', () => render(input.value));
+
+    input.addEventListener('keydown', (e) => {
+      const rows = [...list.querySelectorAll('li')];
+      if (!rows.length) return;
+      if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+        e.preventDefault();
+        rows[active]?.setAttribute('aria-selected', 'false');
+        active = (active + (e.key === 'ArrowDown' ? 1 : -1) + rows.length) % rows.length;
+        rows[active]?.setAttribute('aria-selected', 'true');
+        rows[active]?.scrollIntoView({ block: 'nearest' });
+      } else if (e.key === 'Enter') {
+        e.preventDefault();
+        rows[active]?.querySelector('a')?.click();
+      }
+    });
+  }
+</script>

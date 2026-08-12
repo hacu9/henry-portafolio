@@ -46,14 +46,17 @@ export const WEB3FORMS_ACCESS_KEY = '9854292a-6ba2-4536-8293-6d5740d3dabe';
 /**
  * Show sample testimonials so the section can be judged while it is empty.
  *
- * Design review needs the slot filled; a hiring manager must never see a quote
- * nobody said. So this is a switch, not a default, and the samples are marked
- * SAMPLE in the rendered output.
+ * The samples render with first names only, no company, no profile link, and
+ * NO sample marker, so on a production build they read as real quotes. The
+ * docs are explicit that this state must not reach a hiring manager; Henry
+ * reviewed that trade-off on 2026-08-12 and chose to keep this true for now.
+ * It stays on the record as a decision, not an oversight.
  *
- * Flip to true, look at the layout, flip it back. It is already true in
- * `npm run dev` regardless of this setting.
+ * It is already true in `npm run dev` regardless of this setting, so flipping
+ * it to false costs nothing for layout review.
  *
- * Real ones go in src/data/testimonials.ts and this can then stay false
- * forever. See docs/testimonial-drafts.md for drafts to send for approval.
+ * Once real approved quotes land in src/data/testimonials.ts the samples are
+ * replaced automatically and this flag becomes irrelevant.
+ * See docs/testimonial-drafts.md for the drafts to send for approval.
  */
 export const SHOW_SAMPLE_TESTIMONIALS = true;

@@ -74,6 +74,21 @@ If Henry would rather not show it, `COARSE_TIMELINE_DATES` in `config.ts`
 collapses the column to years only. That hides the gap without asserting
 anything untrue. It does not invent a role.
 
+## The 2018–2020 freelance entry
+
+Added 2026-08-12 from Henry's verbal account: Pukara was a consulting client,
+and he freelanced for clients in Spain and the US. It backs the "8+ years"
+headline, which the timeline previously did not support (earliest role was
+Jul 2020).
+
+- **The dates are year-level because he does not remember the months.** The
+  2018 start is his own anchor. Do not add month precision to this entry -
+  invented dates are checkable in an interview and he cannot defend them.
+- **"Hospitalary handling software" was read as hospital management software.**
+  If he meant hospitality (hotels), the highlight needs one word changed.
+- Gara Group's "My first US client" was removed at the same time: the
+  freelance entry has US clients before Gara, so both claims could not stand.
+
 ## Open questions for Henry
 
 1. **The Spanish note is truncated.** It ends at "construir cosas muy distintas

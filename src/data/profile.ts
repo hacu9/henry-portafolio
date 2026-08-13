@@ -64,13 +64,17 @@ export const profile = {
   /** Carries the evidence the headline no longer has room for. */
   lede: {
     en: 'Luxura is live on Google Play: I built it, I run its infrastructure, and I buy its users. The parts worth talking about are the OTP failure, running production on one box, and what happens when you let two models argue about your code.',
-    es: 'Luxura está publicada en Google Play: la construí, opero su infraestructura y compro sus usuarios. Lo que vale la pena conversar es la falla de OTP, operar producción en una sola máquina, y qué pasa cuando dejas que dos modelos discutan tu código.',
+    // "I buy its users" works in English; in Spanish "comprar usuarios" reads
+    // as buying fake followers, so the Spanish buys the traffic instead, which
+    // is also the wording the Luxura outcome uses.
+    es: 'Luxura está publicada en Google Play: la construí, opero su infraestructura y le compro el tráfico. Lo que vale la pena conversar es la falla de OTP, operar producción en una sola máquina, y qué pasa cuando dejas que dos modelos discutan tu código.',
   } as L,
 
   /** Used where a plain description is needed, such as meta tags. */
   summary: {
-    en: 'Senior full-stack engineer, 8+ years. Ships and operates complete products: enterprise Microsoft integrations, AI agents, and mobile apps in production.',
-    es: 'Ingeniero full-stack senior, 8+ años. Construye y opera productos completos: integraciones empresariales con Microsoft, agentes de IA y apps móviles en producción.',
+    // Only Luxura is in production, so the singular. The plural overstated it.
+    en: 'Senior full-stack engineer, 8+ years. Ships and operates complete products: enterprise Microsoft integrations, AI agents, and a mobile app in production.',
+    es: 'Ingeniero full-stack senior, 8+ años. Construye y opera productos completos: integraciones empresariales con Microsoft, agentes de IA y una app móvil en producción.',
   } as L,
 
   /**
@@ -100,12 +104,12 @@ export const profile = {
       en: [
         'The method is always the same. Find the number that is falling. Work out whether it belongs to the code or to the vendor underneath it. Change the piece that actually controls it, then stay and run what you changed.',
         'That is how a domain I have never touched turns into something in production. Microsoft enterprise systems, a multi-agent AI platform, a dating app on Google Play, a safety product with real-time alerts. Four domains, no shared ground, one way in.',
-        'It is also why I keep the work most engineers pass on: payments, attribution, release pipelines, the ad campaigns, and the infrastructure holding it all up. On a team that turns into technical direction, the review gates and the specs other people build against.',
+        'It is also why I keep the work most engineers pass on: payments, attribution, release pipelines, the ad campaigns, and the infrastructure holding it all up. On a team, that turns into technical direction: the review gates and the specs other people build against.',
       ],
       es: [
-        'El método siempre es el mismo. Encontrar el número que se está cayendo. Averiguar si es del código o del proveedor que lo sostiene. Cambiar la pieza que de verdad lo controla, y quedarme operando lo que cambié.',
-        'Así es como un dominio que nunca toqué termina en producción. Sistemas empresariales de Microsoft, una plataforma de IA multiagente, una app de citas en Google Play, un producto de seguridad con alertas en tiempo real. Cuatro dominios sin nada en común, una sola forma de entrar.',
-        'También es la razón por la que me quedo con el trabajo que la mayoría delega: pagos, atribución, pipelines de release, las campañas y la infraestructura que sostiene todo. En un equipo eso se vuelve dirección técnica, las compuertas de revisión y las especificaciones contra las que construyen los demás.',
+        'El método siempre es el mismo. Encontrar el número que se está cayendo. Averiguar si es del código o del proveedor que lo sostiene. Cambiar la pieza que de verdad lo controla y quedarse operando ese cambio.',
+        'Así es como un dominio que nunca he tocado termina en producción. Sistemas empresariales de Microsoft, una plataforma de IA multiagente, una app de citas en Google Play, un producto de seguridad con alertas en tiempo real. Cuatro dominios sin nada en común, una sola forma de entrar.',
+        'También es la razón por la que me quedo con el trabajo que la mayoría evita: pagos, atribución, pipelines de release, las campañas y la infraestructura que sostiene todo. En un equipo, eso se vuelve dirección técnica: los controles de revisión y las especificaciones contra las que construyen los demás.',
       ],
     } as LList,
     /**
@@ -142,8 +146,8 @@ export const profile = {
     ],
     es: [
       'Un modelo me dijo que TikTok no tiene tope de presupuesto por cuenta. Sí lo tiene, y la campaña habría corrido sin tope si le hubiera creído.',
-      'Un reporte marcaba cero conversiones en una campaña que claramente estaba instalando. El cero era un error de mapeo de campos, y solo apareció porque no acepté el número.',
-      'La atribución de TikTok estuvo rota en silencio durante semanas. Una investigación hecha con IA no dio con la causa; era un permiso de red publicitaria.',
+      'Un reporte marcaba cero conversiones en una campaña que yo veía generando instalaciones. El cero era un error de mapeo de campos, y solo apareció porque no acepté el número.',
+      'La atribución de TikTok estuvo fallando en silencio durante semanas. Una investigación hecha con IA no dio con la causa; era un permiso de red publicitaria.',
       'Dos afirmaciones falsas estuvieron a punto de salir en mi propia hoja de vida, escritas por un asistente que sonaba seguro. Las detecté antes de publicarla.',
     ],
   } as LList,

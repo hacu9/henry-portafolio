@@ -35,7 +35,7 @@ export const stackGroups: StackGroup[] = [
     ],
     note: {
       en: 'I work in agentic loops, and nothing merges until two frontier models have reviewed it independently. Neither is told what the other said, and neither is told what I concluded, because a reviewer handed your reasoning gives you agreement instead of review. The spec stays matched to what actually shipped, and a confident answer counts as a claim to check, not a result. That has caught a wrong platform fact, a field-mapping bug hiding behind a zero, and a permissions toggle that was silently breaking attribution.',
-      es: 'Trabajo en bucles agénticos, y nada se mergea hasta que dos modelos frontera lo revisaron por separado. A ninguno se le dice qué dijo el otro, ni a qué conclusión llegué yo, porque a un revisor al que le entregas tu razonamiento te devuelve acuerdo en vez de revisión. La especificación se mantiene alineada con lo que realmente salió, y una respuesta segura cuenta como afirmación por comprobar, no como resultado. Eso detectó un dato de plataforma equivocado, un error de mapeo escondido detrás de un cero, y un permiso que rompía la atribución en silencio.',
+      es: 'Trabajo en bucles agénticos, y nada se mergea hasta que dos modelos de vanguardia lo hayan revisado por separado. A ninguno se le dice qué dijo el otro, ni a qué conclusión llegué yo, porque un revisor al que le entregas tu razonamiento te devuelve acuerdo en vez de revisión. La especificación se mantiene alineada con lo que realmente salió, y una respuesta segura cuenta como afirmación por comprobar, no como resultado. Eso detectó un dato de plataforma equivocado, un error de mapeo escondido detrás de un cero, y un permiso que rompía la atribución en silencio.',
     },
   },
   {
@@ -55,8 +55,8 @@ export const stackGroups: StackGroup[] = [
       'Claude Code', 'OpenAI Codex CLI',
     ],
     note: {
-      en: 'I run MCP servers daily against AppsFlyer, Meta Ads and TikTok Ads. One of them did not fit how I work, so I extended it.',
-      es: 'Uso servidores MCP a diario contra AppsFlyer, Meta Ads y TikTok Ads. Cuando uno no encajaba con mi flujo, lo extendí yo mismo.',
+      en: 'I run MCP servers daily against AppsFlyer, Meta Ads, and TikTok Ads. One of them did not fit how I work, so I extended it.',
+      es: 'Uso servidores MCP a diario con AppsFlyer, Meta Ads y TikTok Ads. Uno no encajaba con mi forma de trabajar, así que lo extendí.',
     },
   },
   {
@@ -92,11 +92,11 @@ export const stackGroups: StackGroup[] = [
     id: 'growth',
     label: { en: 'Growth and paid media', es: 'Crecimiento y pauta' },
     items: [
-      'Meta Ads', 'Google Ads', 'TikTok Ads', 'Attribution modelling',
+      'Meta Ads', 'Google Ads', 'TikTok Ads', 'Attribution modeling',
       'Geo-targeting', 'Creative production',
     ],
     note: {
-      en: 'I buy the traffic for my own products. It means I find out what an architecture decision costs per user, in money, the same week I make it.',
+      en: 'I buy the traffic for my own products. It means I find out what an architecture decision costs per user the same week I make it.',
       es: 'Yo compro el tráfico de mis propios productos. Eso significa que descubro lo que cuesta por usuario una decisión de arquitectura, en plata, la misma semana en que la tomo.',
     },
   },

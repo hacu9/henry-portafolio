@@ -28,7 +28,7 @@ const heading = label ?? (lang === 'es' ? 'Lo que dicen' : 'What people say');
 {
   testimonials.length > 0 && (
     <section class="quotes" id="testimonials">
-      <p class="quotes-label">{heading}</p>
+      <h2 class="quotes-label">{heading}</h2>
       <div class="quotes-grid">
         {testimonials.map((r) => (
           <figure class="quote">
@@ -60,6 +60,8 @@ const heading = label ?? (lang === 'es' ? 'Lo que dicen' : 'What people say');
   .quotes-label {
     font-family: var(--mono, ui-monospace, monospace);
     font-size: 0.625rem;
+    /* It is an h2 for the outline; keep the label's original weight. */
+    font-weight: 400;
     letter-spacing: 0.16em;
     text-transform: uppercase;
     color: var(--dim, currentColor);

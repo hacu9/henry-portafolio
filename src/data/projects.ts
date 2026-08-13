@@ -87,8 +87,8 @@ const rawProjects: Project[] = [
       },
     ],
     problem: {
-      en: 'Open dating apps drown in low-effort volume. The women leave first, then the men follow them out. Luxura inverts the funnel: men pay to send an invitation, women join free. That only works if the product owns its own economics, so payments, moderation and the cost of every user had to be mine.',
-      es: 'Las apps de citas abiertas se ahogan en volumen de bajo esfuerzo. Primero se van las mujeres, después se van los hombres detrás. Luxura invierte el embudo: los hombres pagan por invitar, las mujeres entran gratis. Eso solo funciona si el producto es dueño de su propia economía, así que los pagos, la moderación y el costo de cada usuario tenían que ser míos.',
+      en: 'Open dating apps drown in low-effort volume. The women leave first, then the men follow them out. Luxura inverts the funnel: men pay to send an invitation, women join free. That only works if the product owns its own economics, so payments, moderation, and the cost of every user had to be mine.',
+      es: 'Las apps de citas abiertas se ahogan en volumen de bajo esfuerzo. Primero se van las mujeres, y después los hombres las siguen. Luxura invierte el embudo: los hombres pagan por invitar, las mujeres entran gratis. Eso solo funciona si el producto es dueño de su propia economía, así que los pagos, la moderación y el costo de cada usuario tenían que ser míos.',
     },
     built: {
       en: [
@@ -98,7 +98,7 @@ const rawProjects: Project[] = [
         'AppsFlyer and RevenueCat attribution, wired to Meta Pixel and the Conversions API',
         'Automated content moderation on Azure Content Safety',
         'Full Google Play release pipeline, 12 testers for 14 days in closed testing, then production',
-        'Brand identity, logo and Play Store assets in a dark-and-gold direction',
+        'Brand identity, logo, and Play Store assets in a dark-and-gold direction',
       ],
       es: [
         'App web en Next.js empaquetada con Capacitor para el release de Android',
@@ -117,7 +117,7 @@ const rawProjects: Project[] = [
           es: 'Migré toda la plataforma de Vercel y Supabase a un VPS de Hetzner con Coolify',
         },
         body: {
-          en: 'A managed platform picks your database, your workers and your failure modes for you. I wanted those choices back before the product grew into them, so I moved everything onto one Hetzner box running Coolify. When memory ran short I added swap instead of a bigger instance, because a bigger instance is how you stop noticing what your app costs to run. Development runs on that same box: two environments drift, and the drift only ever shows up in the one with users on it. Uptime, disk and Docker hygiene are mine now.',
+          en: 'A managed platform picks your database, your workers, and your failure modes for you. I wanted those choices back before the product grew into them, so I moved everything onto one Hetzner box running Coolify. When memory ran short I added swap instead of a bigger instance, because a bigger instance is how you stop noticing what your app costs to run. Development runs on that same box: two environments drift, and the drift only ever shows up in the one with users on it. Uptime, disk, and Docker hygiene are mine now.',
           es: 'Una plataforma administrada elige por ti la base de datos, los workers y los modos de falla. Quería esas decisiones de vuelta antes de que el producto creciera dentro de ellas, así que moví todo a una sola máquina Hetzner con Coolify. Cuando faltó memoria agregué swap en vez de una instancia más grande, porque una instancia más grande es la forma de dejar de notar lo que cuesta operar tu app. Desarrollo corre en esa misma máquina: dos entornos se desvían, y la desviación siempre aparece en el que tiene usuarios. El uptime, el disco y la higiene de Docker ahora son míos.',
         },
       },
@@ -128,7 +128,7 @@ const rawProjects: Project[] = [
         },
         body: {
           en: 'SNS was too slow reaching Colombian carriers, and signups were dying on the verification screen. Nothing else in the app matters if the first screen leaks users. Firebase delivered in-country, so I took the lock-in on that one path and kept the funnel.',
-          es: 'SNS llegaba demasiado lento a las operadoras colombianas y los registros se morían en la pantalla de verificación. Nada más de la app importa si la primera pantalla pierde usuarios. Firebase entregaba dentro del país, así que acepté el amarre en ese punto y me quedé con el embudo.',
+          es: 'SNS llegaba demasiado lento a las operadoras colombianas y los registros se morían en la pantalla de verificación. Nada más en la app importa si la primera pantalla pierde usuarios. Firebase entregaba dentro del país, así que acepté el amarre en ese punto y me quedé con el embudo.',
         },
       },
       {
@@ -166,7 +166,7 @@ const rawProjects: Project[] = [
     lead: true,
     problem: {
       en: 'Swiping asks you to judge a person from one photo and one sentence. Mate tests the opposite: every user gets an agent that represents them, the agents talk first, and the humans only meet once that conversation says it is worth their evening.',
-      es: 'Deslizar te obliga a juzgar a una persona con una foto y una frase. Mate prueba lo contrario: cada usuario tiene un agente que lo representa, los agentes hablan primero, y las personas se conocen solo cuando esa conversación dice que vale la noche.',
+        es: 'Deslizar te obliga a juzgar a una persona con una foto y una frase. Mate prueba lo contrario: cada usuario tiene un agente que lo representa, los agentes hablan primero, y las personas se conocen solo cuando esa conversación dice que la noche vale la pena.',
     },
     built: {
       en: [
@@ -192,7 +192,7 @@ const rawProjects: Project[] = [
         },
         body: {
           en: 'The open question is whether agents talking to each other actually produce better matches. That lives in the orchestration layer, not in native gestures. Web-first took the iteration loop from a store review down to a deploy, and Capacitor keeps mobile open for when the answer is yes.',
-          es: 'La pregunta abierta es si los agentes hablando entre ellos producen mejores matches. Eso vive en la capa de orquestación, no en los gestos nativos. Ir primero a web bajó el ciclo de iteración de una revisión de tienda a un deploy, y Capacitor deja móvil abierto para cuando la respuesta sea sí.',
+          es: 'La pregunta abierta es si los agentes hablando entre ellos producen mejores matches. Eso vive en la capa de orquestación, no en los gestos nativos. Ir primero a web bajó el ciclo de iteración de una revisión de tienda a un deploy, y Capacitor deja la vía móvil abierta para cuando la respuesta sea sí.',
         },
       },
       {
@@ -231,7 +231,7 @@ const rawProjects: Project[] = [
     lead: true,
     problem: {
       en: 'A panic button has one setting. Real situations run from walking home uneasy to an emergency in progress, and the response should not be identical. Femi grades an alert across five levels of urgency and routes each one differently.',
-      es: 'Un botón de pánico tiene un solo ajuste. Las situaciones reales van desde caminar a casa incómoda hasta una emergencia en curso, y la respuesta no debería ser idéntica. Femi clasifica cada alerta en cinco niveles de urgencia y enruta cada uno distinto.',
+        es: 'Un botón de pánico tiene un solo ajuste. Las situaciones reales van desde caminar a casa incómoda hasta una emergencia en curso, y la respuesta no debería ser idéntica. Femi clasifica cada alerta en cinco niveles de urgencia y enruta cada una de forma distinta.',
     },
     built: {
       en: [
@@ -270,13 +270,13 @@ const rawProjects: Project[] = [
           es: 'Puse el chat en vivo dentro de la alerta y no en una bandeja aparte',
         },
         body: {
-          en: 'Nobody navigates during an incident. Keeping the WebSocket channel inside the alert puts the location, the urgency and the conversation on one screen, so a responder never leaves it to ask where someone is.',
+          en: 'Nobody navigates during an incident. Keeping the WebSocket channel inside the alert puts the location, the urgency, and the conversation on one screen, so a responder never leaves it to ask where someone is.',
           es: 'Durante un incidente nadie navega. Mantener el canal WebSocket dentro del detalle de la alerta deja la ubicación, el nivel de urgencia y la conversación en una sola pantalla, para que quien responde nunca cambie de contexto solo para preguntar dónde está la persona.',
         },
       },
     ],
     outcome: {
-      en: 'Real-time alerting, identity verification and trust modelling working as one system: the parts of a safety product you cannot bolt on later.',
+      en: 'Real-time alerting, identity verification, and trust modeling working as one system: the parts of a safety product you cannot bolt on later.',
       es: 'Alertas en tiempo real, verificación de identidad y modelado de confianza funcionando como un solo sistema: las partes de un producto de seguridad que no se pueden agregar después.',
     },
     stack: [
@@ -295,7 +295,7 @@ const rawProjects: Project[] = [
     period: '2021-2026',
     lead: false,
     problem: {
-      en: 'Corporate Microsoft estates where identity, Teams and reporting have to hold together across tenants, and keep holding the day Microsoft retires an endpoint underneath you.',
+      en: 'Corporate Microsoft estates where identity, Teams, and reporting have to hold together across tenants, and keep holding the day Microsoft retires an endpoint underneath you.',
       es: 'Entornos corporativos de Microsoft donde identidad, Teams y reportería tienen que sostenerse entre tenants, y seguir sosteniéndose el día que Microsoft retira un endpoint debajo tuyo.',
     },
     built: {
@@ -322,7 +322,7 @@ const rawProjects: Project[] = [
         },
         body: {
           en: 'A retired Microsoft endpoint almost never maps one to one onto its replacement. I worked out exactly what the new surface could and could not do before touching the integration, which turned the migration into a known quantity instead of a discovery exercise with clients on it.',
-          es: 'Un endpoint retirado de Microsoft casi nunca mapea uno a uno con su reemplazo. Establecí exactamente qué podía y qué no la nueva superficie antes de tocar la integración, y eso convirtió la migración en algo conocido en vez de un descubrimiento con clientes encima.',
+          es: 'Un endpoint retirado de Microsoft casi nunca mapea uno a uno con su reemplazo. Establecí exactamente qué podía y qué no podía hacer la nueva superficie antes de tocar la integración, y eso convirtió la migración en algo conocido en vez de un descubrimiento con clientes encima.',
         },
       },
     ],
@@ -375,9 +375,11 @@ const rawProjects: Project[] = [
         },
       },
     ],
+    // The old outcome restated the decision almost verbatim. This one only
+    // says where it stands; the "why" is already in the hard call above.
     outcome: {
-      en: 'Built directly on Meta\'s platform rather than through a reseller, so the per-conversation economics and the customer relationship stay with the product.',
-      es: 'Construido directo sobre la plataforma de Meta y no a través de un revendedor, así la economía por conversación y la relación con el cliente se quedan en el producto.',
+      en: 'In development, on Meta\'s own rails from day one.',
+      es: 'En desarrollo, sobre los rieles de Meta desde el primer día.',
     },
     stack: ['Next.js', 'TypeScript', 'WhatsApp Cloud API', 'Voice agents', 'PostgreSQL'],
   },
@@ -404,7 +406,7 @@ const rawProjects: Project[] = [
     },
     built: {
       en: [
-        'Channel strategy memo covering Meta Ads, Google Ads and geo-targeting',
+        'Channel strategy memo covering Meta Ads, Google Ads, and geo-targeting',
         'Measurement and attribution setup',
         'Meta ad creative production',
       ],
@@ -439,7 +441,7 @@ const rawProjects: Project[] = [
     period: '2025-2026',
     lead: false,
     problem: {
-      en: 'Self-hosting has a tail. The day you leave managed platforms, disk pressure, container sprawl and cache failures become yours at two in the morning.',
+      en: 'Self-hosting has a tail. The day you leave managed platforms, disk pressure, container sprawl, and cache failures become yours at two in the morning.',
       es: 'Auto-hospedar es una decisión con cola. Cuando dejas las plataformas administradas, el disco lleno, los contenedores acumulados y las fallas de caché pasan a ser tuyos a las dos de la mañana.',
     },
     built: {
@@ -463,7 +465,7 @@ const rawProjects: Project[] = [
           es: 'Automaticé la limpieza en vez de acordarme de hacerla',
         },
         body: {
-          en: 'Every outage I have had on my own hardware traced back to something that piled up quietly. A scheduled cleanup turns a judgement call I have to remember into a property of the system.',
+          en: 'Every outage I have had on my own hardware traced back to something that piled up quietly. A scheduled cleanup turns a judgment call I have to remember into a property of the system.',
           es: 'Cada caída que he tenido en self-hosting se rastreó hasta algo que se acumuló en silencio. La limpieza programada convierte un juicio recurrente en una propiedad del sistema.',
         },
       },
